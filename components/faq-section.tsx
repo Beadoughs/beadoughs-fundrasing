@@ -1,0 +1,67 @@
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
+export function FAQSection() {
+  const faqs = [
+    {
+      question: "Who can run a Beadoughs fundraiser?",
+      answer: "Any Tasmanian community group can run a Beadoughs fundraiser! This includes schools, P&Fs, sports clubs, charities, workplaces, community organisations, and more. If you're raising money for a good cause, we'd love to hear from you.",
+    },
+    {
+      question: "How does the fundraiser work?",
+      answer: "It's simple: your group collects pre-orders from supporters, we bake fresh doughnuts based on those orders, and then help coordinate delivery. Your group sells the doughnuts at a set price, keeps the profit margin, and supporters get delicious fresh doughnuts. No upfront inventory, no waste, no stress.",
+    },
+    {
+      question: "Do we need to pay upfront?",
+      answer: "No upfront payment is required from your group. We operate on a pre-order model, which means doughnuts are only baked once orders are confirmed. This removes financial risk for your organisation.",
+    },
+    {
+      question: "How much can our group raise?",
+      answer: "Fundraising amounts vary based on your group's size and reach. Many groups raise between $1,000–$5,000 from a single fundraiser. We'll help you set realistic goals and maximise your results during the planning stage.",
+    },
+    {
+      question: "Where is Beadoughs available?",
+      answer: "We currently serve groups across Tasmania, including Hobart, Launceston, and surrounding areas. If you're unsure whether we can reach your location, just submit an enquiry and we'll let you know.",
+    },
+    {
+      question: "How do we get started?",
+      answer: "Simply fill out the enquiry form on this page! Tell us about your group and your goals, and we'll be in touch within 1-2 business days to discuss the next steps. There's no obligation — it's just a friendly chat to see if we're the right fit.",
+    },
+  ]
+
+  return (
+    <section id="faq" className="py-16 sm:py-24 bg-secondary/30 scroll-mt-20">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-primary text-balance">
+            Frequently Asked Questions
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground">
+            Got questions? We&apos;ve got answers.
+          </p>
+        </div>
+
+        <Accordion type="single" collapsible className="space-y-4">
+          {faqs.map((faq, index) => (
+            <AccordionItem
+              key={index}
+              value={`item-${index}`}
+              className="bg-card border border-border rounded-2xl px-6 data-[state=open]:shadow-lg transition-shadow"
+            >
+              <AccordionTrigger className="text-left font-semibold text-foreground hover:no-underline py-5">
+                {faq.question}
+              </AccordionTrigger>
+              <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">
+                {faq.answer}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </section>
+  )
+}
