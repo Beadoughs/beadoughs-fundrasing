@@ -1,10 +1,8 @@
 import { Header } from "@/components/header"
 import { HeroSection } from "@/components/hero-section"
-import { ProblemSection } from "@/components/problem-section"
 import { HowItWorksSection } from "@/components/how-it-works-section"
-import { FlavorsSection } from "@/components/flavors-section"
+import { GroupsBanner } from "@/components/groups-banner"
 import { TestimonialsSection } from "@/components/testimonials-section"
-import { BenefitsSection } from "@/components/benefits-section"
 import { ImpactSection } from "@/components/impact-section"
 import { CTASection } from "@/components/cta-section"
 import { EnquiryForm } from "@/components/enquiry-form"
@@ -16,11 +14,10 @@ export default function Home() {
     <main className="min-h-screen">
       <Header />
       <HeroSection />
-      <ProblemSection />
+      <GroupsBanner />
       <HowItWorksSection />
-      <FlavorsSection />
+      <GroupsBanner variant="muted" />
       <TestimonialsSection />
-      <BenefitsSection />
       <ImpactSection />
       <CTASection />
       <EnquiryForm />

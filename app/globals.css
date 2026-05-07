@@ -130,3 +130,23 @@
 html {
   scroll-behavior: smooth;
 }
+
+@keyframes groups-marquee {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.groups-mask {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%);
+}
+
+.groups-track {
+  display: flex;
+  width: max-content;
+  animation: groups-marquee 32s linear infinite;
+}
