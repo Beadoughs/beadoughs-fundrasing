@@ -1,0 +1,196 @@
+export const COLLECTION_CARD_FRAGMENT = `
+  fragment CollectionCard on Collection {
+    id
+    handle
+    title
+    description
+    image {
+      url
+      altText
+    }
+    goalAmount: metafield(namespace: "beadoughs", key: "goal_amount") {
+      value
+    }
+    raisedAmount: metafield(namespace: "beadoughs", key: "raised_amount") {
+      value
+    }
+    endDate: metafield(namespace: "beadoughs", key: "end_date") {
+      value
+    }
+    organization: metafield(namespace: "beadoughs", key: "organization") {
+      value
+    }
+    supportersCount: metafield(namespace: "beadoughs", key: "supporters_count") {
+      value
+    }
+  }
+`
+
+export const COLLECTION_BY_HANDLE_QUERY = `
+  ${COLLECTION_CARD_FRAGMENT}
+  query CollectionByHandle($handle: String!) {
+    collection(handle: $handle) {
+      ...CollectionCard
+      descriptionHtml
+      products(first: 24) {
+        edges {
+          node {
+            id
+            title
+            handle
+            description
+            featuredImage {
+              url
+              altText
+            }
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            variants(first: 10) {
+              edges {
+                node {
+                  id
+                  title
+                  availableForSale
+                  price {
+                    amount
+                    currencyCode
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+export const COLLECTION_CARD_ONLY_QUERY = `
+  ${COLLECTION_CARD_FRAGMENT}
+  query CollectionCardOnly($handle: String!) {
+    collection(handle: $handle) {
+      ...CollectionCard
+    }
+  }
+`
+
+/** Lists collections visible to the Storefront API (max $first). */
+export const COLLECTIONS_FIRST_QUERY = `
+  ${COLLECTION_CARD_FRAGMENT}
+  query CollectionsFirst($first: Int!) {
+    collections(first: $first) {
+      edges {
+        node {
+          ...CollectionCard
+        }
+      }
+    }
+  }
+`
+
+export const CART_QUERY = `
+  query Cart($cartId: ID!) {
+    cart(id: $cartId) {
+      id
+      checkoutUrl
+      totalQuantity
+      cost {
+        totalAmount {
+          amount
+          currencyCode
+        }
+      }
+      lines(first: 50) {
+        edges {
+          node {
+            id
+            quantity
+            cost {
+              totalAmount {
+                amount
+                currencyCode
+              }
+            }
+            merchandise {
+              ... on ProductVariant {
+                id
+                title
+                product {
+                  title
+                  handle
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
+
+export const CART_CREATE_MUTATION = `
+  mutation CartCreate($input: CartInput!) {
+    cartCreate(input: $input) {
+      cart {
+        id
+        checkoutUrl
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`
+
+export const CART_LINES_ADD_MUTATION = `
+  mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+    cartLinesAdd(cartId: $cartId, lines: $lines) {
+      cart {
+        id
+        checkoutUrl
+        totalQuantity
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`
+
+export const CART_LINES_UPDATE_MUTATION = `
+  mutation CartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+    cartLinesUpdate(cartId: $cartId, lines: $lines) {
+      cart {
+        id
+        checkoutUrl
+        totalQuantity
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`
+
+export const CART_LINES_REMOVE_MUTATION = `
+  mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+    cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+      cart {
+        id
+        checkoutUrl
+        totalQuantity
+      }
+      userErrors {
+        field
+        message
+      }
+    }
+  }
+`

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
+import { Menu, ShoppingCart, X } from "lucide-react"
 import Link from "next/link"
 
 export function Header() {
@@ -57,8 +57,14 @@ export function Header() {
             ))}
           </nav>
 
-          {/* CTA Button */}
-          <div className="hidden md:block">
+          {/* Cart + CTA */}
+          <div className="hidden md:flex items-center gap-3">
+            <Button asChild variant="outline" size="lg" className="rounded-full px-4 gap-2">
+              <Link href="/cart">
+                <ShoppingCart className="h-4 w-4" />
+                Cart
+              </Link>
+            </Button>
             <Button asChild size="lg" className="rounded-full px-6">
               <Link href="/#enquiry">Start a Fundraiser</Link>
             </Button>
@@ -88,7 +94,13 @@ export function Header() {
                   {link.label}
                 </Link>
               ))}
-              <Button asChild className="rounded-full mt-2">
+              <Button asChild variant="outline" className="rounded-full mt-2">
+                <Link href="/cart" onClick={() => setIsMobileMenuOpen(false)}>
+                  <ShoppingCart className="mr-2 h-4 w-4" />
+                  Cart
+                </Link>
+              </Button>
+              <Button asChild className="rounded-full">
                 <Link href="/#enquiry" onClick={() => setIsMobileMenuOpen(false)}>
                   Start a Fundraiser
                 </Link>
