@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useTransition } from "react"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -13,14 +14,52 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Send, CheckCircle2 } from "lucide-react"
+import { submitEnquiry } from "@/app/actions/enquiry"
 
 export function EnquiryForm() {
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isPending, startTransition] = useTransition()
+  const [name, setName] = useState("")
+  const [organisation, setOrganisation] = useState("")
+  const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
+  const [groupType, setGroupType] = useState<string | undefined>(undefined)
+  const [fundraisingDate, setFundraisingDate] = useState("")
+  const [message, setMessage] = useState("")
+
+  const resetFields = () => {
+    setName("")
+    setOrganisation("")
+    setEmail("")
+    setPhone("")
+    setGroupType(undefined)
+    setFundraisingDate("")
+    setMessage("")
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Demo: Show success state
-    setIsSubmitted(true)
+    if (!groupType) {
+      toast.error("Please select a type of group.")
+      return
+    }
+    startTransition(async () => {
+      const result = await submitEnquiry({
+        name,
+        organisation,
+        email,
+        phone,
+        groupType,
+        fundraisingDate,
+        message,
+      })
+      if (result.ok) {
+        setIsSubmitted(true)
+        resetFields()
+      } else {
+        toast.error(result.error)
+      }
+    })
   }
 
   if (isSubmitted) {
@@ -37,8 +76,11 @@ export function EnquiryForm() {
             <p className="text-muted-foreground mb-6">
               We&apos;ve received your fundraising enquiry and will be in touch within 1-2 business days.
             </p>
-            <Button 
-              onClick={() => setIsSubmitted(false)}
+            <Button
+              onClick={() => {
+                setIsSubmitted(false)
+                resetFields()
+              }}
               variant="outline"
               className="rounded-full"
             >
@@ -94,8 +136,12 @@ export function EnquiryForm() {
                 </label>
                 <Input
                   id="name"
+                  name="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   placeholder="Jane Smith"
                   required
+                  autoComplete="name"
                   className="h-12 rounded-xl bg-secondary/50 border-border"
                 />
               </div>
@@ -106,8 +152,12 @@ export function EnquiryForm() {
                 </label>
                 <Input
                   id="organisation"
+                  name="organisation"
+                  value={organisation}
+                  onChange={(e) => setOrganisation(e.target.value)}
                   placeholder="Hobart Primary School P&F"
                   required
+                  autoComplete="organization"
                   className="h-12 rounded-xl bg-secondary/50 border-border"
                 />
               </div>
@@ -119,9 +169,13 @@ export function EnquiryForm() {
                   </label>
                   <Input
                     id="email"
+                    name="email"
                     type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="jane@example.com"
                     required
+                    autoComplete="email"
                     className="h-12 rounded-xl bg-secondary/50 border-border"
                   />
                 </div>
@@ -131,8 +185,12 @@ export function EnquiryForm() {
                   </label>
                   <Input
                     id="phone"
+                    name="phone"
                     type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     placeholder="0412 345 678"
+                    autoComplete="tel"
                     className="h-12 rounded-xl bg-secondary/50 border-border"
                   />
                 </div>
@@ -142,8 +200,15 @@ export function EnquiryForm() {
                 <label htmlFor="group-type" className="text-sm font-medium text-foreground">
                   Type of group
                 </label>
-                <Select>
-                  <SelectTrigger className="h-12 rounded-xl bg-secondary/50 border-border">
+                <Select
+                  value={groupType}
+                  onValueChange={setGroupType}
+                  required
+                >
+                  <SelectTrigger
+                    id="group-type"
+                    className="h-12 rounded-xl bg-secondary/50 border-border"
+                  >
                     <SelectValue placeholder="Select your group type" />
                   </SelectTrigger>
                   <SelectContent>
@@ -163,7 +228,10 @@ export function EnquiryForm() {
                 </label>
                 <Input
                   id="date"
+                  name="fundraisingDate"
                   type="text"
+                  value={fundraisingDate}
+                  onChange={(e) => setFundraisingDate(e.target.value)}
                   placeholder="e.g. March 2025, Term 2, or flexible"
                   className="h-12 rounded-xl bg-secondary/50 border-border"
                 />
@@ -175,19 +243,23 @@ export function EnquiryForm() {
                 </label>
                 <Textarea
                   id="message"
+                  name="message"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
                   placeholder="Tell us a bit about your group and what you're hoping to raise money for..."
                   rows={4}
                   className="rounded-xl bg-secondary/50 border-border resize-none"
                 />
               </div>
 
-              <Button 
-                type="submit" 
-                size="lg" 
+              <Button
+                type="submit"
+                size="lg"
+                disabled={isPending}
                 className="w-full rounded-full h-14 text-base shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all"
               >
                 <Send className="h-5 w-5 mr-2" />
-                Send Fundraising Enquiry
+                {isPending ? "Sending…" : "Send Fundraising Enquiry"}
               </Button>
 
               <p className="text-xs text-center text-muted-foreground">
