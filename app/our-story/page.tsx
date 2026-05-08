@@ -80,15 +80,22 @@ export default function OurStoryPage() {
                 local impact.
               </p>
 
-              <div className="relative mt-8 pl-8 sm:pl-10 lg:pl-0">
-                <div className="absolute left-3 top-0 h-full w-px bg-primary/25 lg:hidden" />
-                <div className="hidden lg:block absolute left-0 right-0 top-8 h-px bg-primary/25" />
+              <div className="relative mt-8">
+                <div className="absolute left-3 top-0 h-full w-px bg-primary/25 sm:left-4 lg:left-1/2 lg:-translate-x-1/2" />
 
-                <div className="grid gap-6 lg:grid-cols-5">
+                <div className="space-y-6 lg:space-y-10">
                   {milestones.map((milestone, index) => (
-                    <article key={milestone.title} className="relative">
-                      <div className="absolute -left-[1.6rem] top-7 h-4 w-4 rounded-full border-2 border-primary bg-background shadow-sm lg:left-1/2 lg:-translate-x-1/2" />
-                      <div className="rounded-2xl border border-primary/20 bg-secondary/40 p-4 sm:p-5 shadow-sm backdrop-blur-sm lg:mt-10">
+                    <article key={milestone.title} className="relative pl-8 sm:pl-10 lg:pl-0">
+                      <div className="absolute left-[0.45rem] top-7 h-4 w-4 rounded-full border-2 border-primary bg-background shadow-sm sm:left-[0.7rem] lg:left-1/2 lg:-translate-x-1/2" />
+                      <div className={`lg:grid lg:grid-cols-2 ${index % 2 === 0 ? "lg:pr-8" : "lg:pl-8"}`}>
+                        <div
+                          className={
+                            index % 2 === 0
+                              ? "lg:col-start-1 lg:pr-10"
+                              : "lg:col-start-2 lg:pl-10"
+                          }
+                        >
+                          <div className="rounded-2xl border border-primary/20 bg-secondary/40 p-4 sm:p-5 shadow-sm backdrop-blur-sm">
                         <div className="relative overflow-hidden rounded-xl bg-background/80 ring-1 ring-primary/15">
                           <Image
                             src={milestone.image}
@@ -104,6 +111,8 @@ export default function OurStoryPage() {
                         <h3 className="mt-1 font-serif text-xl font-bold text-primary">{milestone.title}</h3>
                         <p className="mt-2 text-sm leading-relaxed text-foreground">{milestone.description}</p>
                         <p className="mt-3 text-xs font-medium text-primary/80">Milestone {index + 1} of 5</p>
+                          </div>
+                        </div>
                       </div>
                     </article>
                   ))}
