@@ -45,7 +45,7 @@ const milestones = [
     title: "Helping People in Need",
     year: "Today",
     description:
-      "Every campaign now supports real people and practical local causes, one donut at a time.",
+      "In 2025, we helped raise $11,079 for Constable Keith Smith — one of many campaigns focused on uplifting Tasmanians in real need.",
     image: "/images/story/helping-people.png",
   },
 ]
@@ -92,14 +92,11 @@ export default function OurStoryPage() {
                         <div className="relative overflow-hidden rounded-xl bg-background/80 ring-1 ring-primary/15">
                           <Image
                             src={milestone.image}
-                            alt={`${milestone.title} milestone placeholder image`}
+                            alt={`${milestone.title} milestone image`}
                             width={500}
                             height={320}
                             className={`h-32 w-full object-cover sm:h-36 ${milestone.imageClassName ?? ""}`}
                           />
-                          <span className="absolute left-2 top-2 rounded-full bg-primary px-2 py-1 text-[10px] font-semibold uppercase tracking-wide text-primary-foreground">
-                            Placeholder
-                          </span>
                         </div>
                         <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                           {milestone.year}
