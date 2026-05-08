@@ -29,14 +29,6 @@ export function HeroSection() {
               <Button asChild size="lg" className="rounded-full px-8 text-base h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all">
                 <Link href="#enquiry">Submit a Fundraising Enquiry</Link>
               </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="rounded-full px-8 text-base h-14 border-primary/30"
-              >
-                <Link href="/fundraisers">Support a fundraiser (shop)</Link>
-              </Button>
             </div>
 
           </div>

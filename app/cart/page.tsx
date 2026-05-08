@@ -45,7 +45,7 @@ export default async function CartPage() {
             <div className="rounded-3xl border border-border bg-card p-10 text-center">
               <p className="text-muted-foreground mb-6">Your cart is empty.</p>
               <Button asChild className="rounded-full">
-                <Link href="/fundraisers">Browse active fundraisers</Link>
+                <Link href="/">Back to home</Link>
               </Button>
             </div>
           ) : (

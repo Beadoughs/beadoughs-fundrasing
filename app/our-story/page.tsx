@@ -142,9 +142,6 @@ export default function OurStoryPage() {
                   <Button asChild size="lg" className="rounded-full bg-primary-foreground text-primary hover:bg-primary-foreground/90">
                     <Link href="/#enquiry">Start a fundraiser</Link>
                   </Button>
-                  <Button asChild size="lg" variant="outline" className="rounded-full border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10">
-                    <Link href="/fundraisers">View active fundraisers</Link>
-                  </Button>
                 </div>
               </div>
             </div>

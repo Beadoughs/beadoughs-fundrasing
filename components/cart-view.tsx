@@ -93,7 +93,7 @@ export function CartView({ lines, totalQuantity, totalAmount }: Props) {
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button asChild variant="outline" className="rounded-full">
-            <Link href="/fundraisers">Continue supporting</Link>
+            <Link href="/">Continue browsing</Link>
           </Button>
           <form action={redirectToShopifyCheckout}>
             <Button type="submit" className="w-full rounded-full sm:w-auto" size="lg">
