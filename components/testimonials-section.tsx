@@ -1,3 +1,4 @@
+import { TestimonialsDonutDecorations } from "@/components/donut-decorations"
 import { Card } from "@/components/ui/card"
 import { Quote } from "lucide-react"
 
@@ -27,10 +28,12 @@ const TESTIMONIALS = [
 
 export function TestimonialsSection() {
   return (
-    <section className="py-24 bg-primary text-primary-foreground relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent -z-10" />
+    <section className="relative overflow-hidden py-24 bg-primary text-primary-foreground">
+      <div className="absolute top-0 left-0 -z-10 h-full w-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent" />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <TestimonialsDonutDecorations />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-8 duration-700">
           <h2 className="text-3xl sm:text-4xl font-serif font-bold mb-4">
             Hear It From The Legends

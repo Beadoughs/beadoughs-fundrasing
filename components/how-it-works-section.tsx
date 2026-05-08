@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card"
+import { HowItWorksDonutDecorations } from "@/components/donut-decorations"
 import { Send, Handshake, ClipboardList, Truck } from "lucide-react"
 
 export function HowItWorksSection() {
@@ -30,8 +31,13 @@ export function HowItWorksSection() {
   ]
 
   return (
-    <section id="how-it-works" className="py-16 sm:py-24 scroll-mt-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section id="how-it-works" className="relative py-16 sm:py-24 scroll-mt-20 overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <div className="relative mx-auto h-full w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <HowItWorksDonutDecorations />
+        </div>
+      </div>
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-primary text-balance">
             How Beadoughs Makes Fundraising Feel Easy

@@ -1,5 +1,6 @@
 "use client"
 
+import { GroupsBannerDonutDecorations } from "@/components/donut-decorations"
 import Image from "next/image"
 
 type GroupsBannerProps = {
@@ -22,8 +23,11 @@ export function GroupsBanner({ variant = "primary" }: GroupsBannerProps) {
   const scrollerGroups = [...groups, ...groups]
 
   return (
-    <section className={`py-10 md:py-12 ${sectionClass}`}>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section
+      className={`relative overflow-hidden py-10 md:py-12 ${sectionClass}`}
+    >
+      <GroupsBannerDonutDecorations />
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <p className="mb-6 text-center text-sm font-semibold uppercase tracking-[0.22em] text-muted-foreground">
           Groups we&apos;ve worked with
         </p>
