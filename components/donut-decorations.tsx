@@ -14,21 +14,21 @@ const HERO_DONUTS: DonutItem[] = [
   {
     src: "/images/donuts/donut-1.png",
     className:
-      "bottom-24 right-3 left-auto top-auto w-10 sm:w-11 lg:hidden",
+      "bottom-24 right-3 left-auto top-auto w-10 sm:w-[5.5rem] lg:hidden",
     delayMs: 80,
     durationMs: 680,
   },
   {
     src: "/images/donuts/donut-3.png",
     className:
-      "left-2 top-[40%] w-11 h-11 sm:w-12 sm:h-12 hidden lg:block",
+      "left-2 top-[40%] w-[5.5rem] h-[5.5rem] sm:w-24 sm:h-24 hidden lg:block",
     delayMs: 140,
     durationMs: 620,
   },
   {
     src: "/images/donuts/donut-4.png",
     className:
-      "right-2 top-[30%] w-11 h-11 sm:w-12 sm:h-12 hidden lg:block",
+      "right-2 top-[30%] w-[5.5rem] h-[5.5rem] sm:w-24 sm:h-24 hidden lg:block",
     delayMs: 260,
     durationMs: 820,
   },
@@ -38,21 +38,21 @@ const HOW_DONUTS: DonutItem[] = [
   {
     src: "/images/donuts/donut-5.png",
     className:
-      "left-0 top-1/2 -translate-x-[55%] -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 hidden lg:block",
+      "left-0 top-1/2 -translate-x-[55%] -translate-y-1/2 w-20 h-20 sm:w-[5.5rem] sm:h-[5.5rem] hidden lg:block",
     delayMs: 0,
     durationMs: 700,
   },
   {
     src: "/images/donuts/donut-6.png",
     className:
-      "right-0 top-1/2 translate-x-[55%] -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 hidden lg:block",
+      "right-0 top-1/2 translate-x-[55%] -translate-y-1/2 w-20 h-20 sm:w-[5.5rem] sm:h-[5.5rem] hidden lg:block",
     delayMs: 120,
     durationMs: 780,
   },
   {
     src: "/images/donuts/donut-9.png",
     className:
-      "bottom-20 right-3 left-auto top-auto w-10 h-10 lg:hidden",
+      "bottom-20 right-3 left-auto top-auto w-10 h-10 sm:w-20 sm:h-20 lg:hidden",
     delayMs: 220,
     durationMs: 640,
   },
@@ -62,14 +62,14 @@ const GROUPS_DONUTS: DonutItem[] = [
   {
     src: "/images/donuts/donut-7.png",
     className:
-      "left-[2%] md:left-[3%] top-[14%] w-11 h-11 sm:w-12 sm:h-12 max-sm:hidden",
+      "left-[2%] md:left-[3%] top-[14%] w-[5.5rem] h-[5.5rem] sm:w-24 sm:h-24 max-sm:hidden",
     delayMs: 40,
     durationMs: 720,
   },
   {
     src: "/images/donuts/donut-2.png",
     className:
-      "right-[3%] md:right-[5%] bottom-[8%] w-10 h-10 sm:w-11 sm:h-11 hidden sm:block",
+      "right-[3%] md:right-[5%] bottom-[8%] w-20 h-20 sm:w-[5.5rem] sm:h-[5.5rem] hidden sm:block",
     delayMs: 160,
     durationMs: 680,
   },
@@ -79,40 +79,23 @@ const TESTIMONIALS_DONUTS: DonutItem[] = [
   {
     src: "/images/donuts/donut-8.png",
     className:
-      "left-[3%] md:left-[5%] top-[18%] w-12 h-12 sm:w-14 sm:h-14 max-sm:hidden opacity-90",
+      "left-[3%] md:left-[5%] top-[18%] w-24 h-24 sm:w-28 sm:h-28 max-sm:hidden opacity-90",
     delayMs: 60,
     durationMs: 740,
   },
   {
     src: "/images/donuts/donut-4.png",
     className:
-      "right-[4%] bottom-[12%] w-11 h-11 sm:w-[3.75rem] sm:h-[3.75rem] hidden sm:block opacity-90",
+      "right-[4%] bottom-[12%] w-[5.5rem] h-[5.5rem] sm:w-[7.5rem] sm:h-[7.5rem] hidden sm:block opacity-90",
     delayMs: 180,
     durationMs: 800,
   },
   {
     src: "/images/donuts/donut-1.png",
     className:
-      "left-[38%] top-[8%] w-9 h-9 hidden xl:block opacity-70",
+      "left-[38%] top-[8%] w-[4.5rem] h-[4.5rem] hidden xl:block opacity-70",
     delayMs: 240,
     durationMs: 660,
-  },
-]
-
-const CTA_DONUTS: DonutItem[] = [
-  {
-    src: "/images/donuts/donut-9.png",
-    className:
-      "left-[4%] sm:left-[6%] top-[12%] w-10 h-10 sm:w-12 sm:h-12 max-sm:hidden opacity-85",
-    delayMs: 20,
-    durationMs: 710,
-  },
-  {
-    src: "/images/donuts/donut-3.png",
-    className:
-      "right-[5%] sm:right-[7%] bottom-[14%] w-10 h-10 sm:w-11 sm:h-11 hidden sm:block opacity-85",
-    delayMs: 140,
-    durationMs: 770,
   },
 ]
 
@@ -184,8 +167,8 @@ function DonutDecorations({
           <Image
             src={d.src}
             alt=""
-            width={80}
-            height={80}
+            width={160}
+            height={160}
             className="h-full w-full object-contain drop-shadow-sm"
           />
         </div>
@@ -210,8 +193,4 @@ export function GroupsBannerDonutDecorations() {
 
 export function TestimonialsDonutDecorations() {
   return <DonutDecorations items={TESTIMONIALS_DONUTS} />
-}
-
-export function CTADonutDecorations() {
-  return <DonutDecorations items={CTA_DONUTS} />
 }

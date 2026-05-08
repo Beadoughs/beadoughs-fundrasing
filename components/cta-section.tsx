@@ -1,4 +1,3 @@
-import { CTADonutDecorations } from "@/components/donut-decorations"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
@@ -11,8 +10,6 @@ export function CTASection() {
           {/* Background decoration */}
           <div className="absolute top-0 left-0 w-64 h-64 bg-primary-foreground/5 rounded-full -translate-x-1/2 -translate-y-1/2" />
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-foreground/5 rounded-full translate-x-1/3 translate-y-1/3" />
-
-          <CTADonutDecorations />
 
           <div className="relative z-10 mx-auto max-w-3xl">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground text-balance">
