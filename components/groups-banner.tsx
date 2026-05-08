@@ -7,14 +7,14 @@ type GroupsBannerProps = {
 }
 
 const groups = [
-  { name: "Brighton Basketball Club", logo: "/placeholder-logo.svg" },
-  { name: "Southern Surf Life Saving", logo: "/placeholder-logo.svg" },
-  { name: "Hobart City Netball", logo: "/placeholder-logo.svg" },
-  { name: "Tassie Junior Football", logo: "/placeholder-logo.svg" },
-  { name: "Kingston Dance Academy", logo: "/placeholder-logo.svg" },
-  { name: "Northside Scout Group", logo: "/placeholder-logo.svg" },
-  { name: "Huon Valley Soccer Club", logo: "/placeholder-logo.svg" },
-  { name: "Derwent Valley School P&C", logo: "/placeholder-logo.svg" },
+  { name: "Zodicas Dance Academy Burnie", logo: "/images/groups/zodicas-dance-academy-burnie.png" },
+  { name: "Ulverstone Secondary College", logo: "/images/groups/ulverstone-secondary-college.png" },
+  { name: "Tech Steps Dance Studio Devonport", logo: "/images/groups/tech-steps-dance-studio-devonport.png" },
+  { name: "East Ulverstone Primary School", logo: "/images/groups/east-ulverstone-primary-school.png" },
+  { name: "Circular Head Little Athletics", logo: "/images/groups/circular-head-little-athletics.png" },
+  { name: "Boat Harbour Primary School", logo: "/images/groups/boat-harbour-primary-school.png" },
+  { name: "Smithton Primary School", logo: "/images/groups/smithton-primary-school.png" },
+  { name: "Parklands State High School", logo: "/images/groups/parklands-state-high-school.png" },
 ]
 
 export function GroupsBanner({ variant = "primary" }: GroupsBannerProps) {
@@ -36,10 +36,10 @@ export function GroupsBanner({ variant = "primary" }: GroupsBannerProps) {
               >
                 <Image
                   src={group.logo}
-                  alt={group.name}
+                  alt={`${group.name} logo`}
                   width={150}
                   height={60}
-                  className="h-12 w-auto object-contain grayscale transition duration-300 hover:grayscale-0 md:h-16"
+                  className="h-12 w-[150px] object-contain grayscale transition duration-300 hover:grayscale-0 md:h-16"
                 />
                 <p className="mt-3 text-xs font-medium text-muted-foreground md:text-sm">{group.name}</p>
               </div>

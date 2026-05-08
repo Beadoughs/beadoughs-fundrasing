@@ -16,7 +16,6 @@ export default function Home() {
       <HeroSection />
       <GroupsBanner />
       <HowItWorksSection />
-      <GroupsBanner variant="muted" />
       <TestimonialsSection />
       <ImpactSection />
       <CTASection />

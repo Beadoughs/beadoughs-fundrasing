@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Menu, ShoppingCart, X } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -35,12 +36,22 @@ export function Header() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 sm:h-20 items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex flex-col">
-            <span className="font-serif text-xl sm:text-2xl font-bold text-primary tracking-tight">
-              Beadoughs
-            </span>
-            <span className="text-[10px] sm:text-xs text-muted-foreground -mt-1">
-              Deliciously Doing Good
+          <Link href="/" className="flex items-center gap-3">
+            <Image
+              src="/beadoughs-logo.png"
+              alt="Beadoughs logo"
+              width={46}
+              height={46}
+              className="h-10 w-10 sm:h-11 sm:w-11 rounded-md object-cover"
+              priority
+            />
+            <span className="flex flex-col">
+              <span className="font-serif text-xl sm:text-2xl font-bold text-primary tracking-tight">
+                Beadoughs
+              </span>
+              <span className="text-[10px] sm:text-xs text-muted-foreground -mt-1">
+                Deliciously Doing Good
+              </span>
             </span>
           </Link>
 

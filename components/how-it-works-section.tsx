@@ -7,13 +7,13 @@ export function HowItWorksSection() {
       number: "01",
       icon: Send,
       title: "Submit enquiry",
-      description: "Tell us about your group and your fundraising goals. We&apos;ll get back to you quickly.",
+      description: "Tell us about your group and your fundraising goals. We'll get back to you quickly.",
     },
     {
       number: "02",
       icon: Handshake,
       title: "We help set up",
-      description: "We&apos;ll work with you to plan your fundraiser, set dates, and provide all the materials you need.",
+      description: "We'll work with you to plan your fundraiser, set dates, and provide all the materials you need.",
     },
     {
       number: "03",
@@ -34,10 +34,10 @@ export function HowItWorksSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-primary text-balance">
-            How A Beadoughs Fundraiser Works
+            How Beadoughs Makes Fundraising Feel Easy
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Four simple steps to a successful fundraiser for your community.
+            Four clear and simple steps to better results for Tasmania-wide communities and teams.
           </p>
         </div>
 

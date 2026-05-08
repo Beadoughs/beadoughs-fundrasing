@@ -25,7 +25,7 @@ export function ImpactSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-primary text-balance">
-            Built Around Community Impact
+            Built For Community-First Results
           </h2>
         </div>
 
@@ -50,7 +50,7 @@ export function ImpactSection() {
 
         <Card className="max-w-3xl mx-auto p-8 sm:p-10 bg-secondary/50 border-border rounded-2xl text-center">
           <p className="text-lg text-foreground leading-relaxed">
-            Every fundraiser is designed to help local groups raise meaningful money while giving supporters something they genuinely enjoy. We believe fundraising should be a positive experience for everyone involved — from volunteers to buyers.
+            Every fundraiser is designed to help local groups and workplaces raise meaningful money while supporters get doughnuts they are genuinely excited to buy. We keep the process practical, uplifting and people-first from first enquiry to final handover.
           </p>
         </Card>
       </div>

@@ -33,10 +33,10 @@ export function TestimonialsSection() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-8 duration-700">
           <h2 className="text-3xl sm:text-4xl font-serif font-bold mb-4">
-            Hear From Our Community
+            Hear It From The Legends
           </h2>
           <p className="text-lg text-primary-foreground/80 max-w-2xl mx-auto">
-            See how Beadoughs has helped Tasmanian groups reach their fundraising goals without the usual stress.
+            See how Beadoughs helps Tasmania-wide groups hit bigger goals without the usual fundraising chaos.
           </p>
         </div>
 

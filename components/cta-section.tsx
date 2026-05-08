@@ -13,10 +13,10 @@ export function CTASection() {
           
           <div className="relative max-w-3xl mx-auto">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground text-balance">
-              Ready To Run A Fundraiser People Get Excited About?
+              Ready To Make Fundraising The Easiest Win Of The Year?
             </h2>
             <p className="mt-6 text-lg text-primary-foreground/80 max-w-2xl mx-auto">
-              Tell us about your group and we&apos;ll help you work out if a Beadoughs fundraiser is the right fit.
+              Tell us about your group, school or workplace and we&apos;ll help map a Tasmania-ready fundraiser your community will love.
             </p>
             <div className="mt-8">
               <Button 

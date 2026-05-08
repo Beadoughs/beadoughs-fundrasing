@@ -57,10 +57,10 @@ export function EnquiryForm() {
           {/* Left - Info */}
           <div className="lg:sticky lg:top-32">
             <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-primary text-balance">
-              Start Your Fundraising Journey
+              Let&apos;s Get Your Fundraiser Rolling
             </h2>
             <p className="mt-6 text-lg text-muted-foreground">
-              Fill out the form and we&apos;ll get back to you within 1-2 business days to discuss how Beadoughs can help your group.
+              Pop in your details and we&apos;ll be in touch in 1-2 business days to shape the right plan for your group, school, charity or workplace.
             </p>
             
             <div className="mt-8 space-y-4">

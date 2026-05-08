@@ -18,10 +18,10 @@ export function HeroSection() {
           {/* Left Content */}
           <div className="text-center lg:text-left animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both">
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-balance text-primary">
-              Raise More Money With Doughnuts People Actually Want
+              Tasmania, let&apos;s turn delicious donuts into donations.
             </h1>
             <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 text-pretty">
-              Beadoughs helps Tasmanian schools, clubs, charities and community groups run simple, high-profit doughnut fundraisers — without the stress.
+              Beadoughs helps schools, clubs, charities, community groups and workplaces run uplifting doughnut fundraisers that feel easy and raise serious money.
             </p>
             
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -38,9 +38,6 @@ export function HeroSection() {
               </Button>
             </div>
 
-            <p className="mt-6 text-sm text-muted-foreground">
-              Perfect for schools, sports clubs, workplaces, charities and local community groups.
-            </p>
           </div>
 
           {/* Right - Hero Image & Stats */}
