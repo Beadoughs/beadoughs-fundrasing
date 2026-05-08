@@ -155,7 +155,7 @@ html {
 @keyframes donut-fall-in {
   from {
     opacity: 0;
-    transform: translate3d(0, -18px, 0) rotate(-6deg);
+    transform: translate3d(0, calc(-100vh - 120%), 0) rotate(-8deg);
   }
   to {
     opacity: 1;
@@ -165,10 +165,11 @@ html {
 
 .donut-fall-in {
   animation-name: donut-fall-in;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Snappy deceleration into rest — reads as a clean “drop” without feeling slow */
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
   animation-fill-mode: both;
-  /* Stay at the keyframe "from" state (opacity 0, translated up) until the
-     element scrolls into view and `donut-fall-in-visible` is applied. */
+  /* Stay at the keyframe "from" state (off-screen above) until the element
+     scrolls into view and `donut-fall-in-visible` is applied. */
   animation-play-state: paused;
 }
 
