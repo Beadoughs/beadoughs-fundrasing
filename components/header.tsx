@@ -6,8 +6,6 @@ import { Menu, ShoppingCart, X } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
-const MAIN_SITE_STORY_URL = "https://www.beadoughs.com/pages/about-us"
-
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -21,7 +19,7 @@ export function Header() {
   }, [])
 
   const navLinks = [
-    { href: MAIN_SITE_STORY_URL, label: "Our Story" },
+    { href: "/our-story", label: "Our Story" },
     { href: "/#how-it-works", label: "How It Works" },
     { href: "/#why-fundraise", label: "Why Fundraise" },
     { href: "/#faq", label: "FAQ" },
