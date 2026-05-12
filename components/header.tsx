@@ -6,6 +6,8 @@ import { Menu, ShoppingCart, X } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
+const MAIN_SITE_STORY_URL = "https://www.beadoughs.com/pages/about-us"
+
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -19,7 +21,7 @@ export function Header() {
   }, [])
 
   const navLinks = [
-    { href: "/our-story", label: "Our Story" },
+    { href: MAIN_SITE_STORY_URL, label: "Our Story" },
     { href: "/#how-it-works", label: "How It Works" },
     { href: "/#why-fundraise", label: "Why Fundraise" },
     { href: "/#faq", label: "FAQ" },
@@ -28,8 +30,8 @@ export function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? "bg-card/95 backdrop-blur-md shadow-sm border-b border-border" 
+        isScrolled
+          ? "bg-card/95 backdrop-blur-md shadow-sm border-b border-border"
           : "bg-transparent"
       }`}
     >
