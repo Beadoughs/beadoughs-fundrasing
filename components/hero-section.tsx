@@ -37,8 +37,8 @@ export function HeroSection() {
           <div className="relative animate-in fade-in slide-in-from-right-8 duration-1000 delay-300 fill-mode-both">
             <div className="relative rounded-3xl overflow-hidden aspect-[4/3] shadow-2xl border-4 border-white/20">
               <Image 
-                src="/images/hero_doughnuts_1777851722550.png"
-                alt="Delicious fresh doughnuts"
+                src="/images/hero_donut_boxes.png"
+                alt="Two open Beadoughs donut boxes with assorted and glazed donuts"
                 fill
                 className="object-cover"
                 priority
