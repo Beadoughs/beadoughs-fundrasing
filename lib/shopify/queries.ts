@@ -8,6 +8,15 @@ export const COLLECTION_CARD_FRAGMENT = `
       url
       altText
     }
+    goalBoxes: metafield(namespace: "beadoughs", key: "goal_boxes") {
+      value
+    }
+    boxesSold: metafield(namespace: "beadoughs", key: "boxes_sold") {
+      value
+    }
+    leaderboard: metafield(namespace: "beadoughs", key: "leaderboard") {
+      value
+    }
     goalAmount: metafield(namespace: "beadoughs", key: "goal_amount") {
       value
     }

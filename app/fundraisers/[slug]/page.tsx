@@ -6,15 +6,20 @@ import { Footer } from "@/components/footer"
 import { Progress } from "@/components/ui/progress"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Users, Clock } from "lucide-react"
+import { Package, Clock, Users } from "lucide-react"
 import { FundraiserProductAdd } from "@/components/fundraiser-product-add"
-import { getFundraiserByHandle, daysLeftFromEndDate, percentRaised } from "@/lib/shopify/fundraiser-data"
+import { FundraiserLeaderboard } from "@/components/fundraiser-leaderboard"
+import {
+  getFundraiserByHandle,
+  daysLeftFromEndDate,
+  percentBoxesSold,
+} from "@/lib/shopify/fundraiser-data"
 import { isShopifyConfigured } from "@/lib/shopify/config"
 import { ShopifyConfigMissing } from "@/components/shopify-config-missing"
 
 type Props = { params: Promise<{ slug: string }> }
 
-export const revalidate = 120
+export const revalidate = 30
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params
@@ -54,9 +59,15 @@ export default async function FundraiserPage({ params }: Props) {
     notFound()
   }
 
-  const pct = percentRaised(campaign.raisedAmount, campaign.goalAmount)
+  const goalBoxes = campaign.goalBoxes
+  const boxesSold = campaign.boxesSold
+  const pct = percentBoxesSold(boxesSold, goalBoxes)
   const daysLeft = daysLeftFromEndDate(campaign.endDate)
   const org = campaign.organization ?? "Community fundraiser"
+  const supporterCount =
+    campaign.leaderboard.length > 0
+      ? campaign.leaderboard.length
+      : campaign.supportersCount
 
   return (
     <>
@@ -113,6 +124,10 @@ export default async function FundraiserPage({ params }: Props) {
                 </div>
               </div>
 
+              <Card className="p-6 sm:p-8 rounded-3xl border-border shadow-sm">
+                <FundraiserLeaderboard entries={campaign.leaderboard} />
+              </Card>
+
               <div className="space-y-6">
                 <h2 className="text-2xl font-bold">Products</h2>
                 {campaign.products.length === 0 ? (
@@ -157,31 +172,47 @@ export default async function FundraiserPage({ params }: Props) {
             </div>
 
             <div className="md:col-span-1">
-              <div className="sticky top-24">
+              <div className="sticky top-24 space-y-6">
                 <Card className="p-6 sm:p-8 shadow-2xl border-border bg-card rounded-3xl animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
-                  {campaign.goalAmount != null && campaign.raisedAmount != null && (
-                    <>
-                      <div className="mb-6">
-                        <span className="text-4xl font-bold text-foreground">
-                          ${campaign.raisedAmount.toLocaleString()}
-                        </span>
-                        <span className="text-muted-foreground ml-2">
-                          raised of ${campaign.goalAmount.toLocaleString()} goal
-                        </span>
-                      </div>
-                      <Progress value={pct} className="h-3 mb-6 bg-secondary" />
-                    </>
+                  <div className="mb-6">
+                    <div className="flex items-baseline flex-wrap gap-x-2 gap-y-1">
+                      <span className="text-4xl font-bold text-foreground tabular-nums">
+                        {boxesSold.toLocaleString()}
+                      </span>
+                      <span className="text-muted-foreground">
+                        {goalBoxes != null
+                          ? `sold of ${goalBoxes.toLocaleString()} box goal`
+                          : "boxes sold"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {goalBoxes != null && goalBoxes > 0 ? (
+                    <Progress value={pct} className="h-3 mb-6 bg-secondary" />
+                  ) : (
+                    <p className="text-xs text-muted-foreground mb-6">
+                      Set the <code className="text-[11px]">goal_boxes</code> metafield on this
+                      collection in Shopify to show a progress bar.
+                    </p>
                   )}
 
                   <div className="flex items-center justify-between text-sm font-medium text-muted-foreground mb-8 flex-wrap gap-2">
                     <div className="flex items-center gap-2">
-                      <Users className="h-4 w-4 text-primary" />
+                      <Package className="h-4 w-4 text-primary" />
                       <span>
-                        {campaign.supportersCount != null
-                          ? `${campaign.supportersCount} supporters`
-                          : "Supporters — set in Shopify metafields"}
+                        {boxesSold.toLocaleString()}{" "}
+                        {boxesSold === 1 ? "box" : "boxes"} sold
                       </span>
                     </div>
+                    {supporterCount != null && (
+                      <div className="flex items-center gap-2">
+                        <Users className="h-4 w-4 text-primary" />
+                        <span>
+                          {supporterCount}{" "}
+                          {supporterCount === 1 ? "supporter" : "supporters"}
+                        </span>
+                      </div>
+                    )}
                     {daysLeft != null && (
                       <div className="flex items-center gap-2">
                         <Clock className="h-4 w-4 text-primary" />

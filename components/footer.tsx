@@ -37,7 +37,15 @@ export function Footer() {
             <ul className="space-y-3">
               <li>
                 <Link 
-                  href="#how-it-works" 
+                  href="/fundraisers" 
+                  className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                >
+                  Active Fundraisers
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/#how-it-works" 
                   className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                 >
                   How It Works
@@ -45,7 +53,7 @@ export function Footer() {
               </li>
               <li>
                 <Link 
-                  href="#why-fundraise" 
+                  href="/#why-fundraise" 
                   className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                 >
                   Why Fundraise
@@ -53,7 +61,7 @@ export function Footer() {
               </li>
               <li>
                 <Link 
-                  href="#faq" 
+                  href="/#faq" 
                   className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                 >
                   FAQ
@@ -61,7 +69,7 @@ export function Footer() {
               </li>
               <li>
                 <Link 
-                  href="#enquiry" 
+                  href="/#enquiry" 
                   className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                 >
                   Start a Fundraiser

@@ -17,8 +17,11 @@ export function ShopifyConfigMissing() {
           Required: <code className="text-xs bg-secondary px-1 py-0.5 rounded">SHOPIFY_STORE_DOMAIN</code>,{" "}
           <code className="text-xs bg-secondary px-1 py-0.5 rounded">SHOPIFY_STOREFRONT_ACCESS_TOKEN</code>,{" "}
           <code className="text-xs bg-secondary px-1 py-0.5 rounded">SHOPIFY_FUNDRAISER_COLLECTION_HANDLES</code>
-          . See <code className="text-xs bg-secondary px-1 py-0.5 rounded">.env.example</code> and{" "}
-          <code className="text-xs bg-secondary px-1 py-0.5 rounded">lib/shopify/config.ts</code>.
+          . For live box counters and leaderboards also set{" "}
+          <code className="text-xs bg-secondary px-1 py-0.5 rounded">SHOPIFY_ADMIN_ACCESS_TOKEN</code> and{" "}
+          <code className="text-xs bg-secondary px-1 py-0.5 rounded">SHOPIFY_WEBHOOK_SECRET</code>. See{" "}
+          <code className="text-xs bg-secondary px-1 py-0.5 rounded">.env.example</code> and{" "}
+          <code className="text-xs bg-secondary px-1 py-0.5 rounded">README.md</code>.
         </p>
         <Button asChild className="rounded-full">
           <Link href="/">Back home</Link>

@@ -8,7 +8,7 @@ import { Progress } from "@/components/ui/progress"
 import {
   listFundraiserCards,
   listFundraiserCardsFromStore,
-  percentRaised,
+  percentBoxesSold,
 } from "@/lib/shopify/fundraiser-data"
 import {
   getFundraiserCollectionHandles,
@@ -17,7 +17,7 @@ import {
 } from "@/lib/shopify/config"
 import { ShopifyConfigMissing } from "@/components/shopify-config-missing"
 
-export const revalidate = 120
+export const revalidate = 30
 
 export const metadata = {
   title: "Active Fundraisers | Beadoughs",
@@ -57,7 +57,7 @@ export default async function FundraisersDirectoryPage() {
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Browse active campaigns. Purchases are fulfilled through Beadoughs with secure Shopify
-              checkout.
+              checkout. Each campaign shows boxes sold toward its goal.
             </p>
           </div>
 
@@ -104,8 +104,9 @@ export default async function FundraisersDirectoryPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {cards.map((campaign, index) => {
-              const pct = percentRaised(campaign.raisedAmount, campaign.goalAmount)
+              const pct = percentBoxesSold(campaign.boxesSold, campaign.goalBoxes)
               const orgLabel = campaign.organization ?? campaign.title
+              const hasGoal = campaign.goalBoxes != null && campaign.goalBoxes > 0
 
               return (
                 <Card
@@ -140,19 +141,26 @@ export default async function FundraisersDirectoryPage() {
                       {campaign.description || "Open this campaign to see products and support the cause."}
                     </p>
 
-                    {campaign.goalAmount != null && campaign.raisedAmount != null && (
-                      <div className="space-y-4 mb-6">
-                        <Progress value={pct} className="h-2" />
-                        <div className="flex justify-between text-sm font-medium">
-                          <span className="text-primary font-bold">
-                            ${campaign.raisedAmount.toLocaleString()} raised
-                          </span>
-                          <span className="text-muted-foreground">
-                            of ${campaign.goalAmount.toLocaleString()}
-                          </span>
-                        </div>
-                      </div>
-                    )}
+                    <div className="space-y-4 mb-6">
+                      {hasGoal ? (
+                        <>
+                          <Progress value={pct} className="h-2" />
+                          <div className="flex justify-between text-sm font-medium">
+                            <span className="text-primary font-bold tabular-nums">
+                              {campaign.boxesSold.toLocaleString()} sold
+                            </span>
+                            <span className="text-muted-foreground tabular-nums">
+                              of {campaign.goalBoxes!.toLocaleString()} boxes
+                            </span>
+                          </div>
+                        </>
+                      ) : (
+                        <p className="text-sm font-medium text-muted-foreground tabular-nums">
+                          {campaign.boxesSold.toLocaleString()}{" "}
+                          {campaign.boxesSold === 1 ? "box" : "boxes"} sold
+                        </p>
+                      )}
+                    </div>
 
                     <Button asChild className="w-full rounded-full mt-auto">
                       <Link href={`/fundraisers/${campaign.handle}`}>Support this cause</Link>
