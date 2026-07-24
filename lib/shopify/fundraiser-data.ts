@@ -4,7 +4,8 @@ import {
   COLLECTION_CARD_ONLY_QUERY,
   COLLECTIONS_FIRST_QUERY,
 } from "./queries"
-import { getFundraiserCollectionHandles } from "./config"
+import { getFundraiserCollectionHandles, isShopifyAdminConfigured } from "./config"
+import { getCollectionDisplayMetafieldsByHandle } from "./admin"
 import type { LeaderboardEntry } from "@/lib/fundraising/types"
 
 export type FundraiserCollectionCard = {
@@ -58,8 +59,11 @@ type CollectionMetafields = {
   description: string
   image?: { url: string; altText?: string | null } | null
   goalBoxes?: MetafieldNode
+  goalBoxesCustom?: MetafieldNode
   boxesSold?: MetafieldNode
+  boxesSoldCustom?: MetafieldNode
   leaderboard?: MetafieldNode
+  leaderboardCustom?: MetafieldNode
   goalAmount?: MetafieldNode
   raisedAmount?: MetafieldNode
   endDate?: MetafieldNode
@@ -67,10 +71,22 @@ type CollectionMetafields = {
   supportersCount?: MetafieldNode
 }
 
+function firstMetaValue(...nodes: MetafieldNode[]): string | null {
+  for (const node of nodes) {
+    const v = node?.value
+    if (v != null && String(v).trim() !== "") return String(v)
+  }
+  return null
+}
+
 function parseIntMeta(value: string | null | undefined): number | null {
-  if (value == null || value === "") return null
-  const n = Number.parseInt(value, 10)
-  return Number.isFinite(n) ? n : null
+  if (value == null) return null
+  const trimmed = value.trim()
+  if (trimmed === "") return null
+  // Integer metafields are strings; also accept whole-number decimals like "500.0".
+  const n = Number(trimmed)
+  if (!Number.isFinite(n)) return null
+  return Math.trunc(n)
 }
 
 function parseLeaderboard(raw: string | null | undefined): LeaderboardEntry[] {
@@ -96,7 +112,11 @@ function parseLeaderboard(raw: string | null | undefined): LeaderboardEntry[] {
 }
 
 function mapCollectionCard(node: CollectionMetafields): FundraiserCollectionCard {
-  const boxesSoldRaw = parseIntMeta(node.boxesSold?.value ?? undefined)
+  const goalBoxes = parseIntMeta(firstMetaValue(node.goalBoxes, node.goalBoxesCustom))
+  const boxesSoldRaw = parseIntMeta(firstMetaValue(node.boxesSold, node.boxesSoldCustom))
+  const leaderboard = parseLeaderboard(
+    firstMetaValue(node.leaderboard, node.leaderboardCustom) ?? undefined
+  )
   return {
     id: node.id,
     handle: node.handle,
@@ -104,14 +124,44 @@ function mapCollectionCard(node: CollectionMetafields): FundraiserCollectionCard
     description: node.description ?? "",
     imageUrl: node.image?.url ?? null,
     imageAlt: node.image?.altText ?? null,
-    goalBoxes: parseIntMeta(node.goalBoxes?.value ?? undefined),
+    goalBoxes,
     boxesSold: boxesSoldRaw ?? 0,
-    leaderboard: parseLeaderboard(node.leaderboard?.value ?? undefined),
+    leaderboard,
     goalAmount: parseIntMeta(node.goalAmount?.value ?? undefined),
     raisedAmount: parseIntMeta(node.raisedAmount?.value ?? undefined),
     endDate: node.endDate?.value ?? null,
     organization: node.organization?.value ?? null,
     supportersCount: parseIntMeta(node.supportersCount?.value ?? undefined),
+  }
+}
+
+/** When Storefront metafields are missing, fill from Admin (beadoughs then custom). */
+async function withAdminMetafieldFallback(
+  card: FundraiserCollectionCard
+): Promise<FundraiserCollectionCard> {
+  const needsGoal = card.goalBoxes == null || card.goalBoxes <= 0
+  const needsSold = card.boxesSold === 0
+  const needsBoard = card.leaderboard.length === 0
+  if (!needsGoal && !needsSold && !needsBoard) return card
+  if (!isShopifyAdminConfigured()) return card
+
+  const admin = await getCollectionDisplayMetafieldsByHandle(card.handle)
+  if (!admin) return card
+
+  return {
+    ...card,
+    goalBoxes:
+      needsGoal && admin.goalBoxes != null && admin.goalBoxes > 0
+        ? admin.goalBoxes
+        : card.goalBoxes,
+    boxesSold:
+      needsSold && admin.boxesSold != null && admin.boxesSold > 0
+        ? admin.boxesSold
+        : card.boxesSold,
+    leaderboard:
+      needsBoard && admin.leaderboard != null && admin.leaderboard.length > 0
+        ? admin.leaderboard
+        : card.leaderboard,
   }
 }
 
@@ -173,7 +223,7 @@ export async function getFundraiserByHandle(handle: string): Promise<FundraiserD
   const c = data.collection
   if (!c) return null
 
-  const card = mapCollectionCard(c)
+  const card = await withAdminMetafieldFallback(mapCollectionCard(c))
   const products: FundraiserProduct[] = c.products.edges.map(({ node: p }) => ({
     id: p.id,
     title: p.title,
@@ -212,7 +262,7 @@ export async function getFundraiserCardByHandle(
     { revalidate: 30 }
   )
   if (!data.collection) return null
-  return mapCollectionCard(data.collection)
+  return withAdminMetafieldFallback(mapCollectionCard(data.collection))
 }
 
 export async function listFundraiserCards(): Promise<FundraiserCollectionCard[]> {
@@ -238,5 +288,7 @@ export async function listFundraiserCardsFromStore(
     { first },
     { revalidate: 30 }
   )
-  return data.collections.edges.map(({ node }) => mapCollectionCard(node))
+  return Promise.all(
+    data.collections.edges.map(({ node }) => withAdminMetafieldFallback(mapCollectionCard(node)))
+  )
 }

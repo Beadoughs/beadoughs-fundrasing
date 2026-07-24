@@ -21,6 +21,9 @@
  *    - end_date (date) optional
  *    - organization (single line text) optional
  *    - supporters_count (integer) optional
+ *    Also accepted: same keys under namespace `custom` (Storefront + Admin dual-read).
+ *    If Storefront still returns null, pages fall back to Admin API when
+ *    SHOPIFY_ADMIN_ACCESS_TOKEN is set.
  *
  * 5. Admin API (for live counters): same custom app → Admin API scopes:
  *    read_orders, write_orders, read_products, write_products (metafields on collections + orders).

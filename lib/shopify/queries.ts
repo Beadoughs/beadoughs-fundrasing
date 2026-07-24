@@ -11,10 +11,19 @@ export const COLLECTION_CARD_FRAGMENT = `
     goalBoxes: metafield(namespace: "beadoughs", key: "goal_boxes") {
       value
     }
+    goalBoxesCustom: metafield(namespace: "custom", key: "goal_boxes") {
+      value
+    }
     boxesSold: metafield(namespace: "beadoughs", key: "boxes_sold") {
       value
     }
+    boxesSoldCustom: metafield(namespace: "custom", key: "boxes_sold") {
+      value
+    }
     leaderboard: metafield(namespace: "beadoughs", key: "leaderboard") {
+      value
+    }
+    leaderboardCustom: metafield(namespace: "custom", key: "leaderboard") {
       value
     }
     goalAmount: metafield(namespace: "beadoughs", key: "goal_amount") {

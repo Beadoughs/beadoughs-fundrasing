@@ -83,11 +83,27 @@ const COLLECTION_STATS_BY_HANDLE = `
         node {
           id
           handle
+          goalBoxes: metafield(namespace: "${BEADOUGHS_METAFIELD_NAMESPACE}", key: "${BEADOUGHS_COLLECTION_METAFIELDS.goalBoxes}") {
+            id
+            value
+          }
+          goalBoxesCustom: metafield(namespace: "custom", key: "${BEADOUGHS_COLLECTION_METAFIELDS.goalBoxes}") {
+            id
+            value
+          }
           boxesSold: metafield(namespace: "${BEADOUGHS_METAFIELD_NAMESPACE}", key: "${BEADOUGHS_COLLECTION_METAFIELDS.boxesSold}") {
             id
             value
           }
+          boxesSoldCustom: metafield(namespace: "custom", key: "${BEADOUGHS_COLLECTION_METAFIELDS.boxesSold}") {
+            id
+            value
+          }
           leaderboard: metafield(namespace: "${BEADOUGHS_METAFIELD_NAMESPACE}", key: "${BEADOUGHS_COLLECTION_METAFIELDS.leaderboard}") {
+            id
+            value
+          }
+          leaderboardCustom: metafield(namespace: "custom", key: "${BEADOUGHS_COLLECTION_METAFIELDS.leaderboard}") {
             id
             value
           }
@@ -125,31 +141,105 @@ const METAFIELDS_SET = `
   }
 `
 
-export async function getCollectionStatsByHandle(
+type AdminMetaValue = { value?: string | null } | null | undefined
+
+function firstMetaValue(...nodes: AdminMetaValue[]): string | null {
+  for (const node of nodes) {
+    const v = node?.value
+    if (v != null && String(v).trim() !== "") return String(v)
+  }
+  return null
+}
+
+function parseAdminInt(value: string | null | undefined): number | null {
+  if (value == null) return null
+  const trimmed = value.trim()
+  if (trimmed === "") return null
+  const n = Number(trimmed)
+  if (!Number.isFinite(n)) return null
+  return Math.trunc(n)
+}
+
+export type CollectionDisplayMetafields = {
+  collectionId: string
+  goalBoxes: number | null
+  boxesSold: number | null
+  leaderboard: LeaderboardEntry[] | null
+}
+
+type CollectionStatsNode = {
+  id: string
   handle: string
-): Promise<{ collectionId: string; stats: FundraiserStats } | null> {
+  goalBoxes?: AdminMetaValue
+  goalBoxesCustom?: AdminMetaValue
+  boxesSold?: AdminMetaValue
+  boxesSoldCustom?: AdminMetaValue
+  leaderboard?: AdminMetaValue
+  leaderboardCustom?: AdminMetaValue
+}
+
+function mapCollectionDisplayMetafields(
+  c: CollectionStatsNode
+): CollectionDisplayMetafields {
+  const goalRaw = firstMetaValue(c.goalBoxes, c.goalBoxesCustom)
+  const soldRaw = firstMetaValue(c.boxesSold, c.boxesSoldCustom)
+  const boardRaw = firstMetaValue(c.leaderboard, c.leaderboardCustom)
+
+  return {
+    collectionId: c.id,
+    goalBoxes: parseAdminInt(goalRaw),
+    boxesSold: parseAdminInt(soldRaw),
+    leaderboard: boardRaw != null ? parseLeaderboardJson(boardRaw) : null,
+  }
+}
+
+async function fetchCollectionStatsNode(
+  handle: string
+): Promise<CollectionStatsNode | null> {
   const data = await adminGraphql<{
     collections: {
       edges: {
-        node: {
-          id: string
-          handle: string
-          boxesSold?: { value?: string | null } | null
-          leaderboard?: { value?: string | null } | null
-        }
+        node: CollectionStatsNode
       }[]
     }
   }>(COLLECTION_STATS_BY_HANDLE, { query: `handle:${handle}` })
 
   const c = data.collections.edges[0]?.node
   if (!c || c.handle !== handle) return null
+  return c
+}
 
-  const boxesSold = Number.parseInt(c.boxesSold?.value ?? "0", 10)
+/**
+ * Admin read of collection fundraiser metafields. Prefers `beadoughs.*`, falls
+ * back to `custom.*` (common when the value was saved under the default namespace).
+ * Soft-fails (returns null) so Storefront pages can optionally enrich.
+ */
+export async function getCollectionDisplayMetafieldsByHandle(
+  handle: string
+): Promise<CollectionDisplayMetafields | null> {
+  if (!getShopifyAdminConfig()) return null
+
+  try {
+    const c = await fetchCollectionStatsNode(handle)
+    return c ? mapCollectionDisplayMetafields(c) : null
+  } catch {
+    return null
+  }
+}
+
+/** Throws if Admin is missing/misconfigured — used by the orders/paid webhook. */
+export async function getCollectionStatsByHandle(
+  handle: string
+): Promise<{ collectionId: string; stats: FundraiserStats } | null> {
+  const c = await fetchCollectionStatsNode(handle)
+  if (!c) return null
+
+  const display = mapCollectionDisplayMetafields(c)
   return {
-    collectionId: c.id,
+    collectionId: display.collectionId,
     stats: {
-      boxesSold: Number.isFinite(boxesSold) ? boxesSold : 0,
-      leaderboard: parseLeaderboardJson(c.leaderboard?.value),
+      boxesSold: display.boxesSold ?? 0,
+      leaderboard: display.leaderboard ?? [],
     },
   }
 }

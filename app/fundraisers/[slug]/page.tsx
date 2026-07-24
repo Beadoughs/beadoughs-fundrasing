@@ -191,8 +191,14 @@ export default async function FundraiserPage({ params }: Props) {
                     <Progress value={pct} className="h-3 mb-6 bg-secondary" />
                   ) : (
                     <p className="text-xs text-muted-foreground mb-6">
-                      Set the <code className="text-[11px]">goal_boxes</code> metafield on this
-                      collection in Shopify to show a progress bar.
+                      Progress bar needs collection metafield{" "}
+                      <code className="text-[11px]">beadoughs.goal_boxes</code> (integer &gt; 0)
+                      with Storefront API access set to Read. If the value was saved under{" "}
+                      <code className="text-[11px]">custom.goal_boxes</code>, that works too.
+                      Product metafields will not appear here. With{" "}
+                      <code className="text-[11px]">SHOPIFY_ADMIN_ACCESS_TOKEN</code> set, the
+                      site can also read the goal via Admin when Storefront returns null.
+                      Changes can take up to ~30s to refresh.
                     </p>
                   )}
 
