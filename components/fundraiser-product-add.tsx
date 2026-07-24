@@ -61,7 +61,10 @@ export function FundraiserProductAdd({
             {
               merchandiseId: variantId,
               quantity: qty,
-              attributes: [{ key: "Fundraiser", value: fundraiserTitle }],
+              attributes: [
+                { key: "Fundraiser", value: fundraiserTitle },
+                { key: "Fundraiser slug", value: fundraiserSlug },
+              ],
             },
           ],
           [

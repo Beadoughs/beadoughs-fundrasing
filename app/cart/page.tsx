@@ -1,5 +1,9 @@
 import Link from "next/link"
 import { getCartForDisplay } from "@/app/actions/cart"
+import {
+  fundraiserContinueHref,
+  resolveCartFundraiserSlug,
+} from "@/lib/fundraising/cart-fundraiser"
 import { CartView } from "@/components/cart-view"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
@@ -26,6 +30,7 @@ export default async function CartPage() {
   }
 
   const cart = await getCartForDisplay()
+  const continueHref = fundraiserContinueHref(resolveCartFundraiserSlug(cart))
   const lines =
     cart?.lines.edges.map((e) => ({
       id: e.node.id,
@@ -45,7 +50,7 @@ export default async function CartPage() {
             <div className="rounded-3xl border border-border bg-card p-10 text-center">
               <p className="text-muted-foreground mb-6">Your cart is empty.</p>
               <Button asChild className="rounded-full">
-                <Link href="/">Back to home</Link>
+                <Link href={continueHref}>Continue browsing</Link>
               </Button>
             </div>
           ) : (
@@ -53,6 +58,7 @@ export default async function CartPage() {
               lines={lines}
               totalQuantity={cart.totalQuantity}
               totalAmount={cart.cost.totalAmount}
+              continueHref={continueHref}
             />
           )}
         </div>

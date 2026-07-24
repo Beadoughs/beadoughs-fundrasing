@@ -165,6 +165,10 @@ export const CART_QUERY = `
           currencyCode
         }
       }
+      attributes {
+        key
+        value
+      }
       lines(first: 50) {
         edges {
           node {
@@ -175,6 +179,10 @@ export const CART_QUERY = `
                 amount
                 currencyCode
               }
+            }
+            attributes {
+              key
+              value
             }
             merchandise {
               ... on ProductVariant {

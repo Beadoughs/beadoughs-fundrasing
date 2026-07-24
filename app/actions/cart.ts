@@ -16,6 +16,7 @@ import {
   CART_LINES_UPDATE_MUTATION,
   CART_QUERY,
 } from "@/lib/shopify/queries"
+import type { CartAttribute } from "@/lib/fundraising/cart-fundraiser"
 
 export type CartLineInputAttr = { key: string; value: string }
 
@@ -208,6 +209,7 @@ export async function getCartForDisplay() {
       cost: {
         totalAmount: { amount: string; currencyCode: string }
       }
+      attributes: CartAttribute[]
       lines: {
         edges: {
           node: {
@@ -216,6 +218,7 @@ export async function getCartForDisplay() {
             cost: {
               totalAmount: { amount: string; currencyCode: string }
             }
+            attributes: CartAttribute[]
             merchandise: {
               id: string
               title: string

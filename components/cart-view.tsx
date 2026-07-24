@@ -21,9 +21,15 @@ type Props = {
   lines: Line[]
   totalQuantity: number
   totalAmount: { amount: string; currencyCode: string }
+  continueHref?: string
 }
 
-export function CartView({ lines, totalQuantity, totalAmount }: Props) {
+export function CartView({
+  lines,
+  totalQuantity,
+  totalAmount,
+  continueHref = "/fundraisers",
+}: Props) {
   const [pending, startTransition] = useTransition()
 
   return (
@@ -93,7 +99,7 @@ export function CartView({ lines, totalQuantity, totalAmount }: Props) {
         </div>
         <div className="flex flex-col gap-2 sm:flex-row">
           <Button asChild variant="outline" className="rounded-full">
-            <Link href="/">Continue browsing</Link>
+            <Link href={continueHref}>Continue browsing</Link>
           </Button>
           <form action={redirectToShopifyCheckout}>
             <Button type="submit" className="w-full rounded-full sm:w-auto" size="lg">
