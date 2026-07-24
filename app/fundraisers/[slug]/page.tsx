@@ -67,13 +67,6 @@ export default async function FundraiserPage({ params }: Props) {
     campaign.leaderboard.length > 0
       ? campaign.leaderboard.length
       : campaign.supportersCount
-  const productImages = campaign.products
-    .filter((p) => p.imageUrl)
-    .map((p) => ({
-      url: p.imageUrl as string,
-      alt: p.imageAlt ?? p.title,
-    }))
-  const heroProductImages = productImages.slice(0, 4)
 
   return (
     <>
@@ -91,85 +84,6 @@ export default async function FundraiserPage({ params }: Props) {
 
           <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
             <div className="md:col-span-2 space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
-              <div className="relative aspect-[16/9] w-full rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-secondary/40">
-                {campaign.imageUrl ? (
-                  <Image
-                    src={campaign.imageUrl}
-                    alt={campaign.imageAlt ?? campaign.title}
-                    fill
-                    className="object-cover"
-                    priority
-                    sizes="(max-width: 768px) 100vw, 66vw"
-                  />
-                ) : heroProductImages.length === 1 ? (
-                  <Image
-                    src={heroProductImages[0].url}
-                    alt={heroProductImages[0].alt}
-                    fill
-                    className="object-cover"
-                    priority
-                    sizes="(max-width: 768px) 100vw, 66vw"
-                  />
-                ) : heroProductImages.length > 1 ? (
-                  <div
-                    className={`grid h-full w-full gap-0.5 bg-white ${
-                      heroProductImages.length === 2
-                        ? "grid-cols-2"
-                        : heroProductImages.length === 3
-                          ? "grid-cols-2 grid-rows-2"
-                          : "grid-cols-2 grid-rows-2"
-                    }`}
-                  >
-                    {heroProductImages.map((img, i) => (
-                      <div
-                        key={`${img.url}-${i}`}
-                        className={`relative min-h-0 ${
-                          heroProductImages.length === 3 && i === 0 ? "row-span-2" : ""
-                        }`}
-                      >
-                        <Image
-                          src={img.url}
-                          alt={img.alt}
-                          fill
-                          className="object-cover"
-                          priority={i === 0}
-                          sizes="(max-width: 768px) 50vw, 33vw"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="flex h-full items-center justify-center text-muted-foreground">
-                    Images coming soon
-                  </div>
-                )}
-              </div>
-
-              <div className="bg-card p-6 sm:p-8 rounded-3xl shadow-sm border border-border">
-                <h2 className="text-2xl font-bold mb-4">About this campaign</h2>
-                {campaign.descriptionHtml ? (
-                  <div
-                    className="max-w-none text-muted-foreground leading-relaxed [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6"
-                    dangerouslySetInnerHTML={{ __html: campaign.descriptionHtml }}
-                  />
-                ) : (
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    {campaign.description ||
-                      "More about this campaign coming soon."}
-                  </p>
-                )}
-
-                <div className="mt-8 pt-8 border-t border-border">
-                  <p className="text-sm text-muted-foreground">
-                    Secure checkout. Fresh doughnuts delivered per your store settings.
-                  </p>
-                </div>
-              </div>
-
-              <Card className="p-6 sm:p-8 rounded-3xl border-border shadow-sm">
-                <FundraiserLeaderboard entries={campaign.leaderboard} />
-              </Card>
-
               <div className="space-y-6">
                 <h2 className="text-2xl font-bold">Products</h2>
                 {campaign.products.length === 0 ? (
@@ -214,6 +128,31 @@ export default async function FundraiserPage({ params }: Props) {
                   </ul>
                 )}
               </div>
+
+              <div className="bg-card p-6 sm:p-8 rounded-3xl shadow-sm border border-border">
+                <h2 className="text-2xl font-bold mb-4">About this campaign</h2>
+                {campaign.descriptionHtml ? (
+                  <div
+                    className="max-w-none text-muted-foreground leading-relaxed [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6"
+                    dangerouslySetInnerHTML={{ __html: campaign.descriptionHtml }}
+                  />
+                ) : (
+                  <p className="text-lg text-muted-foreground leading-relaxed">
+                    {campaign.description ||
+                      "More about this campaign coming soon."}
+                  </p>
+                )}
+
+                <div className="mt-8 pt-8 border-t border-border">
+                  <p className="text-sm text-muted-foreground">
+                    Secure checkout. Fresh doughnuts delivered per your store settings.
+                  </p>
+                </div>
+              </div>
+
+              <Card className="p-6 sm:p-8 rounded-3xl border-border shadow-sm">
+                <FundraiserLeaderboard entries={campaign.leaderboard} />
+              </Card>
             </div>
 
             <div className="md:col-span-1">
