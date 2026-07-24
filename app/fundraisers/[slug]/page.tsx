@@ -91,35 +91,33 @@ export default async function FundraiserPage({ params }: Props) {
                     Products for this campaign will appear here soon.
                   </p>
                 ) : (
-                  <ul className="grid gap-4 sm:grid-cols-2">
+                  <ul className="grid gap-5 sm:grid-cols-2">
                     {campaign.products.map((product) => (
                       <li key={product.id}>
                         <Link
                           href={`/fundraisers/${campaign.handle}/products/${product.handle}`}
                           className="block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                         >
-                          <Card className="p-4 h-full flex flex-col gap-3 rounded-2xl border-border transition-shadow hover:shadow-md">
-                            <div className="flex gap-3">
-                              {product.imageUrl ? (
-                                <div className="relative h-20 w-20 rounded-xl overflow-hidden shrink-0 bg-secondary/40">
-                                  <Image
-                                    src={product.imageUrl}
-                                    alt={product.imageAlt ?? product.title}
-                                    fill
-                                    className="object-cover"
-                                    sizes="80px"
-                                  />
-                                </div>
-                              ) : (
-                                <div className="h-20 w-20 rounded-xl shrink-0 bg-secondary/40" />
-                              )}
-                              <div className="min-w-0 flex-1">
-                                <p className="font-semibold leading-tight">{product.title}</p>
-                                <p className="text-sm text-muted-foreground mt-1">
-                                  From {product.minPriceCurrency} ${product.minPriceAmount}
-                                </p>
-                                <p className="text-sm font-medium text-primary mt-2">View product →</p>
+                          <Card className="h-full overflow-hidden flex flex-col rounded-2xl border-border transition-shadow hover:shadow-md p-0 gap-0">
+                            {product.imageUrl ? (
+                              <div className="relative aspect-[4/3] w-full overflow-hidden bg-secondary/40">
+                                <Image
+                                  src={product.imageUrl}
+                                  alt={product.imageAlt ?? product.title}
+                                  fill
+                                  className="object-cover"
+                                  sizes="(max-width: 640px) 100vw, 320px"
+                                />
                               </div>
+                            ) : (
+                              <div className="aspect-[4/3] w-full bg-secondary/40" />
+                            )}
+                            <div className="p-4 flex flex-col gap-1 min-w-0">
+                              <p className="font-semibold leading-tight">{product.title}</p>
+                              <p className="text-sm text-muted-foreground">
+                                From {product.minPriceCurrency} ${product.minPriceAmount}
+                              </p>
+                              <p className="text-sm font-medium text-primary mt-1">View product →</p>
                             </div>
                           </Card>
                         </Link>

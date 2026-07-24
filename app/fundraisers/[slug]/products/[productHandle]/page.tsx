@@ -78,7 +78,7 @@ export default async function FundraiserProductPage({ params }: Props) {
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
-            <div className="relative aspect-square w-full rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-secondary/40">
+            <div className="relative aspect-square w-full min-h-[280px] sm:min-h-[360px] rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-secondary/40">
               {product.imageUrl ? (
                 <Image
                   src={product.imageUrl}
@@ -86,7 +86,7 @@ export default async function FundraiserProductPage({ params }: Props) {
                   fill
                   className="object-cover"
                   priority
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 100vw, 560px"
                 />
               ) : (
                 <div className="flex h-full items-center justify-center text-muted-foreground p-6 text-center">
