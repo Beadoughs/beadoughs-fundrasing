@@ -3,6 +3,7 @@ import {
   COLLECTION_BY_HANDLE_QUERY,
   COLLECTION_CARD_ONLY_QUERY,
   COLLECTIONS_FIRST_QUERY,
+  PRODUCT_BY_HANDLE_QUERY,
 } from "./queries"
 import { getFundraiserCollectionHandles, isShopifyAdminConfigured } from "./config"
 import { getCollectionDisplayMetafieldsByHandle } from "./admin"
@@ -38,6 +39,7 @@ export type FundraiserProduct = {
   title: string
   handle: string
   description: string
+  descriptionHtml: string
   imageUrl: string | null
   imageAlt: string | null
   minPriceAmount: string
@@ -194,6 +196,7 @@ type CollectionByHandleResponse = {
           title: string
           handle: string
           description: string
+          descriptionHtml?: string | null
           featuredImage?: { url: string; altText?: string | null } | null
           priceRange: {
             minVariantPrice: { amount: string; currencyCode: string }
@@ -214,21 +217,33 @@ type CollectionByHandleResponse = {
   }) | null
 }
 
-export async function getFundraiserByHandle(handle: string): Promise<FundraiserDetail | null> {
-  const data = await storefrontRequest<CollectionByHandleResponse>(
-    COLLECTION_BY_HANDLE_QUERY,
-    { handle },
-    { revalidate: 30 }
-  )
-  const c = data.collection
-  if (!c) return null
-
-  const card = await withAdminMetafieldFallback(mapCollectionCard(c))
-  const products: FundraiserProduct[] = c.products.edges.map(({ node: p }) => ({
+function mapProductNode(p: {
+  id: string
+  title: string
+  handle: string
+  description?: string | null
+  descriptionHtml?: string | null
+  featuredImage?: { url: string; altText?: string | null } | null
+  priceRange: {
+    minVariantPrice: { amount: string; currencyCode: string }
+  }
+  variants: {
+    edges: {
+      node: {
+        id: string
+        title: string
+        availableForSale: boolean
+        price: { amount: string; currencyCode: string }
+      }
+    }[]
+  }
+}): FundraiserProduct {
+  return {
     id: p.id,
     title: p.title,
     handle: p.handle,
     description: p.description ?? "",
+    descriptionHtml: p.descriptionHtml ?? "",
     imageUrl: p.featuredImage?.url ?? null,
     imageAlt: p.featuredImage?.altText ?? null,
     minPriceAmount: p.priceRange.minVariantPrice.amount,
@@ -240,12 +255,96 @@ export async function getFundraiserByHandle(handle: string): Promise<FundraiserD
       priceAmount: v.price.amount,
       currencyCode: v.price.currencyCode,
     })),
-  }))
+  }
+}
+
+export async function getFundraiserByHandle(handle: string): Promise<FundraiserDetail | null> {
+  const data = await storefrontRequest<CollectionByHandleResponse>(
+    COLLECTION_BY_HANDLE_QUERY,
+    { handle },
+    { revalidate: 30 }
+  )
+  const c = data.collection
+  if (!c) return null
+
+  const card = await withAdminMetafieldFallback(mapCollectionCard(c))
+  const products: FundraiserProduct[] = c.products.edges.map(({ node: p }) => mapProductNode(p))
 
   return {
     ...card,
     descriptionHtml: c.descriptionHtml ?? "",
     products,
+  }
+}
+
+type ProductByHandleResponse = {
+  product: {
+    id: string
+    title: string
+    handle: string
+    description: string
+    descriptionHtml?: string | null
+    featuredImage?: { url: string; altText?: string | null } | null
+    priceRange: {
+      minVariantPrice: { amount: string; currencyCode: string }
+    }
+    variants: {
+      edges: {
+        node: {
+          id: string
+          title: string
+          availableForSale: boolean
+          price: { amount: string; currencyCode: string }
+        }
+      }[]
+    }
+    collections: {
+      edges: {
+        node: { handle: string }
+      }[]
+    }
+  } | null
+}
+
+export type FundraiserProductPage = {
+  fundraiser: Pick<FundraiserCollectionCard, "handle" | "title" | "organization">
+  product: FundraiserProduct
+}
+
+/**
+ * Load a product by handle and ensure it belongs to the fundraiser collection.
+ */
+export async function getFundraiserProduct(
+  fundraiserHandle: string,
+  productHandle: string
+): Promise<FundraiserProductPage | null> {
+  const [card, productData] = await Promise.all([
+    getFundraiserCardByHandle(fundraiserHandle),
+    storefrontRequest<ProductByHandleResponse>(
+      PRODUCT_BY_HANDLE_QUERY,
+      { handle: productHandle },
+      { revalidate: 30 }
+    ),
+  ])
+
+  if (!card || !productData.product) return null
+
+  const inCollection = productData.product.collections.edges.some(
+    ({ node }) => node.handle === fundraiserHandle
+  )
+  if (!inCollection) {
+    // Fallback: some catalogs expose products via collection query more reliably.
+    const detail = await getFundraiserByHandle(fundraiserHandle)
+    if (!detail?.products.some((p) => p.handle === productHandle)) return null
+  }
+
+  return {
+    fundraiser: {
+      handle: card.handle,
+      title: card.title,
+      organization: card.organization,
+    },
+    product: mapProductNode(productData.product),
   }
 }
 

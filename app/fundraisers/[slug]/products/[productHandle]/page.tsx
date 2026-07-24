@@ -1,0 +1,144 @@
+import { notFound } from "next/navigation"
+import Image from "next/image"
+import Link from "next/link"
+import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { FundraiserProductAdd } from "@/components/fundraiser-product-add"
+import { getFundraiserProduct } from "@/lib/shopify/fundraiser-data"
+import { isShopifyConfigured } from "@/lib/shopify/config"
+import { ShopifyConfigMissing } from "@/components/shopify-config-missing"
+import { ArrowLeft } from "lucide-react"
+
+type Props = {
+  params: Promise<{ slug: string; productHandle: string }>
+}
+
+export const revalidate = 30
+
+export async function generateMetadata({ params }: Props) {
+  const { slug, productHandle } = await params
+  if (!isShopifyConfigured()) {
+    return { title: "Product | Beadoughs" }
+  }
+  try {
+    const data = await getFundraiserProduct(slug, productHandle)
+    if (!data) return { title: "Product | Beadoughs" }
+    return { title: `${data.product.title} | ${data.fundraiser.title} | Beadoughs` }
+  } catch {
+    return { title: "Product | Beadoughs" }
+  }
+}
+
+export default async function FundraiserProductPage({ params }: Props) {
+  const { slug, productHandle } = await params
+
+  if (!isShopifyConfigured()) {
+    return (
+      <>
+        <Header />
+        <ShopifyConfigMissing />
+        <Footer />
+      </>
+    )
+  }
+
+  let data: Awaited<ReturnType<typeof getFundraiserProduct>> = null
+  try {
+    data = await getFundraiserProduct(slug, productHandle)
+  } catch {
+    throw new Error("Failed to load product from Shopify. Check API token and Storefront scopes.")
+  }
+
+  if (!data) {
+    notFound()
+  }
+
+  const { fundraiser, product } = data
+  const org = fundraiser.organization ?? "Community fundraiser"
+
+  return (
+    <>
+      <Header />
+      <main className="min-h-screen pt-24 pb-16 bg-secondary/10">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
+            <Button asChild variant="ghost" className="mb-4 -ml-2 rounded-full text-muted-foreground">
+              <Link href={`/fundraisers/${fundraiser.handle}`}>
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to {fundraiser.title}
+              </Link>
+            </Button>
+            <p className="text-sm text-muted-foreground font-medium">
+              Supporting <span className="text-primary font-bold">{fundraiser.title}</span>
+              {" · "}
+              Organized by <span className="font-semibold text-foreground">{org}</span>
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
+            <div className="relative aspect-square w-full rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-secondary/40">
+              {product.imageUrl ? (
+                <Image
+                  src={product.imageUrl}
+                  alt={product.imageAlt ?? product.title}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : (
+                <div className="flex h-full items-center justify-center text-muted-foreground p-6 text-center">
+                  Add a product image in Shopify
+                </div>
+              )}
+            </div>
+
+            <Card className="p-6 sm:p-8 rounded-3xl border-border shadow-sm h-fit">
+              <h1 className="text-3xl sm:text-4xl font-serif font-bold text-foreground mb-4">
+                {product.title}
+              </h1>
+
+              {product.descriptionHtml ? (
+                <div
+                  className="mb-8 max-w-none text-muted-foreground leading-relaxed [&_p]:mb-3 [&_ul]:list-disc [&_ul]:pl-6"
+                  dangerouslySetInnerHTML={{ __html: product.descriptionHtml }}
+                />
+              ) : product.description ? (
+                <p className="mb-8 text-muted-foreground leading-relaxed">{product.description}</p>
+              ) : (
+                <p className="mb-8 text-muted-foreground leading-relaxed">
+                  Fresh Beadoughs doughnuts — every purchase supports this fundraiser.
+                </p>
+              )}
+
+              <FundraiserProductAdd
+                product={product}
+                fundraiserSlug={fundraiser.handle}
+                fundraiserTitle={fundraiser.title}
+                showQuantitySelector
+                size="lg"
+              />
+
+              <p className="text-xs text-center text-muted-foreground pt-6">
+                Secure checkout powered by Shopify. This purchase is attributed to{" "}
+                <span className="font-medium text-foreground">{fundraiser.title}</span>.
+              </p>
+
+              <div className="mt-6 pt-6 border-t border-border flex flex-col sm:flex-row gap-3">
+                <Button asChild variant="outline" className="rounded-full flex-1">
+                  <Link href={`/fundraisers/${fundraiser.handle}`}>Back to campaign</Link>
+                </Button>
+                <Button asChild variant="secondary" className="rounded-full flex-1">
+                  <Link href="/cart">View cart</Link>
+                </Button>
+              </div>
+            </Card>
+          </div>
+        </div>
+      </main>
+      <Footer />
+    </>
+  )
+}

@@ -57,6 +57,7 @@ export const COLLECTION_BY_HANDLE_QUERY = `
             title
             handle
             description
+            descriptionHtml
             featuredImage {
               url
               altText
@@ -80,6 +81,48 @@ export const COLLECTION_BY_HANDLE_QUERY = `
                 }
               }
             }
+          }
+        }
+      }
+    }
+  }
+`
+
+export const PRODUCT_BY_HANDLE_QUERY = `
+  query ProductByHandle($handle: String!) {
+    product(handle: $handle) {
+      id
+      title
+      handle
+      description
+      descriptionHtml
+      featuredImage {
+        url
+        altText
+      }
+      priceRange {
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+      variants(first: 25) {
+        edges {
+          node {
+            id
+            title
+            availableForSale
+            price {
+              amount
+              currencyCode
+            }
+          }
+        }
+      }
+      collections(first: 50) {
+        edges {
+          node {
+            handle
           }
         }
       }
