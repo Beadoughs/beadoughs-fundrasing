@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Package, Clock, Users } from "lucide-react"
 import { FundraiserLeaderboard } from "@/components/fundraiser-leaderboard"
+import { FundraiserProductAdd } from "@/components/fundraiser-product-add"
 import {
   getFundraiserByHandle,
   daysLeftFromEndDate,
@@ -92,15 +93,16 @@ export default async function FundraiserPage({ params }: Props) {
                   </p>
                 ) : (
                   <ul className="grid gap-5 sm:grid-cols-2">
-                    {campaign.products.map((product) => (
-                      <li key={product.id}>
-                        <Link
-                          href={`/fundraisers/${campaign.handle}/products/${product.handle}`}
-                          className="block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                        >
+                    {campaign.products.map((product) => {
+                      const detailHref = `/fundraisers/${campaign.handle}/products/${product.handle}`
+                      return (
+                        <li key={product.id}>
                           <Card className="h-full overflow-hidden flex flex-col rounded-2xl border-border transition-shadow hover:shadow-md p-0 gap-0">
-                            {product.imageUrl ? (
-                              <div className="relative aspect-[4/3] w-full overflow-hidden bg-secondary/40">
+                            <Link
+                              href={detailHref}
+                              className="relative block aspect-[4/3] w-full overflow-hidden bg-secondary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                            >
+                              {product.imageUrl ? (
                                 <Image
                                   src={product.imageUrl}
                                   alt={product.imageAlt ?? product.title}
@@ -108,21 +110,31 @@ export default async function FundraiserPage({ params }: Props) {
                                   className="object-cover"
                                   sizes="(max-width: 640px) 100vw, 320px"
                                 />
+                              ) : null}
+                            </Link>
+                            <div className="p-4 flex flex-col gap-3 min-w-0 flex-1">
+                              <div className="space-y-1">
+                                <Link
+                                  href={detailHref}
+                                  className="font-semibold leading-tight hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded-sm"
+                                >
+                                  {product.title}
+                                </Link>
+                                <p className="text-sm text-muted-foreground">
+                                  From {product.minPriceCurrency} ${product.minPriceAmount}
+                                </p>
                               </div>
-                            ) : (
-                              <div className="aspect-[4/3] w-full bg-secondary/40" />
-                            )}
-                            <div className="p-4 flex flex-col gap-1 min-w-0">
-                              <p className="font-semibold leading-tight">{product.title}</p>
-                              <p className="text-sm text-muted-foreground">
-                                From {product.minPriceCurrency} ${product.minPriceAmount}
-                              </p>
-                              <p className="text-sm font-medium text-primary mt-1">View product →</p>
+                              <FundraiserProductAdd
+                                product={product}
+                                fundraiserSlug={campaign.handle}
+                                fundraiserTitle={campaign.title}
+                                showQuantitySelector
+                              />
                             </div>
                           </Card>
-                        </Link>
-                      </li>
-                    ))}
+                        </li>
+                      )
+                    })}
                   </ul>
                 )}
               </div>
