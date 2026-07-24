@@ -78,7 +78,7 @@ export function FundraiserProductAdd({
 
   if (product.variants.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">This product has no variants in Shopify.</p>
+      <p className="text-sm text-muted-foreground">This product is currently unavailable.</p>
     )
   }
 

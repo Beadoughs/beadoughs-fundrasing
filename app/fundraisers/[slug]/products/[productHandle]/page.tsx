@@ -90,7 +90,7 @@ export default async function FundraiserProductPage({ params }: Props) {
                 />
               ) : (
                 <div className="flex h-full items-center justify-center text-muted-foreground p-6 text-center">
-                  Add a product image in Shopify
+                  Images coming soon
                 </div>
               )}
             </div>
@@ -122,7 +122,7 @@ export default async function FundraiserProductPage({ params }: Props) {
               />
 
               <p className="text-xs text-center text-muted-foreground pt-6">
-                Secure checkout powered by Shopify. This purchase is attributed to{" "}
+                Secure payment. This purchase is attributed to{" "}
                 <span className="font-medium text-foreground">{fundraiser.title}</span>.
               </p>
 

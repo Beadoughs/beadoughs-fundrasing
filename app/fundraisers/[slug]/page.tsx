@@ -67,6 +67,13 @@ export default async function FundraiserPage({ params }: Props) {
     campaign.leaderboard.length > 0
       ? campaign.leaderboard.length
       : campaign.supportersCount
+  const productImages = campaign.products
+    .filter((p) => p.imageUrl)
+    .map((p) => ({
+      url: p.imageUrl as string,
+      alt: p.imageAlt ?? p.title,
+    }))
+  const heroProductImages = productImages.slice(0, 4)
 
   return (
     <>
@@ -94,9 +101,46 @@ export default async function FundraiserPage({ params }: Props) {
                     priority
                     sizes="(max-width: 768px) 100vw, 66vw"
                   />
+                ) : heroProductImages.length === 1 ? (
+                  <Image
+                    src={heroProductImages[0].url}
+                    alt={heroProductImages[0].alt}
+                    fill
+                    className="object-cover"
+                    priority
+                    sizes="(max-width: 768px) 100vw, 66vw"
+                  />
+                ) : heroProductImages.length > 1 ? (
+                  <div
+                    className={`grid h-full w-full gap-0.5 bg-white ${
+                      heroProductImages.length === 2
+                        ? "grid-cols-2"
+                        : heroProductImages.length === 3
+                          ? "grid-cols-2 grid-rows-2"
+                          : "grid-cols-2 grid-rows-2"
+                    }`}
+                  >
+                    {heroProductImages.map((img, i) => (
+                      <div
+                        key={`${img.url}-${i}`}
+                        className={`relative min-h-0 ${
+                          heroProductImages.length === 3 && i === 0 ? "row-span-2" : ""
+                        }`}
+                      >
+                        <Image
+                          src={img.url}
+                          alt={img.alt}
+                          fill
+                          className="object-cover"
+                          priority={i === 0}
+                          sizes="(max-width: 768px) 50vw, 33vw"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 ) : (
                   <div className="flex h-full items-center justify-center text-muted-foreground">
-                    Add a featured image to this collection in Shopify
+                    Images coming soon
                   </div>
                 )}
               </div>
@@ -111,14 +155,13 @@ export default async function FundraiserPage({ params }: Props) {
                 ) : (
                   <p className="text-lg text-muted-foreground leading-relaxed">
                     {campaign.description ||
-                      "Edit the collection description in Shopify to tell your story here."}
+                      "More about this campaign coming soon."}
                   </p>
                 )}
 
                 <div className="mt-8 pt-8 border-t border-border">
                   <p className="text-sm text-muted-foreground">
-                    Checkout is processed securely by Shopify. Fresh doughnuts delivered per your store
-                    settings.
+                    Secure checkout. Fresh doughnuts delivered per your store settings.
                   </p>
                 </div>
               </div>
@@ -131,7 +174,7 @@ export default async function FundraiserPage({ params }: Props) {
                 <h2 className="text-2xl font-bold">Products</h2>
                 {campaign.products.length === 0 ? (
                   <p className="text-muted-foreground">
-                    Add products to this collection in Shopify to enable purchases.
+                    Products for this campaign will appear here soon.
                   </p>
                 ) : (
                   <ul className="grid gap-4 sm:grid-cols-2">
@@ -234,7 +277,7 @@ export default async function FundraiserPage({ params }: Props) {
                   </Button>
 
                   <p className="text-xs text-center text-muted-foreground pt-4">
-                    Secure checkout powered by Shopify.
+                    Secure checkout.
                   </p>
                 </Card>
               </div>

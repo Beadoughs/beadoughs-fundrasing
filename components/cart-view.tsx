@@ -97,7 +97,7 @@ export function CartView({ lines, totalQuantity, totalAmount }: Props) {
           </Button>
           <form action={redirectToShopifyCheckout}>
             <Button type="submit" className="w-full rounded-full sm:w-auto" size="lg">
-              Checkout with Shopify
+              Secure checkout
             </Button>
           </form>
         </div>

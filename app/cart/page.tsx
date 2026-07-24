@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic"
 
 export const metadata = {
   title: "Cart | Beadoughs",
-  description: "Review your order before Shopify checkout.",
+  description: "Review your order before secure checkout.",
 }
 
 export default async function CartPage() {

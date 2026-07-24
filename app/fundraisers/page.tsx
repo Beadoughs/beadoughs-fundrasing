@@ -129,7 +129,7 @@ export default async function FundraisersDirectoryPage() {
                         />
                       ) : (
                         <div className="flex h-full items-center justify-center text-muted-foreground text-sm">
-                          Campaign image coming soon
+                          Images coming soon
                         </div>
                       )}
                       <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold shadow-sm max-w-[85%] truncate">
