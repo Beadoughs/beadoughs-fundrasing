@@ -27,6 +27,93 @@ export type AddLineInput = {
   attributes?: CartLineInputAttr[]
 }
 
+function normalizeAttrKey(key: string): string {
+  return key.trim().toLowerCase().replace(/[^a-z0-9]/g, "")
+}
+
+function attrByNormalizedKey(
+  attrs: CartLineInputAttr[] | undefined,
+  keys: string[]
+): string | null {
+  if (!attrs?.length) return null
+  const wanted = new Set(keys.map(normalizeAttrKey))
+  const found = attrs.find((a) => wanted.has(normalizeAttrKey(a.key)))
+  const value = found?.value?.trim()
+  return value || null
+}
+
+/**
+ * Guarantee every line carries `Fundraiser slug` (and title when known).
+ * Line properties survive checkout even if cart-level attributes fail to update,
+ * so the webhook can always attribute fundraiser-page orders.
+ */
+function ensureFundraiserAttribution(
+  lines: AddLineInput[],
+  cartAttributes?: CartLineInputAttr[]
+): { lines: AddLineInput[]; cartAttributes: CartLineInputAttr[] | undefined } {
+  const slugFromCart = attrByNormalizedKey(cartAttributes, [
+    "Fundraiser slug",
+    "Fundraiser handle",
+    "fundraiser_slug",
+    "fundraiser_handle",
+  ])
+  const titleFromCart = attrByNormalizedKey(cartAttributes, ["Fundraiser"])
+
+  let slug =
+    slugFromCart ??
+    lines
+      .map((l) =>
+        attrByNormalizedKey(l.attributes, [
+          "Fundraiser slug",
+          "Fundraiser handle",
+          "fundraiser_slug",
+          "fundraiser_handle",
+        ])
+      )
+      .find(Boolean) ??
+    null
+  let title =
+    titleFromCart ??
+    lines.map((l) => attrByNormalizedKey(l.attributes, ["Fundraiser"])).find(Boolean) ??
+    null
+
+  const ensuredLines = lines.map((line) => {
+    const attrs = [...(line.attributes ?? [])]
+    const lineSlug = attrByNormalizedKey(attrs, [
+      "Fundraiser slug",
+      "Fundraiser handle",
+      "fundraiser_slug",
+      "fundraiser_handle",
+    ])
+    const lineTitle = attrByNormalizedKey(attrs, ["Fundraiser"])
+
+    if (!lineSlug && slug) {
+      attrs.push({ key: "Fundraiser slug", value: slug })
+    }
+    if (!lineTitle && title) {
+      attrs.push({ key: "Fundraiser", value: title })
+    }
+    if (lineSlug && !slug) slug = lineSlug
+    if (lineTitle && !title) title = lineTitle
+
+    return { ...line, attributes: attrs.length ? attrs : line.attributes }
+  })
+
+  if (!slug) {
+    return { lines: ensuredLines, cartAttributes }
+  }
+
+  const nextCart = [...(cartAttributes ?? [])]
+  if (!attrByNormalizedKey(nextCart, ["Fundraiser slug", "fundraiser_slug", "Fundraiser handle"])) {
+    nextCart.push({ key: "Fundraiser slug", value: slug })
+  }
+  if (title && !attrByNormalizedKey(nextCart, ["Fundraiser"])) {
+    nextCart.push({ key: "Fundraiser", value: title })
+  }
+
+  return { lines: ensuredLines, cartAttributes: nextCart }
+}
+
 async function setCartCookie(cartId: string) {
   const jar = await cookies()
   jar.set(CART_COOKIE_NAME, cartId, {
@@ -87,11 +174,13 @@ export async function addCartLines(
   }
   getShopifyConfig()
 
-  const lineInputs = lines.map((l) => ({
+  const ensured = ensureFundraiserAttribution(lines, cartAttributes)
+  const lineInputs = ensured.lines.map((l) => ({
     merchandiseId: l.merchandiseId,
     quantity: l.quantity,
     attributes: l.attributes?.map((a) => ({ key: a.key, value: a.value })),
   }))
+  const cartAttrs = ensured.cartAttributes
 
   const existingId = await getCartIdFromCookie()
 
@@ -107,7 +196,7 @@ export async function addCartLines(
       {
         input: {
           lines: lineInputs,
-          attributes: cartAttributes?.map((a) => ({ key: a.key, value: a.value })),
+          attributes: cartAttrs?.map((a) => ({ key: a.key, value: a.value })),
         },
       },
       { cache: "no-store" }
@@ -144,7 +233,7 @@ export async function addCartLines(
       {
         input: {
           lines: lineInputs,
-          attributes: cartAttributes?.map((a) => ({ key: a.key, value: a.value })),
+          attributes: cartAttrs?.map((a) => ({ key: a.key, value: a.value })),
         },
       },
       { cache: "no-store" }
@@ -163,7 +252,7 @@ export async function addCartLines(
   // item properties. Keep both in sync for existing carts. The line property
   // remains the primary fallback if this best-effort cart update fails.
   try {
-    await updateCartAttributes(cartId, cartAttributes)
+    await updateCartAttributes(cartId, cartAttrs)
   } catch (error) {
     console.warn(
       "[shopify cart] Failed to update cart fundraiser attributes; line attributes remain set",

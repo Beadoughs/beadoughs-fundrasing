@@ -15,6 +15,24 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Shopify fundraisers (counters + leaderboards)
 
+### Must-have checklist for automatic boxes sold + leaderboard
+
+Confirm these five things once (then new paid orders update themselves — no manual `boxes_sold` edits):
+
+1. **Webhook** in Shopify: event **Order payment** / `orders/paid` →  
+   `https://YOUR_DOMAIN/api/webhooks/shopify/orders-paid`
+2. **Vercel** env `SHOPIFY_WEBHOOK_SECRET` = that webhook’s signing secret (redeploy after changing)
+3. **Vercel** env `SHOPIFY_ADMIN_ACCESS_TOKEN` with Admin scopes:  
+   `read_orders`, `write_orders`, `read_products`, `write_products`
+4. Each fundraiser **collection** has metafields `beadoughs.boxes_sold` (integer) and  
+   `beadoughs.leaderboard` (json) — start sold at `0`
+5. Buyers must purchase from this site’s **fundraiser page** (`/fundraisers/{handle}`),  
+   not only the native Shopify Online Store theme
+
+Quick test: place a $1 paid order from a fundraiser page, then refresh that page — boxes sold and the leaderboard should rise without editing metafields by hand.
+
+### Full Shopify setup
+
 1. **One collection per fundraiser** — handle becomes the URL slug. Add donut products (1 unit = 1 box).
 2. **Collection metafields** (namespace `beadoughs` preferred — not Product metafields):
    - `goal_boxes` (integer) — e.g. 500 — required for the progress bar
@@ -37,18 +55,19 @@ Open [http://localhost:3000](http://localhost:3000).
 
 Cart checkout tags orders twice so sales count toward the right campaign:
 
-- cart attribute `Fundraiser slug` → Shopify order **Additional details** / `note_attributes`
-- line attribute `Fundraiser slug` → order line-item **Properties**
+- **line** attribute `Fundraiser slug` → order line-item **Properties** (primary; webhook reads this first)
+- **cart** attribute `Fundraiser slug` → Shopify order **Additional details** / `note_attributes`
 
 The webhook accepts `Fundraiser slug`, `fundraiser_slug`, `Fundraiser handle`, or
-`fundraiser_handle`. For a manually-created/native Shopify order that did not pass
-through this storefront, add an order tag in the form `fundraiser:collection-handle`
-or use a discount code in the form `FUNDRAISER-collection-handle`.
+`fundraiser_handle`. If those are missing, it may still attribute when the product sits in
+**exactly one** collection listed in `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES`. For a
+manually-created/native Shopify order, add an order tag `fundraiser:collection-handle`
+or a discount code `FUNDRAISER-collection-handle`.
 
-In Shopify Admin, open the paid order and confirm at least one of the two attributes
-above is present and exactly matches the fundraiser collection handle. Then inspect
-the `orders/paid` webhook delivery: a `200` response includes `applied` or a specific
-skip reason such as `no_fundraiser_slug`, `collection_not_found`, or `already_applied`.
+In Shopify Admin, open the paid order and confirm a line property / Additional detail
+matches the fundraiser collection handle. Then inspect the `orders/paid` webhook
+delivery: a `200` response includes `applied` or a skip reason such as
+`no_fundraiser_slug`, `collection_not_found`, or `already_applied`.
 Vercel logs include the webhook ID, topic, order number, attribution source, and result.
 
 Optional recovery endpoint (set `FUNDRAISING_ADMIN_SECRET`):

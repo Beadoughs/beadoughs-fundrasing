@@ -51,25 +51,33 @@ export function FundraiserProductAdd({
 
   function handleAdd() {
     if (!variantId) return
+    const slug = fundraiserSlug.trim()
+    const title = fundraiserTitle.trim() || slug
+    if (!slug) {
+      setError("Missing fundraiser — refresh the page and try again.")
+      return
+    }
     const qty = showQuantitySelector ? clampQuantity(quantity) : 1
     startTransition(async () => {
       setError(null)
       setDone(false)
       try {
+        // Line properties are the primary attribution path for the orders/paid
+        // webhook; cart attributes are a secondary copy for order Additional details.
         await addCartLines(
           [
             {
               merchandiseId: variantId,
               quantity: qty,
               attributes: [
-                { key: "Fundraiser", value: fundraiserTitle },
-                { key: "Fundraiser slug", value: fundraiserSlug },
+                { key: "Fundraiser", value: title },
+                { key: "Fundraiser slug", value: slug },
               ],
             },
           ],
           [
-            { key: "Fundraiser slug", value: fundraiserSlug },
-            { key: "Fundraiser", value: fundraiserTitle },
+            { key: "Fundraiser slug", value: slug },
+            { key: "Fundraiser", value: title },
           ]
         )
         setDone(true)

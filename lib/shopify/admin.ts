@@ -2,6 +2,7 @@ import {
   BEADOUGHS_COLLECTION_METAFIELDS,
   BEADOUGHS_METAFIELD_NAMESPACE,
   BEADOUGHS_ORDER_STATS_APPLIED_KEY,
+  getFundraiserCollectionHandles,
   getShopifyAdminConfig,
 } from "./config"
 import type { FundraiserStats, LeaderboardEntry } from "@/lib/fundraising/types"
@@ -316,6 +317,61 @@ export function orderGidFromRestId(id: number | string): string {
   return `gid://shopify/Order/${id}`
 }
 
+export function productGidFromRestId(id: number | string): string {
+  return `gid://shopify/Product/${id}`
+}
+
+const PRODUCT_COLLECTION_HANDLES = `
+  query ProductCollectionHandles($id: ID!) {
+    product(id: $id) {
+      id
+      collections(first: 50) {
+        nodes {
+          handle
+        }
+      }
+    }
+  }
+`
+
+/**
+ * If each ordered product belongs to exactly one configured fundraiser
+ * collection, and all such products agree on the same handle, return that
+ * handle. Used when cart/line Fundraiser slug attributes are missing.
+ */
+export async function resolveUniqueFundraiserHandleForProducts(
+  productIds: Array<number | string>
+): Promise<string | null> {
+  const configured = getFundraiserCollectionHandles().map((h) => h.toLowerCase())
+  if (!configured.length || !productIds.length) return null
+  if (!getShopifyAdminConfig()) return null
+
+  const configuredSet = new Set(configured)
+  const matched = new Set<string>()
+
+  for (const productId of productIds) {
+    const data = await adminGraphql<{
+      product: {
+        id: string
+        collections: { nodes: { handle?: string | null }[] }
+      } | null
+    }>(PRODUCT_COLLECTION_HANDLES, { id: productGidFromRestId(productId) })
+
+    const handles = (data.product?.collections.nodes ?? [])
+      .map((n) => n.handle?.trim().toLowerCase())
+      .filter((h): h is string => Boolean(h))
+    const fundraiserMatches = handles.filter((h) => configuredSet.has(h))
+
+    // Only use an unambiguous single-collection match for this product.
+    if (fundraiserMatches.length === 1) {
+      matched.add(fundraiserMatches[0])
+    }
+  }
+
+  if (matched.size === 1) return [...matched][0]
+  return null
+}
+
 const ORDER_FOR_FUNDRAISING = `
   query OrderForFundraising($id: ID!) {
     order(id: $id) {
@@ -341,6 +397,9 @@ const ORDER_FOR_FUNDRAISING = `
       lineItems(first: 100) {
         nodes {
           quantity
+          product {
+            id
+          }
           customAttributes {
             key
             value
@@ -379,6 +438,7 @@ export async function getPaidOrderPayloadById(
       lineItems: {
         nodes: {
           quantity?: number | null
+          product?: { id?: string | null } | null
           customAttributes?: { key?: string | null; value?: string | null }[] | null
         }[]
       }
@@ -423,12 +483,17 @@ export async function getPaidOrderPayloadById(
       name: a.key ?? undefined,
       value: a.value ?? undefined,
     })),
-    line_items: order.lineItems.nodes.map((line) => ({
-      quantity: line.quantity ?? 0,
-      properties: (line.customAttributes ?? []).map((a) => ({
-        name: a.key ?? undefined,
-        value: a.value ?? undefined,
-      })),
-    })),
+    line_items: order.lineItems.nodes.map((line) => {
+      const productGid = line.product?.id ?? null
+      const productId = productGid?.match(/\/Product\/(\d+)/)?.[1] ?? null
+      return {
+        quantity: line.quantity ?? 0,
+        product_id: productId,
+        properties: (line.customAttributes ?? []).map((a) => ({
+          name: a.key ?? undefined,
+          value: a.value ?? undefined,
+        })),
+      }
+    }),
   }
 }

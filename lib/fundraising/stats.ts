@@ -8,6 +8,7 @@ import {
   isOrderStatsApplied,
   markOrderStatsApplied,
   orderGidFromRestId,
+  resolveUniqueFundraiserHandleForProducts,
   saveCollectionStats,
 } from "@/lib/shopify/admin"
 
@@ -30,6 +31,7 @@ export type ShopifyPaidOrderPayload = {
   note_attributes?: { name?: string; value?: string }[] | null
   line_items?: {
     quantity?: number
+    product_id?: number | string | null
     properties?: { name?: string; value?: string }[] | null
   }[] | null
 }
@@ -67,6 +69,7 @@ export type FundraiserAttributionSource =
   | "line_property"
   | "order_tag"
   | "discount_code"
+  | "product_collection"
 
 export type FundraiserAttribution = {
   slug: string
@@ -100,6 +103,19 @@ function fundraiserSlugFromDiscountCodes(
   return null
 }
 
+function productIdsFromOrder(order: ShopifyPaidOrderPayload): string[] {
+  const ids: string[] = []
+  const seen = new Set<string>()
+  for (const line of order.line_items ?? []) {
+    if (line.product_id == null || line.product_id === "") continue
+    const id = String(line.product_id)
+    if (seen.has(id)) continue
+    seen.add(id)
+    ids.push(id)
+  }
+  return ids
+}
+
 /**
  * Resolve fundraiser collection handle from cart/order attributes.
  * Prefers line item properties because they identify the purchased item and
@@ -123,6 +139,33 @@ export function resolveFundraiserAttribution(
 
   const fromDiscount = fundraiserSlugFromDiscountCodes(order.discount_codes)
   if (fromDiscount) return { slug: fromDiscount, source: "discount_code" }
+
+  return null
+}
+
+/**
+ * Same as resolveFundraiserAttribution, then optionally falls back to a unique
+ * SHOPIFY_FUNDRAISER_COLLECTION_HANDLES match for the ordered product(s).
+ */
+export async function resolveFundraiserAttributionWithFallbacks(
+  order: ShopifyPaidOrderPayload
+): Promise<FundraiserAttribution | null> {
+  const direct = resolveFundraiserAttribution(order)
+  if (direct) return direct
+
+  const productIds = productIdsFromOrder(order)
+  if (!productIds.length) return null
+
+  try {
+    const handle = await resolveUniqueFundraiserHandleForProducts(productIds)
+    const slug = normalizeFundraiserSlug(handle)
+    if (slug) return { slug, source: "product_collection" }
+  } catch (error) {
+    console.warn(
+      "[fundraising] Product-collection attribution fallback failed",
+      error instanceof Error ? error.message : error
+    )
+  }
 
   return null
 }
@@ -195,7 +238,7 @@ export async function applyPaidOrderToFundraiserStats(
     return { status: "skipped", reason: "already_applied" }
   }
 
-  const attribution = resolveFundraiserAttribution(order)
+  const attribution = await resolveFundraiserAttributionWithFallbacks(order)
   if (!attribution) {
     return { status: "skipped", reason: "no_fundraiser_slug" }
   }

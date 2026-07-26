@@ -33,14 +33,23 @@
  *    Optional: set FUNDRAISING_ADMIN_SECRET to enable
  *    POST /api/admin/fundraising/replay-order for dry-run / manual recovery.
  *
- * 6. Attribution: add-to-cart writes `Fundraiser slug` + `Fundraiser` on both the
- *    cart (→ order note_attributes / Additional details) and each line item
- *    (→ line properties). Existing carts also call cartAttributesUpdate so the
- *    cart-level slug stays in sync after the first add.
+ * 6. Attribution: add-to-cart ALWAYS writes `Fundraiser slug` + `Fundraiser` on
+ *    each line item (→ order line properties — primary path) and on the cart
+ *    (→ order note_attributes / Additional details). Existing carts also call
+ *    cartAttributesUpdate. If slug is still missing on a paid order, the webhook
+ *    may fall back when the product belongs to exactly one handle listed in
+ *    SHOPIFY_FUNDRAISER_COLLECTION_HANDLES.
  *
  * 7. Set env vars (see .env.example). List collection handles in SHOPIFY_FUNDRAISER_COLLECTION_HANDLES
  *    (comma-separated) for the /fundraisers directory. Every listed collection gets a counter +
  *    leaderboard automatically once orders are attributed via cart "Fundraiser slug".
+ *
+ * Owner checklist (auto boxes_sold / leaderboard — do once):
+ *  1. Webhook topic orders/paid → https://YOUR_DOMAIN/api/webhooks/shopify/orders-paid
+ *  2. SHOPIFY_WEBHOOK_SECRET = that webhook’s signing secret (Vercel env)
+ *  3. SHOPIFY_ADMIN_ACCESS_TOKEN with read/write orders + products (Vercel env)
+ *  4. Collection metafields beadoughs.boxes_sold + beadoughs.leaderboard exist
+ *  5. Buyers must checkout from this website’s /fundraisers/{handle} page (not the native Shopify theme alone)
  */
 
 export const BEADOUGHS_METAFIELD_NAMESPACE = "beadoughs"

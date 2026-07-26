@@ -3,7 +3,7 @@ import { NextResponse } from "next/server"
 import {
   applyPaidOrderToFundraiserStats,
   countBoxesInOrder,
-  resolveFundraiserAttribution,
+  resolveFundraiserAttributionWithFallbacks,
   type ShopifyPaidOrderPayload,
 } from "@/lib/fundraising/stats"
 import { getPaidOrderPayloadById } from "@/lib/shopify/admin"
@@ -101,7 +101,7 @@ export async function POST(request: Request) {
     )
   }
 
-  const attribution = resolveFundraiserAttribution(order)
+  const attribution = await resolveFundraiserAttributionWithFallbacks(order)
   const boxes = countBoxesInOrder(order, attribution?.slug)
   const diagnosis = {
     orderId: String(order.id),
@@ -111,6 +111,7 @@ export async function POST(request: Request) {
     noteAttributes: order.note_attributes ?? [],
     linePropertySamples: (order.line_items ?? []).map((line) => ({
       quantity: line.quantity ?? 0,
+      productId: line.product_id ?? null,
       properties: line.properties ?? [],
     })),
     tags: order.tags ?? null,
