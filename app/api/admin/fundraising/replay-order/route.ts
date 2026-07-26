@@ -19,6 +19,27 @@ function getAdminSecret(): string | null {
   return secret || null
 }
 
+/**
+ * Public health check for the replay/backfill tool (no secrets returned).
+ * GET /api/admin/fundraising/replay-order
+ */
+export async function GET() {
+  const adminSecret = Boolean(getAdminSecret())
+  const adminApi = isShopifyAdminConfigured()
+  return NextResponse.json({
+    ok: true,
+    endpoint: "fundraising/replay-order",
+    ready: adminSecret && adminApi,
+    configured: {
+      adminSecret,
+      adminApi,
+    },
+    tip: adminSecret
+      ? 'POST with Authorization: Bearer <FUNDRAISING_ADMIN_SECRET> and body {"recent":true,"limit":10} to backfill past paid orders.'
+      : "Set FUNDRAISING_ADMIN_SECRET in Vercel (Production), redeploy, then POST with that Bearer token to backfill.",
+  })
+}
+
 function isAuthorized(request: Request): boolean {
   const secret = getAdminSecret()
   if (!secret) return false

@@ -4,10 +4,42 @@ import {
   applyPaidOrderToFundraiserStats,
   type ShopifyPaidOrderPayload,
 } from "@/lib/fundraising/stats"
-import { isShopifyAdminConfigured, getShopifyWebhookSecret } from "@/lib/shopify/config"
+import {
+  getFundraiserCollectionHandles,
+  getShopifyWebhookSecret,
+  isShopifyAdminConfigured,
+} from "@/lib/shopify/config"
 import { verifyShopifyWebhookHmac } from "@/lib/shopify/webhook"
 
 export const runtime = "nodejs"
+
+/**
+ * Public health check — no secrets returned.
+ * Open in a browser: /api/webhooks/shopify/orders-paid
+ * Expect webhookSecret + adminApi both true once Vercel env is set.
+ */
+export async function GET() {
+  const webhookSecret = Boolean(getShopifyWebhookSecret())
+  const adminApi = isShopifyAdminConfigured()
+  const fundraiserHandles = getFundraiserCollectionHandles().length
+  const ready = webhookSecret && adminApi
+
+  return NextResponse.json({
+    ok: true,
+    endpoint: "orders/paid",
+    ready,
+    configured: {
+      webhookSecret,
+      adminApi,
+      fundraiserHandles,
+    },
+    shopifyWebhookUrl:
+      "https://www.beadoughs.com/api/webhooks/shopify/orders-paid",
+    tip: ready
+      ? "Site secrets look set. In Shopify Admin → Settings → Notifications → Webhooks, confirm an orders/paid webhook points at shopifyWebhookUrl, then open a recent delivery for HTTP 200."
+      : "Add SHOPIFY_WEBHOOK_SECRET and SHOPIFY_ADMIN_ACCESS_TOKEN in Vercel, redeploy, then create the Shopify orders/paid webhook.",
+  })
+}
 
 export async function POST(request: Request) {
   const rawBody = await request.text()
