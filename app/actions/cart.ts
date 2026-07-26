@@ -10,6 +10,7 @@ import {
 } from "@/lib/shopify/config"
 import { storefrontRequest } from "@/lib/shopify/storefront"
 import {
+  CART_ATTRIBUTES_UPDATE_MUTATION,
   CART_CREATE_MUTATION,
   CART_LINES_ADD_MUTATION,
   CART_LINES_REMOVE_MUTATION,
@@ -48,6 +49,32 @@ function cartUserErrors(
 ) {
   if (userErrors?.length) {
     throw new Error(`${label}: ${userErrors.map((e) => e.message).join("; ")}`)
+  }
+}
+
+async function updateCartAttributes(
+  cartId: string,
+  attributes: CartLineInputAttr[] | undefined
+): Promise<void> {
+  if (!attributes?.length) return
+
+  type Res = {
+    cartAttributesUpdate: {
+      cart: { id: string } | null
+      userErrors: { field: string[]; message: string }[]
+    }
+  }
+  const data = await storefrontRequest<Res>(
+    CART_ATTRIBUTES_UPDATE_MUTATION,
+    {
+      cartId,
+      attributes: attributes.map((a) => ({ key: a.key, value: a.value })),
+    },
+    { cache: "no-store" }
+  )
+  cartUserErrors(data.cartAttributesUpdate.userErrors, "cartAttributesUpdate")
+  if (!data.cartAttributesUpdate.cart) {
+    throw new Error("cartAttributesUpdate returned no cart")
   }
 }
 
@@ -129,7 +156,20 @@ export async function addCartLines(
     return
   }
 
-  await setCartCookie(addData.cartLinesAdd.cart.id)
+  const cartId = addData.cartLinesAdd.cart.id
+  await setCartCookie(cartId)
+
+  // Cart attributes become order note_attributes; line attributes become line
+  // item properties. Keep both in sync for existing carts. The line property
+  // remains the primary fallback if this best-effort cart update fails.
+  try {
+    await updateCartAttributes(cartId, cartAttributes)
+  } catch (error) {
+    console.warn(
+      "[shopify cart] Failed to update cart fundraiser attributes; line attributes remain set",
+      error instanceof Error ? error.message : error
+    )
+  }
 }
 
 export async function updateCartLineQuantity(lineId: string, quantity: number): Promise<void> {

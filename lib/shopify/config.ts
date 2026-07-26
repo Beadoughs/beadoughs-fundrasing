@@ -30,8 +30,15 @@
  *    Create an orders/paid webhook pointing to:
  *    https://YOUR_DOMAIN/api/webhooks/shopify/orders-paid
  *    Copy the webhook signing secret into SHOPIFY_WEBHOOK_SECRET.
+ *    Optional: set FUNDRAISING_ADMIN_SECRET to enable
+ *    POST /api/admin/fundraising/replay-order for dry-run / manual recovery.
  *
- * 6. Set env vars (see .env.example). List collection handles in SHOPIFY_FUNDRAISER_COLLECTION_HANDLES
+ * 6. Attribution: add-to-cart writes `Fundraiser slug` + `Fundraiser` on both the
+ *    cart (→ order note_attributes / Additional details) and each line item
+ *    (→ line properties). Existing carts also call cartAttributesUpdate so the
+ *    cart-level slug stays in sync after the first add.
+ *
+ * 7. Set env vars (see .env.example). List collection handles in SHOPIFY_FUNDRAISER_COLLECTION_HANDLES
  *    (comma-separated) for the /fundraisers directory. Every listed collection gets a counter +
  *    leaderboard automatically once orders are attributed via cart "Fundraiser slug".
  */

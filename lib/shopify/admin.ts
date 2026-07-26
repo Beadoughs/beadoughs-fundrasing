@@ -315,3 +315,120 @@ export async function markOrderStatsApplied(orderGid: string): Promise<void> {
 export function orderGidFromRestId(id: number | string): string {
   return `gid://shopify/Order/${id}`
 }
+
+const ORDER_FOR_FUNDRAISING = `
+  query OrderForFundraising($id: ID!) {
+    order(id: $id) {
+      id
+      name
+      email
+      tags
+      customAttributes {
+        key
+        value
+      }
+      discountCodes
+      customer {
+        id
+        firstName
+        lastName
+        email
+      }
+      billingAddress {
+        firstName
+        lastName
+      }
+      lineItems(first: 100) {
+        nodes {
+          quantity
+          customAttributes {
+            key
+            value
+          }
+        }
+      }
+    }
+  }
+`
+
+/**
+ * Load a paid order via Admin GraphQL and map it into the REST-shaped payload
+ * used by fundraising stats (note_attributes / line properties).
+ */
+export async function getPaidOrderPayloadById(
+  orderId: number | string
+): Promise<import("@/lib/fundraising/stats").ShopifyPaidOrderPayload | null> {
+  const data = await adminGraphql<{
+    order: {
+      id: string
+      name?: string | null
+      email?: string | null
+      tags?: string | string[] | null
+      customAttributes?: { key?: string | null; value?: string | null }[] | null
+      discountCodes?: string[] | null
+      customer?: {
+        id?: string | null
+        firstName?: string | null
+        lastName?: string | null
+        email?: string | null
+      } | null
+      billingAddress?: {
+        firstName?: string | null
+        lastName?: string | null
+      } | null
+      lineItems: {
+        nodes: {
+          quantity?: number | null
+          customAttributes?: { key?: string | null; value?: string | null }[] | null
+        }[]
+      }
+    } | null
+  }>(ORDER_FOR_FUNDRAISING, { id: orderGidFromRestId(orderId) })
+
+  const order = data.order
+  if (!order) return null
+
+  const numericId =
+    typeof orderId === "number" || /^\d+$/.test(String(orderId))
+      ? orderId
+      : (order.id.match(/\/Order\/(\d+)/)?.[1] ?? orderId)
+
+  const tags = Array.isArray(order.tags)
+    ? order.tags
+    : typeof order.tags === "string"
+      ? order.tags
+      : []
+
+  return {
+    id: numericId,
+    name: order.name ?? null,
+    email: order.email ?? null,
+    tags,
+    discount_codes: (order.discountCodes ?? []).map((code) => ({ code })),
+    customer: order.customer
+      ? {
+          id: order.customer.id ?? null,
+          first_name: order.customer.firstName ?? null,
+          last_name: order.customer.lastName ?? null,
+          email: order.customer.email ?? null,
+        }
+      : null,
+    billing_address: order.billingAddress
+      ? {
+          first_name: order.billingAddress.firstName ?? null,
+          last_name: order.billingAddress.lastName ?? null,
+        }
+      : null,
+    note_attributes: (order.customAttributes ?? []).map((a) => ({
+      name: a.key ?? undefined,
+      value: a.value ?? undefined,
+    })),
+    line_items: order.lineItems.nodes.map((line) => ({
+      quantity: line.quantity ?? 0,
+      properties: (line.customAttributes ?? []).map((a) => ({
+        name: a.key ?? undefined,
+        value: a.value ?? undefined,
+      })),
+    })),
+  }
+}

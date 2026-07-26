@@ -13,7 +13,10 @@ import {
 
 export type ShopifyPaidOrderPayload = {
   id: number | string
+  name?: string | null
   email?: string | null
+  tags?: string | string[] | null
+  discount_codes?: { code?: string | null }[] | null
   customer?: {
     id?: number | string
     first_name?: string | null
@@ -33,34 +36,119 @@ export type ShopifyPaidOrderPayload = {
 
 function attrValue(
   rows: { name?: string; value?: string }[] | null | undefined,
-  key: string
+  keys: string[]
 ): string | null {
   if (!rows) return null
-  const found = rows.find((r) => (r.name ?? "").trim().toLowerCase() === key.toLowerCase())
+  const normalizedKeys = new Set(keys.map(normalizeAttributeName))
+  const found = rows.find((r) => normalizedKeys.has(normalizeAttributeName(r.name ?? "")))
   const v = found?.value?.trim()
   return v || null
 }
 
+function normalizeAttributeName(value: string): string {
+  return value.trim().toLowerCase().replace(/[^a-z0-9]/g, "")
+}
+
+function normalizeFundraiserSlug(value: string | null): string | null {
+  if (!value) return null
+  const slug = value.trim().toLowerCase()
+  return /^[a-z0-9][a-z0-9-]*$/.test(slug) ? slug : null
+}
+
+const FUNDRAISER_SLUG_KEYS = [
+  "Fundraiser slug",
+  "Fundraiser handle",
+  "fundraiser_slug",
+  "fundraiser_handle",
+]
+
+export type FundraiserAttributionSource =
+  | "note_attribute"
+  | "line_property"
+  | "order_tag"
+  | "discount_code"
+
+export type FundraiserAttribution = {
+  slug: string
+  source: FundraiserAttributionSource
+}
+
+function fundraiserSlugFromAttributes(
+  rows: { name?: string; value?: string }[] | null | undefined
+): string | null {
+  return normalizeFundraiserSlug(attrValue(rows, FUNDRAISER_SLUG_KEYS))
+}
+
+function fundraiserSlugFromTags(tags: ShopifyPaidOrderPayload["tags"]): string | null {
+  const values = Array.isArray(tags) ? tags : (tags ?? "").split(",")
+  for (const tag of values) {
+    const match = tag.trim().match(/^fundraiser(?:[\s_-]?slug)?\s*[:=]\s*(.+)$/i)
+    const slug = normalizeFundraiserSlug(match?.[1] ?? null)
+    if (slug) return slug
+  }
+  return null
+}
+
+function fundraiserSlugFromDiscountCodes(
+  codes: ShopifyPaidOrderPayload["discount_codes"]
+): string | null {
+  for (const row of codes ?? []) {
+    const match = row.code?.trim().match(/^fundraiser[-_:](.+)$/i)
+    const slug = normalizeFundraiserSlug(match?.[1] ?? null)
+    if (slug) return slug
+  }
+  return null
+}
+
 /**
  * Resolve fundraiser collection handle from cart/order attributes.
- * Prefers note_attributes "Fundraiser slug", then line item properties.
+ * Prefers line item properties because they identify the purchased item and
+ * cannot be made stale by reusing a cart, then checks order note attributes.
+ * Explicit `fundraiser:handle` tags and `FUNDRAISER-handle` discount codes are
+ * supported as operational fallbacks for orders created outside this site.
  */
-export function resolveFundraiserSlug(order: ShopifyPaidOrderPayload): string | null {
-  const fromNote = attrValue(order.note_attributes, "Fundraiser slug")
-  if (fromNote) return fromNote
-
+export function resolveFundraiserAttribution(
+  order: ShopifyPaidOrderPayload
+): FundraiserAttribution | null {
   for (const line of order.line_items ?? []) {
-    const fromLine = attrValue(line.properties, "Fundraiser slug")
-    if (fromLine) return fromLine
+    const fromLine = fundraiserSlugFromAttributes(line.properties)
+    if (fromLine) return { slug: fromLine, source: "line_property" }
   }
+
+  const fromNote = fundraiserSlugFromAttributes(order.note_attributes)
+  if (fromNote) return { slug: fromNote, source: "note_attribute" }
+
+  const fromTag = fundraiserSlugFromTags(order.tags)
+  if (fromTag) return { slug: fromTag, source: "order_tag" }
+
+  const fromDiscount = fundraiserSlugFromDiscountCodes(order.discount_codes)
+  if (fromDiscount) return { slug: fromDiscount, source: "discount_code" }
 
   return null
 }
 
-/** Count boxes: sum of line item quantities (1 product unit = 1 box). */
-export function countBoxesInOrder(order: ShopifyPaidOrderPayload): number {
+export function resolveFundraiserSlug(order: ShopifyPaidOrderPayload): string | null {
+  return resolveFundraiserAttribution(order)?.slug ?? null
+}
+
+/**
+ * Count boxes (1 product unit = 1 box). When line properties identify one or
+ * more fundraisers, only lines attributed to the resolved fundraiser count.
+ * This avoids counting unrelated products in a mixed cart.
+ */
+export function countBoxesInOrder(
+  order: ShopifyPaidOrderPayload,
+  fundraiserSlug?: string
+): number {
+  const hasLineAttribution = (order.line_items ?? []).some(
+    (line) => fundraiserSlugFromAttributes(line.properties) != null
+  )
   let total = 0
   for (const line of order.line_items ?? []) {
+    if (hasLineAttribution && fundraiserSlug) {
+      const lineSlug = fundraiserSlugFromAttributes(line.properties)
+      if (lineSlug !== fundraiserSlug) continue
+    }
     const q = Number(line.quantity ?? 0)
     if (Number.isFinite(q) && q > 0) total += Math.floor(q)
   }
@@ -87,7 +175,13 @@ function mergeLeaderboard(
 
 export type ApplyOrderStatsResult =
   | { status: "skipped"; reason: string }
-  | { status: "applied"; slug: string; boxesAdded: number; boxesSold: number }
+  | {
+      status: "applied"
+      slug: string
+      attributionSource: FundraiserAttributionSource
+      boxesAdded: number
+      boxesSold: number
+    }
 
 /**
  * Apply a paid Shopify order to the matching fundraiser collection stats.
@@ -101,14 +195,14 @@ export async function applyPaidOrderToFundraiserStats(
     return { status: "skipped", reason: "already_applied" }
   }
 
-  const slug = resolveFundraiserSlug(order)
-  if (!slug) {
+  const attribution = resolveFundraiserAttribution(order)
+  if (!attribution) {
     return { status: "skipped", reason: "no_fundraiser_slug" }
   }
+  const { slug } = attribution
 
-  const boxesAdded = countBoxesInOrder(order)
+  const boxesAdded = countBoxesInOrder(order, slug)
   if (boxesAdded <= 0) {
-    await markOrderStatsApplied(orderGid)
     return { status: "skipped", reason: "no_boxes" }
   }
 
@@ -142,6 +236,7 @@ export async function applyPaidOrderToFundraiserStats(
   return {
     status: "applied",
     slug,
+    attributionSource: attribution.source,
     boxesAdded,
     boxesSold: next.boxesSold,
   }

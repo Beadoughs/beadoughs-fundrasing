@@ -32,9 +32,35 @@ Open [http://localhost:3000](http://localhost:3000).
 3. List handles in `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES` (comma-separated).
 4. **Admin app token** — `SHOPIFY_ADMIN_ACCESS_TOKEN` with order + product metafield scopes.
 5. **Webhook** — `orders/paid` → `https://YOUR_DOMAIN/api/webhooks/shopify/orders-paid`  
-   Set `SHOPIFY_WEBHOOK_SECRET` to the signing secret.
+   Set `SHOPIFY_WEBHOOK_SECRET` to the app/webhook signing secret, and redeploy after
+   changing any Vercel environment variable.
 
-Cart checkout already tags orders with `Fundraiser slug` so sales count toward the right campaign.
+Cart checkout tags orders twice so sales count toward the right campaign:
+
+- cart attribute `Fundraiser slug` → Shopify order **Additional details** / `note_attributes`
+- line attribute `Fundraiser slug` → order line-item **Properties**
+
+The webhook accepts `Fundraiser slug`, `fundraiser_slug`, `Fundraiser handle`, or
+`fundraiser_handle`. For a manually-created/native Shopify order that did not pass
+through this storefront, add an order tag in the form `fundraiser:collection-handle`
+or use a discount code in the form `FUNDRAISER-collection-handle`.
+
+In Shopify Admin, open the paid order and confirm at least one of the two attributes
+above is present and exactly matches the fundraiser collection handle. Then inspect
+the `orders/paid` webhook delivery: a `200` response includes `applied` or a specific
+skip reason such as `no_fundraiser_slug`, `collection_not_found`, or `already_applied`.
+Vercel logs include the webhook ID, topic, order number, attribution source, and result.
+
+Optional recovery endpoint (set `FUNDRAISING_ADMIN_SECRET`):
+
+```bash
+curl -X POST https://YOUR_DOMAIN/api/admin/fundraising/replay-order \
+  -H "Authorization: Bearer $FUNDRAISING_ADMIN_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{"orderId":"1234567890","dryRun":true}'
+```
+
+Omit `dryRun` to apply the order to `boxes_sold` / `leaderboard` if it has not already been marked `stats_applied`.
 
 Every new collection you add to the handles list gets the same counter + leaderboard automatically once orders come in.
 
