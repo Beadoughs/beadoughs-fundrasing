@@ -7,7 +7,6 @@ import { Progress } from "@/components/ui/progress"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Package, Clock, Users } from "lucide-react"
-import { FundraiserLeaderboard } from "@/components/fundraiser-leaderboard"
 import { FundraiserProductAdd } from "@/components/fundraiser-product-add"
 import {
   getFundraiserByHandle,
@@ -155,10 +154,6 @@ export default async function FundraiserPage({ params }: Props) {
                   </p>
                 </div>
               </div>
-
-              <Card className="p-6 sm:p-8 rounded-3xl border-border shadow-sm">
-                <FundraiserLeaderboard entries={campaign.leaderboard} />
-              </Card>
             </div>
 
             <div className="md:col-span-1">
