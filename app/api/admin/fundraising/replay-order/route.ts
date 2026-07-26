@@ -6,7 +6,10 @@ import {
   resolveFundraiserAttributionWithFallbacks,
   type ShopifyPaidOrderPayload,
 } from "@/lib/fundraising/stats"
-import { getPaidOrderPayloadById } from "@/lib/shopify/admin"
+import {
+  getPaidOrderPayloadById,
+  listRecentUnappliedPaidOrderIds,
+} from "@/lib/shopify/admin"
 import { isShopifyAdminConfigured } from "@/lib/shopify/config"
 
 export const runtime = "nodejs"
@@ -31,6 +34,32 @@ type ReplayBody = {
   order?: ShopifyPaidOrderPayload
   dryRun?: boolean
   force?: boolean
+  /** Apply the most recent unapplied paid order(s). */
+  recent?: boolean
+  limit?: number
+}
+
+function diagnoseOrder(order: ShopifyPaidOrderPayload) {
+  return (async () => {
+    const attribution = await resolveFundraiserAttributionWithFallbacks(order)
+    const boxes = countBoxesInOrder(order, attribution?.slug, {
+      matchedProductIds: attribution?.matchedProductIds,
+    })
+    return {
+      orderId: String(order.id),
+      orderName: order.name ?? null,
+      attribution,
+      boxes,
+      noteAttributes: order.note_attributes ?? [],
+      linePropertySamples: (order.line_items ?? []).map((line) => ({
+        quantity: line.quantity ?? 0,
+        productId: line.product_id ?? null,
+        properties: line.properties ?? [],
+      })),
+      tags: order.tags ?? null,
+      discountCodes: order.discount_codes ?? [],
+    }
+  })()
 }
 
 /**
@@ -40,6 +69,7 @@ type ReplayBody = {
  * Headers: Authorization: Bearer <FUNDRAISING_ADMIN_SECRET>
  * Body: { "orderId": "5678901234" } or { "order": { ...REST payload } }
  * Optional: { "dryRun": true } — inspect attribution without writing metafields
+ * Optional: { "recent": true, "limit": 5 } — apply latest unapplied paid orders
  * Optional: { "force": true } — clear-check only; still refuses already_applied
  *            (use Shopify metafield delete if you truly need a re-apply)
  */
@@ -77,6 +107,74 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 })
   }
 
+  if (body.recent) {
+    const limit = body.limit ?? 5
+    try {
+      const candidates = await listRecentUnappliedPaidOrderIds(limit)
+      const results: Array<{
+        orderId: string
+        orderName: string | null
+        diagnosis?: unknown
+        result?: unknown
+        error?: string
+      }> = []
+
+      for (const candidate of candidates) {
+        try {
+          const order = await getPaidOrderPayloadById(candidate.id)
+          if (!order) {
+            results.push({
+              orderId: candidate.id,
+              orderName: candidate.name,
+              error: "order_not_found",
+            })
+            continue
+          }
+          const diagnosis = await diagnoseOrder(order)
+          if (body.dryRun) {
+            results.push({
+              orderId: candidate.id,
+              orderName: candidate.name,
+              diagnosis,
+            })
+            continue
+          }
+          const result = await applyPaidOrderToFundraiserStats(order)
+          if (result.status === "applied") {
+            revalidatePath("/fundraisers")
+            revalidatePath(`/fundraisers/${result.slug}`)
+          }
+          results.push({
+            orderId: candidate.id,
+            orderName: candidate.name,
+            diagnosis,
+            result,
+          })
+        } catch (e) {
+          results.push({
+            orderId: candidate.id,
+            orderName: candidate.name,
+            error: e instanceof Error ? e.message : "Failed to process order",
+          })
+        }
+      }
+
+      return NextResponse.json({
+        ok: true,
+        recent: true,
+        dryRun: Boolean(body.dryRun),
+        candidates: candidates.length,
+        results,
+      })
+    } catch (e) {
+      const message = e instanceof Error ? e.message : "Failed to list recent orders"
+      return NextResponse.json(
+        { ok: false, error: "recent_orders_failed", detail: message },
+        { status: 500 }
+      )
+    }
+  }
+
   let order: ShopifyPaidOrderPayload | null = body.order ?? null
   if (!order && body.orderId != null) {
     try {
@@ -95,28 +193,14 @@ export async function POST(request: Request) {
       {
         ok: false,
         error: "missing_order",
-        detail: "Provide orderId or a full REST-shaped order payload",
+        detail:
+          'Provide orderId, a full REST-shaped order payload, or { "recent": true }',
       },
       { status: 400 }
     )
   }
 
-  const attribution = await resolveFundraiserAttributionWithFallbacks(order)
-  const boxes = countBoxesInOrder(order, attribution?.slug)
-  const diagnosis = {
-    orderId: String(order.id),
-    orderName: order.name ?? null,
-    attribution,
-    boxes,
-    noteAttributes: order.note_attributes ?? [],
-    linePropertySamples: (order.line_items ?? []).map((line) => ({
-      quantity: line.quantity ?? 0,
-      productId: line.product_id ?? null,
-      properties: line.properties ?? [],
-    })),
-    tags: order.tags ?? null,
-    discountCodes: order.discount_codes ?? [],
-  }
+  const diagnosis = await diagnoseOrder(order)
 
   if (body.dryRun) {
     return NextResponse.json({ ok: true, dryRun: true, diagnosis })
@@ -128,7 +212,12 @@ export async function POST(request: Request) {
       revalidatePath("/fundraisers")
       revalidatePath(`/fundraisers/${result.slug}`)
     }
-    return NextResponse.json({ ok: true, diagnosis, result, forceIgnored: Boolean(body.force) })
+    return NextResponse.json({
+      ok: true,
+      diagnosis,
+      result,
+      forceIgnored: Boolean(body.force),
+    })
   } catch (e) {
     const message = e instanceof Error ? e.message : "Failed to apply order stats"
     return NextResponse.json(

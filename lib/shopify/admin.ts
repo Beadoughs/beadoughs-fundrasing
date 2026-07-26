@@ -262,7 +262,10 @@ export async function saveCollectionStats(
   stats: FundraiserStats
 ): Promise<void> {
   const sorted = [...stats.leaderboard].sort((a, b) => b.boxes - a.boxes).slice(0, 50)
+  const boxesValue = String(Math.max(0, Math.floor(stats.boxesSold)))
+  const boardValue = JSON.stringify(sorted)
 
+  // Write beadoughs.* (canonical) and custom.* (Storefront often only exposes custom).
   const data = await adminGraphql<{
     metafieldsSet: {
       userErrors: { message: string }[]
@@ -274,20 +277,66 @@ export async function saveCollectionStats(
         namespace: BEADOUGHS_METAFIELD_NAMESPACE,
         key: BEADOUGHS_COLLECTION_METAFIELDS.boxesSold,
         type: "number_integer",
-        value: String(Math.max(0, Math.floor(stats.boxesSold))),
+        value: boxesValue,
       },
       {
         ownerId: collectionId,
         namespace: BEADOUGHS_METAFIELD_NAMESPACE,
         key: BEADOUGHS_COLLECTION_METAFIELDS.leaderboard,
         type: "json",
-        value: JSON.stringify(sorted),
+        value: boardValue,
+      },
+      {
+        ownerId: collectionId,
+        namespace: "custom",
+        key: BEADOUGHS_COLLECTION_METAFIELDS.boxesSold,
+        type: "number_integer",
+        value: boxesValue,
+      },
+      {
+        ownerId: collectionId,
+        namespace: "custom",
+        key: BEADOUGHS_COLLECTION_METAFIELDS.leaderboard,
+        type: "json",
+        value: boardValue,
       },
     ],
   })
 
   if (data.metafieldsSet.userErrors.length) {
-    throw new Error(data.metafieldsSet.userErrors.map((e) => e.message).join("; "))
+    // If custom.* definitions use a different type, retry beadoughs-only so the
+    // webhook still advances the canonical counters.
+    const onlyBeadoughs = await adminGraphql<{
+      metafieldsSet: {
+        userErrors: { message: string }[]
+      }
+    }>(METAFIELDS_SET, {
+      metafields: [
+        {
+          ownerId: collectionId,
+          namespace: BEADOUGHS_METAFIELD_NAMESPACE,
+          key: BEADOUGHS_COLLECTION_METAFIELDS.boxesSold,
+          type: "number_integer",
+          value: boxesValue,
+        },
+        {
+          ownerId: collectionId,
+          namespace: BEADOUGHS_METAFIELD_NAMESPACE,
+          key: BEADOUGHS_COLLECTION_METAFIELDS.leaderboard,
+          type: "json",
+          value: boardValue,
+        },
+      ],
+    })
+    if (onlyBeadoughs.metafieldsSet.userErrors.length) {
+      throw new Error(
+        onlyBeadoughs.metafieldsSet.userErrors.map((e) => e.message).join("; ")
+      )
+    }
+    console.warn(
+      "[fundraising] Dual-write to custom.* failed; beadoughs.* saved",
+      data.metafieldsSet.userErrors.map((e) => e.message).join("; ")
+    )
   }
 }
 
@@ -321,13 +370,41 @@ export function productGidFromRestId(id: number | string): string {
   return `gid://shopify/Product/${id}`
 }
 
+type ProductCollectionNode = {
+  handle?: string | null
+  goalBoxes?: AdminMetaValue
+  goalBoxesCustom?: AdminMetaValue
+  boxesSold?: AdminMetaValue
+  boxesSoldCustom?: AdminMetaValue
+  leaderboard?: AdminMetaValue
+  leaderboardCustom?: AdminMetaValue
+}
+
 const PRODUCT_COLLECTION_HANDLES = `
   query ProductCollectionHandles($id: ID!) {
     product(id: $id) {
       id
-      collections(first: 50) {
+      collections(first: 100) {
         nodes {
           handle
+          goalBoxes: metafield(namespace: "${BEADOUGHS_METAFIELD_NAMESPACE}", key: "${BEADOUGHS_COLLECTION_METAFIELDS.goalBoxes}") {
+            value
+          }
+          goalBoxesCustom: metafield(namespace: "custom", key: "${BEADOUGHS_COLLECTION_METAFIELDS.goalBoxes}") {
+            value
+          }
+          boxesSold: metafield(namespace: "${BEADOUGHS_METAFIELD_NAMESPACE}", key: "${BEADOUGHS_COLLECTION_METAFIELDS.boxesSold}") {
+            value
+          }
+          boxesSoldCustom: metafield(namespace: "custom", key: "${BEADOUGHS_COLLECTION_METAFIELDS.boxesSold}") {
+            value
+          }
+          leaderboard: metafield(namespace: "${BEADOUGHS_METAFIELD_NAMESPACE}", key: "${BEADOUGHS_COLLECTION_METAFIELDS.leaderboard}") {
+            value
+          }
+          leaderboardCustom: metafield(namespace: "custom", key: "${BEADOUGHS_COLLECTION_METAFIELDS.leaderboard}") {
+            value
+          }
         }
       }
     }
@@ -335,41 +412,125 @@ const PRODUCT_COLLECTION_HANDLES = `
 `
 
 /**
- * If each ordered product belongs to exactly one configured fundraiser
- * collection, and all such products agree on the same handle, return that
- * handle. Used when cart/line Fundraiser slug attributes are missing.
+ * A collection counts as a fundraiser when:
+ * - its handle is listed in SHOPIFY_FUNDRAISER_COLLECTION_HANDLES, OR
+ * - it already has fundraiser metafields (goal_boxes / boxes_sold / leaderboard)
+ *   under beadoughs.* or custom.*.
+ *
+ * This lets product→collection attribution work even when the env handle list is
+ * stale or missing the campaign the product actually belongs to.
+ */
+function isFundraiserCollectionNode(
+  node: ProductCollectionNode,
+  configuredSet: Set<string>
+): boolean {
+  const handle = node.handle?.trim().toLowerCase()
+  if (!handle) return false
+  if (configuredSet.has(handle)) return true
+
+  const markers = [
+    node.goalBoxes,
+    node.goalBoxesCustom,
+    node.boxesSold,
+    node.boxesSoldCustom,
+    node.leaderboard,
+    node.leaderboardCustom,
+  ]
+  return markers.some((m) => m != null && m.value != null)
+}
+
+export type ProductCollectionAttribution = {
+  handle: string
+  /** Product REST ids that uniquely matched this fundraiser collection. */
+  matchedProductIds: string[]
+}
+
+/**
+ * If ordered products resolve to exactly one fundraiser collection (via configured
+ * handles and/or fundraiser metafields), return that handle. Used when cart/line
+ * Fundraiser slug attributes are missing from checkout.
  */
 export async function resolveUniqueFundraiserHandleForProducts(
   productIds: Array<number | string>
-): Promise<string | null> {
-  const configured = getFundraiserCollectionHandles().map((h) => h.toLowerCase())
-  if (!configured.length || !productIds.length) return null
+): Promise<ProductCollectionAttribution | null> {
+  if (!productIds.length) return null
   if (!getShopifyAdminConfig()) return null
 
-  const configuredSet = new Set(configured)
-  const matched = new Set<string>()
+  const configuredSet = new Set(
+    getFundraiserCollectionHandles().map((h) => h.toLowerCase())
+  )
+  const matchedHandles = new Set<string>()
+  const matchedProductIds: string[] = []
 
   for (const productId of productIds) {
     const data = await adminGraphql<{
       product: {
         id: string
-        collections: { nodes: { handle?: string | null }[] }
+        collections: { nodes: ProductCollectionNode[] }
       } | null
     }>(PRODUCT_COLLECTION_HANDLES, { id: productGidFromRestId(productId) })
 
-    const handles = (data.product?.collections.nodes ?? [])
+    const fundraiserMatches = (data.product?.collections.nodes ?? [])
+      .filter((n) => isFundraiserCollectionNode(n, configuredSet))
       .map((n) => n.handle?.trim().toLowerCase())
       .filter((h): h is string => Boolean(h))
-    const fundraiserMatches = handles.filter((h) => configuredSet.has(h))
 
     // Only use an unambiguous single-collection match for this product.
     if (fundraiserMatches.length === 1) {
-      matched.add(fundraiserMatches[0])
+      matchedHandles.add(fundraiserMatches[0])
+      matchedProductIds.push(String(productId))
     }
   }
 
-  if (matched.size === 1) return [...matched][0]
-  return null
+  if (matchedHandles.size !== 1 || matchedProductIds.length === 0) return null
+  return { handle: [...matchedHandles][0], matchedProductIds }
+}
+
+const RECENT_ORDERS_FOR_FUNDRAISING = `
+  query RecentOrdersForFundraising($first: Int!) {
+    orders(first: $first, sortKey: CREATED_AT, reverse: true) {
+      nodes {
+        id
+        name
+        displayFinancialStatus
+        statsApplied: metafield(namespace: "${BEADOUGHS_METAFIELD_NAMESPACE}", key: "${BEADOUGHS_ORDER_STATS_APPLIED_KEY}") {
+          value
+        }
+      }
+    }
+  }
+`
+
+/**
+ * Recent paid orders that do not yet have beadoughs.stats_applied.
+ * Used by the admin backfill endpoint.
+ */
+export async function listRecentUnappliedPaidOrderIds(
+  first: number = 10
+): Promise<Array<{ id: string; name: string | null }>> {
+  const limit = Math.min(Math.max(1, Math.floor(first)), 25)
+  const data = await adminGraphql<{
+    orders: {
+      nodes: {
+        id: string
+        name?: string | null
+        displayFinancialStatus?: string | null
+        statsApplied?: { value?: string | null } | null
+      }[]
+    }
+  }>(RECENT_ORDERS_FOR_FUNDRAISING, { first: limit })
+
+  const out: Array<{ id: string; name: string | null }> = []
+  for (const order of data.orders.nodes) {
+    const status = (order.displayFinancialStatus ?? "").toUpperCase()
+    if (status && status !== "PAID" && status !== "PARTIALLY_PAID") continue
+    const flag = order.statsApplied?.value?.trim().toLowerCase()
+    if (flag === "1" || flag === "true" || flag === "yes") continue
+    const numeric = order.id.match(/\/Order\/(\d+)/)?.[1]
+    if (!numeric) continue
+    out.push({ id: numeric, name: order.name ?? null })
+  }
+  return out
 }
 
 const ORDER_FOR_FUNDRAISING = `
@@ -467,7 +628,7 @@ export async function getPaidOrderPayloadById(
     discount_codes: (order.discountCodes ?? []).map((code) => ({ code })),
     customer: order.customer
       ? {
-          id: order.customer.id ?? null,
+          id: order.customer.id ?? undefined,
           first_name: order.customer.firstName ?? null,
           last_name: order.customer.lastName ?? null,
           email: order.customer.email ?? null,

@@ -59,29 +59,40 @@ Cart checkout tags orders twice so sales count toward the right campaign:
 - **cart** attribute `Fundraiser slug` → Shopify order **Additional details** / `note_attributes`
 
 The webhook accepts `Fundraiser slug`, `fundraiser_slug`, `Fundraiser handle`, or
-`fundraiser_handle`. If those are missing, it may still attribute when the product sits in
-**exactly one** collection listed in `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES`. For a
-manually-created/native Shopify order, add an order tag `fundraiser:collection-handle`
+`fundraiser_handle`. If those are missing (common when Checkout Extensibility drops
+cart attributes), it attributes via **product→collection membership**: the purchased
+product must sit in exactly one fundraiser collection — either listed in
+`SHOPIFY_FUNDRAISER_COLLECTION_HANDLES` **or** already carrying fundraiser metafields
+(`goal_boxes` / `boxes_sold` / `leaderboard`). Native cart attributes are not required.
+For a manually-created order, you can also add a tag `fundraiser:collection-handle`
 or a discount code `FUNDRAISER-collection-handle`.
 
-In Shopify Admin, open the paid order and confirm a line property / Additional detail
-matches the fundraiser collection handle. Then inspect the `orders/paid` webhook
-delivery: a `200` response includes `applied` or a skip reason such as
-`no_fundraiser_slug`, `collection_not_found`, or `already_applied`.
-Vercel logs include the webhook ID, topic, order number, attribution source, and result.
+In Shopify Admin, open the paid order and check whether a line property / Additional
+detail has the fundraiser handle. Then inspect the `orders/paid` webhook delivery:
+a `200` response includes `applied` or a skip reason such as `no_fundraiser_slug`,
+`collection_not_found`, or `already_applied`. Vercel logs include the webhook ID,
+topic, order number, attribution source, and result.
 
-Optional recovery endpoint (set `FUNDRAISING_ADMIN_SECRET`):
+Optional recovery endpoint (set `FUNDRAISING_ADMIN_SECRET` in Vercel):
 
 ```bash
+# Inspect one order
 curl -X POST https://YOUR_DOMAIN/api/admin/fundraising/replay-order \
   -H "Authorization: Bearer $FUNDRAISING_ADMIN_SECRET" \
   -H "Content-Type: application/json" \
   -d '{"orderId":"1234567890","dryRun":true}'
+
+# Apply the latest unapplied paid orders (product→collection works even without slug)
+curl -X POST https://YOUR_DOMAIN/api/admin/fundraising/replay-order \
+  -H "Authorization: Bearer $FUNDRAISING_ADMIN_SECRET" \
+  -H "Content-Type: application/json" \
+  -d '{"recent":true,"limit":5}'
 ```
 
 Omit `dryRun` to apply the order to `boxes_sold` / `leaderboard` if it has not already been marked `stats_applied`.
 
-Every new collection you add to the handles list gets the same counter + leaderboard automatically once orders come in.
+Every new collection you add to the handles list (or that has fundraiser metafields)
+gets the same counter + leaderboard automatically once orders come in.
 
 See comments in `lib/shopify/config.ts` for full Admin setup notes.
 

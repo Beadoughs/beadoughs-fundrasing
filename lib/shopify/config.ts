@@ -37,8 +37,10 @@
  *    each line item (→ order line properties — primary path) and on the cart
  *    (→ order note_attributes / Additional details). Existing carts also call
  *    cartAttributesUpdate. If slug is still missing on a paid order, the webhook
- *    may fall back when the product belongs to exactly one handle listed in
- *    SHOPIFY_FUNDRAISER_COLLECTION_HANDLES.
+ *    falls back via Admin product→collection lookup: the product must belong to
+ *    exactly one fundraiser collection (handle listed in
+ *    SHOPIFY_FUNDRAISER_COLLECTION_HANDLES OR collection has goal_boxes /
+ *    boxes_sold / leaderboard metafields).
  *
  * 7. Set env vars (see .env.example). List collection handles in SHOPIFY_FUNDRAISER_COLLECTION_HANDLES
  *    (comma-separated) for the /fundraisers directory. Every listed collection gets a counter +

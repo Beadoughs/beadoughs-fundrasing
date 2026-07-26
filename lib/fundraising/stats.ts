@@ -12,6 +12,12 @@ import {
   saveCollectionStats,
 } from "@/lib/shopify/admin"
 
+export type ShopifyAttrRow = {
+  name?: string
+  key?: string
+  value?: string
+}
+
 export type ShopifyPaidOrderPayload = {
   id: number | string
   name?: string | null
@@ -28,21 +34,27 @@ export type ShopifyPaidOrderPayload = {
     first_name?: string | null
     last_name?: string | null
   } | null
-  note_attributes?: { name?: string; value?: string }[] | null
+  note_attributes?: ShopifyAttrRow[] | null
   line_items?: {
     quantity?: number
     product_id?: number | string | null
-    properties?: { name?: string; value?: string }[] | null
+    properties?: ShopifyAttrRow[] | null
   }[] | null
 }
 
+function attrRowName(row: ShopifyAttrRow): string {
+  return row.name ?? row.key ?? ""
+}
+
 function attrValue(
-  rows: { name?: string; value?: string }[] | null | undefined,
+  rows: ShopifyAttrRow[] | null | undefined,
   keys: string[]
 ): string | null {
   if (!rows) return null
   const normalizedKeys = new Set(keys.map(normalizeAttributeName))
-  const found = rows.find((r) => normalizedKeys.has(normalizeAttributeName(r.name ?? "")))
+  const found = rows.find((r) =>
+    normalizedKeys.has(normalizeAttributeName(attrRowName(r)))
+  )
   const v = found?.value?.trim()
   return v || null
 }
@@ -74,10 +86,12 @@ export type FundraiserAttributionSource =
 export type FundraiserAttribution = {
   slug: string
   source: FundraiserAttributionSource
+  /** When source is product_collection, only these product ids should count. */
+  matchedProductIds?: string[]
 }
 
 function fundraiserSlugFromAttributes(
-  rows: { name?: string; value?: string }[] | null | undefined
+  rows: ShopifyAttrRow[] | null | undefined
 ): string | null {
   return normalizeFundraiserSlug(attrValue(rows, FUNDRAISER_SLUG_KEYS))
 }
@@ -144,8 +158,10 @@ export function resolveFundraiserAttribution(
 }
 
 /**
- * Same as resolveFundraiserAttribution, then optionally falls back to a unique
- * SHOPIFY_FUNDRAISER_COLLECTION_HANDLES match for the ordered product(s).
+ * Same as resolveFundraiserAttribution, then falls back to product→collection
+ * membership via Admin API when Fundraiser slug is missing on the order.
+ * Detects fundraiser collections by configured handles OR fundraiser metafields
+ * (goal_boxes / boxes_sold / leaderboard), so native attribution is not required.
  */
 export async function resolveFundraiserAttributionWithFallbacks(
   order: ShopifyPaidOrderPayload
@@ -157,9 +173,15 @@ export async function resolveFundraiserAttributionWithFallbacks(
   if (!productIds.length) return null
 
   try {
-    const handle = await resolveUniqueFundraiserHandleForProducts(productIds)
-    const slug = normalizeFundraiserSlug(handle)
-    if (slug) return { slug, source: "product_collection" }
+    const match = await resolveUniqueFundraiserHandleForProducts(productIds)
+    const slug = normalizeFundraiserSlug(match?.handle ?? null)
+    if (slug && match) {
+      return {
+        slug,
+        source: "product_collection",
+        matchedProductIds: match.matchedProductIds,
+      }
+    }
   } catch (error) {
     console.warn(
       "[fundraising] Product-collection attribution fallback failed",
@@ -175,20 +197,30 @@ export function resolveFundraiserSlug(order: ShopifyPaidOrderPayload): string | 
 }
 
 /**
- * Count boxes (1 product unit = 1 box). When line properties identify one or
- * more fundraisers, only lines attributed to the resolved fundraiser count.
- * This avoids counting unrelated products in a mixed cart.
+ * Count boxes (1 product unit = 1 box).
+ * - Line-property attribution: only lines for the resolved fundraiser count.
+ * - Product-collection attribution: only products that uniquely matched count.
+ * - Otherwise: sum all line quantities.
  */
 export function countBoxesInOrder(
   order: ShopifyPaidOrderPayload,
-  fundraiserSlug?: string
+  fundraiserSlug?: string,
+  options?: { matchedProductIds?: string[] }
 ): number {
+  const matchedProducts = options?.matchedProductIds?.length
+    ? new Set(options.matchedProductIds.map(String))
+    : null
+
   const hasLineAttribution = (order.line_items ?? []).some(
     (line) => fundraiserSlugFromAttributes(line.properties) != null
   )
   let total = 0
   for (const line of order.line_items ?? []) {
-    if (hasLineAttribution && fundraiserSlug) {
+    if (matchedProducts) {
+      if (line.product_id == null || !matchedProducts.has(String(line.product_id))) {
+        continue
+      }
+    } else if (hasLineAttribution && fundraiserSlug) {
       const lineSlug = fundraiserSlugFromAttributes(line.properties)
       if (lineSlug !== fundraiserSlug) continue
     }
@@ -240,11 +272,22 @@ export async function applyPaidOrderToFundraiserStats(
 
   const attribution = await resolveFundraiserAttributionWithFallbacks(order)
   if (!attribution) {
+    console.warn("[fundraising] Could not attribute paid order", {
+      orderId: String(order.id),
+      orderName: order.name ?? null,
+      productIds: productIdsFromOrder(order),
+      noteAttributeKeys: (order.note_attributes ?? []).map((a) => attrRowName(a)),
+      linePropertyKeys: (order.line_items ?? []).flatMap((line) =>
+        (line.properties ?? []).map((p) => attrRowName(p))
+      ),
+    })
     return { status: "skipped", reason: "no_fundraiser_slug" }
   }
   const { slug } = attribution
 
-  const boxesAdded = countBoxesInOrder(order, slug)
+  const boxesAdded = countBoxesInOrder(order, slug, {
+    matchedProductIds: attribution.matchedProductIds,
+  })
   if (boxesAdded <= 0) {
     return { status: "skipped", reason: "no_boxes" }
   }

@@ -137,33 +137,33 @@ function mapCollectionCard(node: CollectionMetafields): FundraiserCollectionCard
   }
 }
 
-/** When Storefront metafields are missing, fill from Admin (beadoughs then custom). */
+/** When Storefront metafields are missing or stale, prefer Admin (beadoughs then custom). */
 async function withAdminMetafieldFallback(
   card: FundraiserCollectionCard
 ): Promise<FundraiserCollectionCard> {
-  const needsGoal = card.goalBoxes == null || card.goalBoxes <= 0
-  const needsSold = card.boxesSold === 0
-  const needsBoard = card.leaderboard.length === 0
-  if (!needsGoal && !needsSold && !needsBoard) return card
   if (!isShopifyAdminConfigured()) return card
 
   const admin = await getCollectionDisplayMetafieldsByHandle(card.handle)
   if (!admin) return card
 
+  // Prefer Admin for live counters: Storefront may only expose custom.* while the
+  // webhook writes beadoughs.*, leaving a stale custom.boxes_sold visible forever.
+  const boxesSold =
+    admin.boxesSold != null && admin.boxesSold >= 0
+      ? Math.max(card.boxesSold, admin.boxesSold)
+      : card.boxesSold
+  const leaderboard =
+    admin.leaderboard != null && admin.leaderboard.length > 0
+      ? admin.leaderboard
+      : card.leaderboard
+  const goalBoxes =
+    admin.goalBoxes != null && admin.goalBoxes > 0 ? admin.goalBoxes : card.goalBoxes
+
   return {
     ...card,
-    goalBoxes:
-      needsGoal && admin.goalBoxes != null && admin.goalBoxes > 0
-        ? admin.goalBoxes
-        : card.goalBoxes,
-    boxesSold:
-      needsSold && admin.boxesSold != null && admin.boxesSold > 0
-        ? admin.boxesSold
-        : card.boxesSold,
-    leaderboard:
-      needsBoard && admin.leaderboard != null && admin.leaderboard.length > 0
-        ? admin.leaderboard
-        : card.leaderboard,
+    goalBoxes: goalBoxes ?? card.goalBoxes,
+    boxesSold,
+    leaderboard,
   }
 }
 
