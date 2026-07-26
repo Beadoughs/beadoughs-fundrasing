@@ -63,7 +63,6 @@ export default async function FundraiserPage({ params }: Props) {
   const boxesSold = campaign.boxesSold
   const pct = percentBoxesSold(boxesSold, goalBoxes)
   const daysLeft = daysLeftFromEndDate(campaign.endDate)
-  const org = campaign.organization ?? "Community fundraiser"
   const supporterCount =
     campaign.leaderboard.length > 0
       ? campaign.leaderboard.length
@@ -75,12 +74,9 @@ export default async function FundraiserPage({ params }: Props) {
       <main className="min-h-screen pt-24 pb-16 bg-secondary/10">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 text-center animate-in fade-in slide-in-from-top-4 duration-700">
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold text-foreground mb-4">
+            <h1 className="text-4xl sm:text-5xl font-serif font-bold text-foreground">
               {campaign.title}
             </h1>
-            <p className="text-lg text-muted-foreground font-medium flex items-center justify-center gap-2 flex-wrap">
-              Organized by <span className="text-primary font-bold">{org}</span>
-            </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
