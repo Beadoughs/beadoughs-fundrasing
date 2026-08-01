@@ -50,7 +50,7 @@ export async function FeaturedFundraisersSection() {
                 <Link href="/fundraisers">View all fundraisers</Link>
               </Button>
               <Button asChild className="rounded-full">
-                <Link href="/fundraise#enquiry">Run a fundraiser</Link>
+                <Link href="/fundraise#enquiry">Start a fundraiser</Link>
               </Button>
             </div>
           </div>
@@ -70,7 +70,7 @@ export async function FeaturedFundraisersSection() {
                 <Link href="/fundraisers">View all fundraisers</Link>
               </Button>
               <Button asChild className="rounded-full">
-                <Link href="/fundraise#enquiry">Run a fundraiser</Link>
+                <Link href="/fundraise#enquiry">Start a fundraiser</Link>
               </Button>
             </div>
           </div>

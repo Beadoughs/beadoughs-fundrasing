@@ -32,7 +32,7 @@ export function HeroSection() {
                 size="lg"
                 className="rounded-full px-8 text-base h-14 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all"
               >
-                <Link href="/fundraise">Run a fundraiser</Link>
+                <Link href="#fundraisers">Support a fundraiser</Link>
               </Button>
               <Button
                 asChild
@@ -40,7 +40,7 @@ export function HeroSection() {
                 size="lg"
                 className="rounded-full px-8 text-base h-14"
               >
-                <Link href="#fundraisers">Support a fundraiser</Link>
+                <Link href="/fundraise">Start a fundraiser</Link>
               </Button>
             </div>
           </div>
