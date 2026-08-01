@@ -72,22 +72,53 @@ export default async function FundraiserPage({ params }: Props) {
       <Header />
       <main className="min-h-screen pt-24 pb-16 bg-secondary/10">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 text-center animate-in fade-in slide-in-from-top-4 duration-700">
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold text-foreground">
+          <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
+            <h1 className="text-center text-4xl sm:text-5xl font-serif font-bold text-foreground">
               {campaign.title}
             </h1>
-            {(campaign.descriptionHtml || campaign.description) && (
-              <div className="mx-auto mt-4 max-w-2xl">
-                {campaign.descriptionHtml ? (
+            {(campaign.descriptionHtml ||
+              campaign.description ||
+              campaign.imageUrl) && (
+              <div
+                className={
+                  (campaign.descriptionHtml || campaign.description) &&
+                  campaign.imageUrl
+                    ? "mx-auto mt-6 grid max-w-4xl gap-6 md:grid-cols-2 md:items-center md:gap-8"
+                    : "mx-auto mt-4 max-w-2xl"
+                }
+              >
+                {(campaign.descriptionHtml || campaign.description) && (
                   <div
-                    className="text-base sm:text-lg text-muted-foreground leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:text-left"
-                    dangerouslySetInnerHTML={{ __html: campaign.descriptionHtml }}
-                  />
-                ) : (
-                  <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-                    {campaign.description}
-                  </p>
+                    className={
+                      campaign.imageUrl ? "text-left" : "text-center"
+                    }
+                  >
+                    {campaign.descriptionHtml ? (
+                      <div
+                        className="text-base sm:text-lg text-muted-foreground leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:text-left"
+                        dangerouslySetInnerHTML={{
+                          __html: campaign.descriptionHtml,
+                        }}
+                      />
+                    ) : (
+                      <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+                        {campaign.description}
+                      </p>
+                    )}
+                  </div>
                 )}
+                {campaign.imageUrl ? (
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-lg border-4 border-white">
+                    <Image
+                      src={campaign.imageUrl}
+                      alt={campaign.imageAlt ?? campaign.title}
+                      fill
+                      className="object-cover"
+                      priority
+                      sizes="(max-width: 768px) 100vw, 40vw"
+                    />
+                  </div>
+                ) : null}
               </div>
             )}
           </div>
