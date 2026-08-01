@@ -22,8 +22,8 @@ export function HeroSection() {
               Deliciously Doing Good
             </h1>
             <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 text-pretty">
-              Tasmania-made doughnuts that help schools, clubs and community groups raise serious
-              money — or support a campaign that&apos;s already underway.
+              Tasmania-made doughnuts that help schools, clubs and community groups raise funds —
+              or support a campaign that&apos;s already underway.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
