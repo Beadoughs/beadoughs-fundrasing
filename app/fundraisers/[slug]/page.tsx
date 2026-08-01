@@ -76,6 +76,20 @@ export default async function FundraiserPage({ params }: Props) {
             <h1 className="text-4xl sm:text-5xl font-serif font-bold text-foreground">
               {campaign.title}
             </h1>
+            {(campaign.descriptionHtml || campaign.description) && (
+              <div className="mx-auto mt-4 max-w-2xl">
+                {campaign.descriptionHtml ? (
+                  <div
+                    className="text-base sm:text-lg text-muted-foreground leading-relaxed [&_p]:mb-3 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:text-left"
+                    dangerouslySetInnerHTML={{ __html: campaign.descriptionHtml }}
+                  />
+                ) : (
+                  <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+                    {campaign.description}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
@@ -132,27 +146,6 @@ export default async function FundraiserPage({ params }: Props) {
                     })}
                   </ul>
                 )}
-              </div>
-
-              <div className="bg-card p-6 sm:p-8 rounded-3xl shadow-sm border border-border">
-                <h2 className="text-2xl font-bold mb-4">About this campaign</h2>
-                {campaign.descriptionHtml ? (
-                  <div
-                    className="max-w-none text-muted-foreground leading-relaxed [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-6"
-                    dangerouslySetInnerHTML={{ __html: campaign.descriptionHtml }}
-                  />
-                ) : (
-                  <p className="text-lg text-muted-foreground leading-relaxed">
-                    {campaign.description ||
-                      "More about this campaign coming soon."}
-                  </p>
-                )}
-
-                <div className="mt-8 pt-8 border-t border-border">
-                  <p className="text-sm text-muted-foreground">
-                    Secure checkout. Fresh doughnuts delivered per your store settings.
-                  </p>
-                </div>
               </div>
             </div>
 
