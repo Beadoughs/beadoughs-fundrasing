@@ -140,7 +140,7 @@ export default function OurStoryPage() {
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row gap-3">
                   <Button asChild size="lg" className="rounded-full bg-primary-foreground text-primary hover:bg-primary-foreground/90">
-                    <Link href="/#enquiry">Start a fundraiser</Link>
+                    <Link href="/fundraise#enquiry">Start a fundraiser</Link>
                   </Button>
                 </div>
               </div>

@@ -19,11 +19,10 @@ export function Header() {
   }, [])
 
   const navLinks = [
+    { href: "/", label: "Home" },
     { href: "/our-story", label: "Our Story" },
     { href: "/fundraisers", label: "Active Fundraisers" },
-    { href: "/#how-it-works", label: "How It Works" },
-    { href: "/#why-fundraise", label: "Why Fundraise" },
-    { href: "/#faq", label: "FAQ" },
+    { href: "/fundraise", label: "Run a Fundraiser" },
   ]
 
   return (
@@ -78,7 +77,7 @@ export function Header() {
               </Link>
             </Button>
             <Button asChild size="lg" className="rounded-full px-6">
-              <Link href="/#enquiry">Start a Fundraiser</Link>
+              <Link href="/fundraise#enquiry">Start a Fundraiser</Link>
             </Button>
           </div>
 
@@ -113,7 +112,7 @@ export function Header() {
                 </Link>
               </Button>
               <Button asChild className="rounded-full">
-                <Link href="/#enquiry" onClick={() => setIsMobileMenuOpen(false)}>
+                <Link href="/fundraise#enquiry" onClick={() => setIsMobileMenuOpen(false)}>
                   Start a Fundraiser
                 </Link>
               </Button>

@@ -36,40 +36,40 @@ export function Footer() {
             <h4 className="font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-3">
               <li>
-                <Link 
-                  href="/fundraisers" 
+                <Link
+                  href="/"
+                  className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/our-story"
+                  className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
+                >
+                  Our Story
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/fundraisers"
                   className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                 >
                   Active Fundraisers
                 </Link>
               </li>
               <li>
-                <Link 
-                  href="/#how-it-works" 
+                <Link
+                  href="/fundraise"
                   className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                 >
-                  How It Works
+                  Run a Fundraiser
                 </Link>
               </li>
               <li>
-                <Link 
-                  href="/#why-fundraise" 
-                  className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                >
-                  Why Fundraise
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/#faq" 
-                  className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                >
-                  FAQ
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/#enquiry" 
+                <Link
+                  href="/fundraise#enquiry"
                   className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
                 >
                   Start a Fundraiser
