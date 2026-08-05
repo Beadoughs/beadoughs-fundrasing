@@ -26,7 +26,7 @@ export function HowItWorksSection() {
       number: "04",
       icon: Truck,
       title: "We bake & deliver",
-      description: "We bake fresh doughnuts and help coordinate delivery so your group can distribute them.",
+      description: "We bake fresh donuts and help coordinate delivery so your group can distribute them.",
     },
   ]
 
@@ -40,7 +40,7 @@ export function HowItWorksSection() {
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-primary text-balance">
-            How Beadoughs Makes Fundraising Feel Easy
+            How Sunny&apos;s Donuts Makes Fundraising Feel Easy
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Four clear and simple steps to better results for Tasmania-wide communities and teams.

@@ -79,7 +79,7 @@ export async function submitEnquiry(
     return {
       ok: false,
       error:
-        "Email sender is not configured. Set RESEND_FROM in your environment (e.g. Beadoughs Enquiries <onboarding@resend.dev>).",
+        "Email sender is not configured. Set RESEND_FROM in your environment (e.g. Sunny's Donuts Enquiries <onboarding@resend.dev>).",
     }
   }
 
@@ -93,7 +93,7 @@ export async function submitEnquiry(
   const groupLabel = GROUP_TYPE_LABELS[d.groupType] ?? d.groupType
 
   const textLines = [
-    "New fundraising enquiry — Beadoughs website",
+    "New fundraising enquiry — Sunny's Donuts website",
     "",
     `Your name: ${d.name}`,
     `Organisation / group name: ${d.organisation}`,
@@ -133,7 +133,7 @@ export async function submitEnquiry(
   }
 
   const htmlBody = `<!DOCTYPE html><html><body style="font-family:system-ui,sans-serif;line-height:1.5;color:#111;">
-<p style="margin:0 0 16px;font-size:16px;">New fundraising enquiry from the Beadoughs website.</p>
+<p style="margin:0 0 16px;font-size:16px;">New fundraising enquiry from the Sunny's Donuts website.</p>
 <table style="border-collapse:collapse;max-width:560px;">${htmlRows.join("")}</table>
 </body></html>`
 

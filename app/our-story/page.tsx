@@ -6,9 +6,9 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 
 export const metadata: Metadata = {
-  title: "Our Story | Beadoughs",
+  title: "Our Story | Sunny's Donuts",
   description:
-    "How Beadoughs started in Burnie and grew into Tasmania-wide, community-driven fundraising.",
+    "How Sunny's Donuts started in Burnie and grew into Tasmania-wide, community-driven fundraising.",
 }
 
 const milestones = [
@@ -16,7 +16,7 @@ const milestones = [
     title: "Mum's Kitchen",
     year: "2020",
     description:
-      "Beadoughs began in Sunny's mum's kitchen in Burnie, with handmade donuts and a big heart for community.",
+      "Sunny's Donuts began in Sunny's mum's kitchen in Burnie, with handmade donuts and a big heart for community.",
     image: "/images/story/mums-kitchen.jpg",
   },
   {
@@ -31,7 +31,7 @@ const milestones = [
     title: "Shop",
     year: "Next Step",
     description:
-      "The move into a dedicated shop gave Beadoughs room to grow while keeping the same quality and energy.",
+      "The move into a dedicated shop gave Sunny's Donuts room to grow while keeping the same quality and energy.",
     image: "/images/story/shop.png",
   },
   {
@@ -57,12 +57,12 @@ export default function OurStoryPage() {
       <main className="min-h-screen pt-24 pb-16">
         <section className="py-12 sm:py-16">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Deliciously Doing Good</p>
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-yellow)]">Dough for Good</p>
             <h1 className="mt-4 font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-primary text-balance">
               Our Story
             </h1>
             <p className="mt-6 text-lg text-muted-foreground max-w-3xl mx-auto">
-              Sunny Beatson founded Beadoughs Donuts in 2020 during COVID, starting in his mum&apos;s
+              Sunny Beatson founded Sunny&apos;s Donuts in 2020 during COVID, starting in his mum&apos;s
               kitchen in Burnie, Tasmania, with a passion for bringing people together through handmade,
               quality donuts.
             </p>

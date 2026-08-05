@@ -20,14 +20,14 @@ export const revalidate = 30
 export async function generateMetadata({ params }: Props) {
   const { slug, productHandle } = await params
   if (!isShopifyConfigured()) {
-    return { title: "Product | Beadoughs" }
+    return { title: "Product | Sunny's Donuts" }
   }
   try {
     const data = await getFundraiserProduct(slug, productHandle)
-    if (!data) return { title: "Product | Beadoughs" }
-    return { title: `${data.product.title} | ${data.fundraiser.title} | Beadoughs` }
+    if (!data) return { title: "Product | Sunny's Donuts" }
+    return { title: `${data.product.title} | ${data.fundraiser.title} | Sunny's Donuts` }
   } catch {
-    return { title: "Product | Beadoughs" }
+    return { title: "Product | Sunny's Donuts" }
   }
 }
 
@@ -109,7 +109,7 @@ export default async function FundraiserProductPage({ params }: Props) {
                 <p className="mb-8 text-muted-foreground leading-relaxed">{product.description}</p>
               ) : (
                 <p className="mb-8 text-muted-foreground leading-relaxed">
-                  Fresh Beadoughs doughnuts — every purchase supports this fundraiser.
+                  Fresh Sunny&apos;s Donuts — every purchase supports this fundraiser.
                 </p>
               )}
 

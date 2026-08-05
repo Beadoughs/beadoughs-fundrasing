@@ -15,12 +15,12 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: 'Beadoughs | Deliciously Doing Good — Tasmanian Doughnut Fundraising',
-  description: 'Beadoughs helps Tasmanian schools, clubs, charities and community groups run simple, high-profit doughnut fundraisers. Run a campaign or support one today.',
-  keywords: ['fundraising', 'doughnuts', 'Tasmania', 'schools', 'charities', 'community', 'Beadoughs'],
+  title: "Sunny's Donuts | Dough for Good — Tasmanian Donut Fundraising",
+  description: "Sunny's Donuts helps Tasmanian schools, clubs, charities and community groups run simple, high-profit donut fundraisers. Run a campaign or support one today.",
+  keywords: ['fundraising', 'donuts', 'Tasmania', 'schools', 'charities', 'community', "Sunny's Donuts"],
   openGraph: {
-    title: 'Beadoughs | Deliciously Doing Good',
-    description: 'Raise more money with doughnuts people actually want. Run a fundraiser or support an active Tasmanian campaign.',
+    title: "Sunny's Donuts | Dough for Good",
+    description: 'Raise more money with donuts people actually want. Run a fundraiser or support an active Tasmanian campaign.',
     type: 'website',
   },
 }

@@ -8,23 +8,23 @@ import {
 export function FAQSection() {
   const faqs = [
     {
-      question: "Who can run a Beadoughs fundraiser?",
-      answer: "Any Tasmanian community group can run a Beadoughs fundraiser! This includes schools, P&Fs, sports clubs, charities, workplaces, community organisations, and more. If you're raising money for a good cause, we'd love to hear from you.",
+      question: "Who can run a Sunny's Donuts fundraiser?",
+      answer: "Any Tasmanian community group can run a Sunny's Donuts fundraiser! This includes schools, P&Fs, sports clubs, charities, workplaces, community organisations, and more. If you're raising money for a good cause, we'd love to hear from you.",
     },
     {
       question: "How does the fundraiser work?",
-      answer: "It's simple: your group collects pre-orders from supporters, we bake fresh doughnuts based on those orders, and then help coordinate delivery. Your group sells the doughnuts at a set price, keeps the profit margin, and supporters get delicious fresh doughnuts. No upfront inventory, no waste, no stress.",
+      answer: "It's simple: your group collects pre-orders from supporters, we bake fresh donuts based on those orders, and then help coordinate delivery. Your group sells the donuts at a set price, keeps the profit margin, and supporters get delicious fresh donuts. No upfront inventory, no waste, no stress.",
     },
     {
       question: "Do we need to pay upfront?",
-      answer: "No upfront payment is required from your group. We operate on a pre-order model, which means doughnuts are only baked once orders are confirmed. This removes financial risk for your organisation.",
+      answer: "No upfront payment is required from your group. We operate on a pre-order model, which means donuts are only baked once orders are confirmed. This removes financial risk for your organisation.",
     },
     {
       question: "How much can our group raise?",
       answer: "Fundraising amounts vary based on your group's size and reach. Many groups raise between $1,000–$5,000 from a single fundraiser. We'll help you set realistic goals and maximise your results during the planning stage.",
     },
     {
-      question: "Where is Beadoughs available?",
+      question: "Where is Sunny's Donuts available?",
       answer: "We currently serve groups across Tasmania, including Hobart, Launceston, and surrounding areas. If you're unsure whether we can reach your location, just submit an enquiry and we'll let you know.",
     },
     {

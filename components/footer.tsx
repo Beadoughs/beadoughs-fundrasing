@@ -9,25 +9,22 @@ export function Footer() {
         <div className="grid md:grid-cols-3 gap-10 md:gap-8">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-3">
-              <Image
-                src="/beadoughs-logo.png"
-                alt="Beadoughs logo"
-                width={52}
-                height={52}
-                className="h-12 w-12 rounded-md object-cover"
-              />
-              <div className="flex flex-col">
-                <span className="font-serif text-2xl font-bold tracking-tight">
-                  Beadoughs
-                </span>
-                <span className="text-sm text-primary-foreground/70 mt-1">
-                  Deliciously Doing Good
-                </span>
+            <div className="flex flex-col gap-3">
+              <div className="inline-flex w-fit rounded-xl bg-white p-2">
+                <Image
+                  src="/sunnys-donuts-logo.png"
+                  alt="Sunny's Donuts logo"
+                  width={180}
+                  height={120}
+                  className="h-12 w-auto"
+                />
               </div>
+              <span className="text-sm font-semibold text-[color:var(--brand-yellow)]">
+                Dough for Good
+              </span>
             </div>
             <p className="mt-4 text-sm text-primary-foreground/70 max-w-xs">
-              Helping Tasmania-wide groups and workplaces raise more through easy, high-margin doughnut campaigns.
+              Helping Tasmania-wide groups and workplaces raise more through easy, high-margin donut campaigns.
             </p>
           </div>
 
@@ -111,7 +108,7 @@ export function Footer() {
         <div className="mt-12 pt-8 border-t border-primary-foreground/10">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-sm text-primary-foreground/50">
-              © {new Date().getFullYear()} Beadoughs. All rights reserved.
+              © {new Date().getFullYear()} Sunny&apos;s Donuts. All rights reserved.
             </p>
             <p className="text-sm text-primary-foreground/50">
               Made with love in Tasmania 🇦🇺

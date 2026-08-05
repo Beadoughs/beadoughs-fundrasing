@@ -116,7 +116,7 @@ export function EnquiryForm() {
                 <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
                   <div className="w-2 h-2 rounded-full bg-primary" />
                 </div>
-                <p className="text-foreground">We&apos;ll help you figure out if a doughnut fundraiser is right for you</p>
+                <p className="text-foreground">We&apos;ll help you figure out if a donut fundraiser is right for you</p>
               </div>
               <div className="flex items-start gap-3">
                 <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">

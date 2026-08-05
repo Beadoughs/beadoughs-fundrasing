@@ -38,21 +38,13 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/beadoughs-logo.png"
-              alt="Beadoughs logo"
-              width={46}
-              height={46}
-              className="h-10 w-10 sm:h-11 sm:w-11 rounded-md object-cover"
+              src="/sunnys-donuts-logo.png"
+              alt="Sunny's Donuts logo"
+              width={180}
+              height={120}
+              className="h-10 sm:h-12 w-auto"
               priority
             />
-            <span className="flex flex-col">
-              <span className="font-serif text-xl sm:text-2xl font-bold text-primary tracking-tight">
-                Beadoughs
-              </span>
-              <span className="text-[10px] sm:text-xs text-muted-foreground -mt-1">
-                Deliciously Doing Good
-              </span>
-            </span>
           </Link>
 
           {/* Desktop Navigation */}

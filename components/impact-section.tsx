@@ -50,7 +50,7 @@ export function ImpactSection() {
 
         <Card className="max-w-3xl mx-auto p-8 sm:p-10 bg-secondary/50 border-border rounded-2xl text-center">
           <p className="text-lg text-foreground leading-relaxed">
-            Every fundraiser is designed to help local groups and workplaces raise meaningful money while supporters get doughnuts they are genuinely excited to buy. We keep the process practical, uplifting and people-first from first enquiry to final handover.
+            Every fundraiser is designed to help local groups and workplaces raise meaningful money while supporters get donuts they are genuinely excited to buy. We keep the process practical, uplifting and people-first from first enquiry to final handover.
           </p>
         </Card>
       </div>

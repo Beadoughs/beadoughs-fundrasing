@@ -5,7 +5,7 @@ import { Quote } from "lucide-react"
 const TESTIMONIALS = [
   {
     id: 1,
-    quote: "We raised over $2,500 for our new playground equipment in just one week! The doughnuts practically sold themselves.",
+    quote: "We raised over $2,500 for our new playground equipment in just one week! The donuts practically sold themselves.",
     author: "Sarah J.",
     role: "P&C President",
     school: "Hobart Primary School"
@@ -39,7 +39,7 @@ export function TestimonialsSection() {
             Hear It From The Legends
           </h2>
           <p className="text-lg text-primary-foreground/80 max-w-2xl mx-auto">
-            See how Beadoughs helps Tasmania-wide groups hit bigger goals without the usual fundraising chaos.
+            See how Sunny&apos;s Donuts helps Tasmania-wide groups hit bigger goals without the usual fundraising chaos.
           </p>
         </div>
 
@@ -50,7 +50,7 @@ export function TestimonialsSection() {
               className="p-8 bg-card text-card-foreground border-none shadow-xl animate-in fade-in slide-in-from-bottom-8 duration-700 fill-mode-both"
               style={{ animationDelay: `${index * 200}ms` }}
             >
-              <Quote className="h-8 w-8 text-accent mb-6 opacity-50" />
+              <Quote className="h-8 w-8 text-primary mb-6 opacity-40" />
               <p className="text-lg italic mb-6">"{testimonial.quote}"</p>
               <div>
                 <p className="font-bold">{testimonial.author}</p>

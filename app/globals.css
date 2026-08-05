@@ -4,38 +4,40 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Beadoughs Brand Colors */
+  /* Sunny's Donuts — sampled from logo */
+  --brand-blue: #0050c8;
+  --brand-yellow: #fccc10;
   --background: oklch(1 0 0); /* white */
-  --foreground: oklch(0.2 0.04 260); /* deep navy */
+  --foreground: #0a2a5c; /* deep brand blue for body text */
   --card: oklch(1 0 0); /* white */
-  --card-foreground: oklch(0.2 0.04 260); /* deep navy */
+  --card-foreground: #0a2a5c;
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.04 260);
-  --primary: #253c74; /* approved Beadoughs primary */
+  --popover-foreground: #0a2a5c;
+  --primary: #0050c8; /* logo royal blue */
   --primary-foreground: oklch(1 0 0); /* white */
-  --secondary: oklch(0.96 0.01 260); /* light navy tint */
-  --secondary-foreground: oklch(0.2 0.04 260);
-  --muted: oklch(0.94 0.01 260);
-  --muted-foreground: oklch(0.45 0.02 260);
-  --accent: oklch(0.9 0.05 260); /* accent navy blue */
-  --accent-foreground: oklch(0.2 0.04 260);
+  --secondary: #eef4fc; /* light blue tint */
+  --secondary-foreground: #0a2a5c;
+  --muted: #f0f4fa;
+  --muted-foreground: #4a6280;
+  --accent: #fff4b8; /* soft yellow highlight for UI chrome */
+  --accent-foreground: #0a2a5c;
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.01 260);
-  --input: oklch(0.92 0.01 260);
-  --ring: #253c74;
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
+  --border: #d5e0ef;
+  --input: #e4ebf5;
+  --ring: #0050c8;
+  --chart-1: #0050c8;
+  --chart-2: #fccc10;
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.75rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #253c74;
+  --sidebar-primary: #0050c8;
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-accent: #fff8d6;
+  --sidebar-accent-foreground: #0a2a5c;
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 }

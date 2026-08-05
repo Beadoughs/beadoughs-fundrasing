@@ -7,7 +7,7 @@ const highlights = [
     title: "Mum's Kitchen",
     year: "2020",
     description:
-      "Beadoughs began in Sunny's mum's kitchen in Burnie — handmade donuts with a heart for community.",
+      "Sunny's Donuts began in Sunny's mum's kitchen in Burnie — handmade donuts with a heart for community.",
     image: "/images/story/mums-kitchen.jpg",
   },
   {
@@ -22,7 +22,7 @@ const highlights = [
     title: "Fundraising First",
     year: "Today",
     description:
-      "Schools, clubs and families across Tasmania raise meaningful money with doughnuts people love.",
+      "Schools, clubs and families across Tasmania raise meaningful money with donuts people love.",
     image: "/images/story/fundraising-pivot.png",
   },
 ]
@@ -32,14 +32,14 @@ export function HomeStorySection() {
     <section id="story" className="py-16 sm:py-24 scroll-mt-20 bg-secondary/20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-            Deliciously Doing Good
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-yellow)]">
+            Dough for Good
           </p>
           <h2 className="mt-4 font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-primary text-balance">
             Our Story
           </h2>
           <p className="mt-6 text-lg text-muted-foreground">
-            From a Burnie kitchen to Tasmania-wide fundraising — Beadoughs exists to give back to
+            From a Burnie kitchen to Tasmania-wide fundraising — Sunny&apos;s Donuts exists to give back to
             the state that gave us so much.
           </p>
         </div>

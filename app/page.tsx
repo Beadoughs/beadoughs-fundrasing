@@ -9,13 +9,13 @@ import { Footer } from "@/components/footer"
 export const revalidate = 30
 
 export const metadata: Metadata = {
-  title: "Beadoughs | Deliciously Doing Good — Tasmanian Doughnut Fundraising",
+  title: "Sunny's Donuts | Dough for Good — Tasmanian Donut Fundraising",
   description:
-    "Beadoughs helps Tasmanian schools, clubs and community groups raise money with doughnuts people love. Run a fundraiser or support an active campaign.",
+    "Sunny's Donuts helps Tasmanian schools, clubs and community groups raise money with donuts people love. Run a fundraiser or support an active campaign.",
   openGraph: {
-    title: "Beadoughs | Deliciously Doing Good",
+    title: "Sunny's Donuts | Dough for Good",
     description:
-      "Run a doughnut fundraiser or support an active Tasmanian campaign. Premium doughnuts, real community impact.",
+      "Run a donut fundraiser or support an active Tasmanian campaign. Premium donuts, real community impact.",
     type: "website",
   },
 }

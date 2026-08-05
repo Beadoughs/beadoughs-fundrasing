@@ -23,14 +23,14 @@ export const revalidate = 30
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params
   if (!isShopifyConfigured()) {
-    return { title: "Fundraiser | Beadoughs" }
+    return { title: "Fundraiser | Sunny's Donuts" }
   }
   try {
     const campaign = await getFundraiserByHandle(slug)
-    if (!campaign) return { title: "Fundraiser | Beadoughs" }
-    return { title: `${campaign.title} | Beadoughs` }
+    if (!campaign) return { title: "Fundraiser | Sunny's Donuts" }
+    return { title: `${campaign.title} | Sunny's Donuts` }
   } catch {
-    return { title: "Fundraiser | Beadoughs" }
+    return { title: "Fundraiser | Sunny's Donuts" }
   }
 }
 

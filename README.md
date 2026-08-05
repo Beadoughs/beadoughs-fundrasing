@@ -1,6 +1,6 @@
-# Beadoughs fundraising website
+# Sunny's Donuts fundraising website
 
-Next.js site for Beadoughs doughnut fundraisers. Each Shopify **collection** is one campaign at `/fundraisers/{handle}` with products, a **boxes sold** progress bar, and a **buyer leaderboard**.
+Next.js site for Sunny's Donuts fundraisers. Each Shopify **collection** is one campaign at `/fundraisers/{handle}` with products, a **boxes sold** progress bar, and a **buyer leaderboard**.
 
 ## Getting started
 

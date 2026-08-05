@@ -16,7 +16,7 @@ import { ShopifyConfigMissing } from "@/components/shopify-config-missing"
 export const revalidate = 30
 
 export const metadata = {
-  title: "Active Fundraisers | Beadoughs",
+  title: "Active Fundraisers | Sunny's Donuts",
   description: "Support local fundraising campaigns with secure checkout.",
 }
 
@@ -52,7 +52,7 @@ export default async function FundraisersDirectoryPage() {
               Support Local Fundraisers
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Browse active campaigns. Purchases are fulfilled through Beadoughs with secure
+              Browse active campaigns. Purchases are fulfilled through Sunny&apos;s Donuts with secure
               checkout. Each campaign shows boxes sold toward its goal.
             </p>
           </div>

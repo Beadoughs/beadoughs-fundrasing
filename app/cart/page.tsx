@@ -14,7 +14,7 @@ import { ShopifyConfigMissing } from "@/components/shopify-config-missing"
 export const dynamic = "force-dynamic"
 
 export const metadata = {
-  title: "Cart | Beadoughs",
+  title: "Cart | Sunny's Donuts",
   description: "Review your order before secure checkout.",
 }
 
