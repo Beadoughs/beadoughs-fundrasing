@@ -60,7 +60,7 @@ export function Header() {
                 className="h-5 w-5 sm:h-6 sm:w-6 object-contain"
               />
               <span className="text-[10px] sm:text-xs font-medium leading-snug text-primary/75 whitespace-nowrap">
-                Formerly Beadoughs
+                Formerly Beadoughs Donuts
               </span>
             </Link>
           </div>
