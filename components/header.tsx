@@ -34,17 +34,36 @@ export function Header() {
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-[4.5rem] sm:h-[5.5rem] items-center justify-between gap-4">
-          <Link href="/" className="flex items-center shrink-0">
-            <Image
-              src="/sunnys-donuts-logo.png"
-              alt="Sunny's Donuts logo"
-              width={280}
-              height={186}
-              className="h-14 sm:h-16 w-auto"
-              priority
-            />
-          </Link>
+        <div className="flex h-[4.5rem] sm:h-[5.5rem] items-center justify-between gap-3 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0 shrink">
+            <Link href="/" className="flex items-center shrink-0">
+              <Image
+                src="/sunnys-donuts-logo.png"
+                alt="Sunny's Donuts logo"
+                width={280}
+                height={186}
+                className="h-14 sm:h-[4.25rem] w-auto"
+                priority
+              />
+            </Link>
+
+            <Link
+              href="/our-story"
+              className="inline-flex items-center gap-1 sm:gap-1.5 rounded-full border border-primary/10 bg-[#EEF6FF] px-1.5 py-1 sm:px-2.5 sm:py-1.5 shadow-sm hover:bg-[#E4F1FF] transition-colors shrink-0"
+              aria-label="Formerly Beadoughs Donuts — read our story"
+            >
+              <Image
+                src="/images/beadoughs-legacy-logo.png"
+                alt=""
+                width={40}
+                height={40}
+                className="h-5 w-5 sm:h-6 sm:w-6 object-contain"
+              />
+              <span className="text-[10px] sm:text-xs font-medium leading-snug text-primary/75 whitespace-nowrap">
+                Formerly Beadoughs
+              </span>
+            </Link>
+          </div>
 
           <nav className="hidden md:flex items-center gap-7 lg:gap-9">
             {navLinks.map((link) => (
