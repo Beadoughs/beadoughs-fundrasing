@@ -83,6 +83,11 @@ export function HomeStorySection() {
           <Button asChild variant="outline" size="lg" className="rounded-full px-8 h-12">
             <Link href="/our-story">Read our full story</Link>
           </Button>
+          <p className="mt-4 text-sm text-muted-foreground">
+            <Link href="/our-story" className="underline-offset-4 hover:underline hover:text-primary">
+              Previously known as Beadoughs Donuts
+            </Link>
+          </p>
         </div>
       </div>
 

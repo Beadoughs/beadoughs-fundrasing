@@ -69,6 +69,29 @@ export default function OurStoryPage() {
           </div>
         </section>
 
+        <section className="pb-4 sm:pb-6">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col items-center gap-5 rounded-3xl border border-border bg-[#EEF6FF] px-6 py-8 sm:flex-row sm:gap-6 sm:px-8 sm:py-7 shadow-sm sm:text-left text-center">
+              <Image
+                src="/images/beadoughs-legacy-logo.png"
+                alt="Beadoughs Donuts legacy logo"
+                width={96}
+                height={96}
+                className="h-20 w-20 shrink-0 object-contain sm:h-24 sm:w-24"
+              />
+              <div>
+                <p className="font-heading text-xl sm:text-2xl font-bold text-primary text-balance">
+                  Formerly Beadoughs Donuts — now Sunny&apos;s Donuts
+                </p>
+                <p className="mt-2 text-sm sm:text-base text-muted-foreground leading-relaxed">
+                  Same business, same community focus. The story continues under a new name — still
+                  handmade donuts, still dough for good across Tasmania.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <section className="py-8 sm:py-12">
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
             <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 lg:p-10 shadow-sm">
