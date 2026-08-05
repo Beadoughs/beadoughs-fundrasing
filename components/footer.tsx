@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Facebook, Instagram, Mail, MapPin } from "lucide-react"
+import { Facebook, Instagram, Mail } from "lucide-react"
 import Image from "next/image"
 
 export function Footer() {
@@ -85,10 +85,6 @@ export function Footer() {
               <li className="flex items-center gap-3 text-sm text-primary-foreground/70">
                 <Mail className="h-4 w-4 flex-shrink-0" />
                 <span>sunny@beadoughs.com</span>
-              </li>
-              <li className="flex items-center gap-3 text-sm text-primary-foreground/70">
-                <MapPin className="h-4 w-4 flex-shrink-0" />
-                <span>57 Punchbowl Road, Launceston</span>
               </li>
             </ul>
             
