@@ -84,7 +84,7 @@ export async function submitEnquiry(
   }
 
   const toEmail =
-    process.env.ENQUIRY_TO_EMAIL?.trim() || "sunny@beadoughs.com"
+    process.env.ENQUIRY_TO_EMAIL?.trim() || "Sunny@sunnysdonuts.com.au"
 
   const d = parsed.data
   const phone = normalizeOptional(d.phone)

@@ -71,7 +71,12 @@ export function Footer() {
             <ul className="space-y-3">
               <li className="flex items-center gap-3 text-sm text-white/70">
                 <Mail className="h-4 w-4 shrink-0" />
-                <span>sunny@beadoughs.com</span>
+                <a
+                  href="mailto:Sunny@sunnysdonuts.com.au"
+                  className="transition-colors hover:text-white"
+                >
+                  Sunny@sunnysdonuts.com.au
+                </a>
               </li>
             </ul>
           </div>

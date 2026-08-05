@@ -6,7 +6,7 @@ import { HowItWorksSection } from "@/components/how-it-works-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { ImpactSection } from "@/components/impact-section"
 import { CTASection } from "@/components/cta-section"
-import { EnquiryForm } from "@/components/enquiry-form"
+import { EnquirySection } from "@/components/enquiry-section"
 import { FAQSection } from "@/components/faq-section"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -52,7 +52,7 @@ export default function FundraisePage() {
       <TestimonialsSection />
       <ImpactSection />
       <CTASection />
-      <EnquiryForm />
+      <EnquirySection />
       <FAQSection />
       <Footer />
     </main>

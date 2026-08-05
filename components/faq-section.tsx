@@ -29,7 +29,7 @@ export function FAQSection() {
     },
     {
       question: "How do we get started?",
-      answer: "Simply fill out the enquiry form on this page! Tell us about your group and your goals, and we'll be in touch within 1-2 business days to discuss the next steps. There's no obligation — it's just a friendly chat to see if we're the right fit.",
+      answer: "Email us via the enquiry section on this page! Tell us about your group and your goals, and we'll be in touch within 1-2 business days to discuss the next steps. There's no obligation — it's just a friendly chat to see if we're the right fit.",
     },
   ]
 

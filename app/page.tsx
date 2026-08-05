@@ -3,7 +3,7 @@ import { Header } from "@/components/header"
 import { HeroSection } from "@/components/hero-section"
 import { HomeStorySection } from "@/components/home-story-section"
 import { FeaturedFundraisersSection } from "@/components/featured-fundraisers-section"
-import { EnquiryForm } from "@/components/enquiry-form"
+import { EnquirySection } from "@/components/enquiry-section"
 import { Footer } from "@/components/footer"
 
 export const revalidate = 30
@@ -27,7 +27,7 @@ export default function Home() {
       <HeroSection />
       <HomeStorySection />
       <FeaturedFundraisersSection />
-      <EnquiryForm />
+      <EnquirySection />
       <Footer />
     </main>
   )

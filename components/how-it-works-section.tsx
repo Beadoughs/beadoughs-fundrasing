@@ -7,8 +7,8 @@ export function HowItWorksSection() {
     {
       number: "01",
       icon: Send,
-      title: "Submit enquiry",
-      description: "Tell us about your group and your fundraising goals. We'll get back to you quickly.",
+      title: "Send an enquiry",
+      description: "Email us about your group and fundraising goals. We'll get back to you quickly.",
     },
     {
       number: "02",
