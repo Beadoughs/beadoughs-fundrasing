@@ -39,17 +39,11 @@ export function HomeStorySection() {
       <div className="pointer-events-none absolute -right-20 top-10 h-64 w-64 rounded-full bg-secondary blur-2xl" aria-hidden />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-14 sm:mb-16 flex flex-col items-center gap-4 text-center lg:flex-row lg:items-end lg:justify-between lg:text-left">
-          <div>
-            <h2 className="inline-flex items-center gap-2 font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-primary text-balance">
-              Our Story
-              <BrandSparkle />
-            </h2>
-          </div>
-          <p className="max-w-md text-base sm:text-lg text-muted-foreground">
-            From a Burnie kitchen to Tasmania-wide fundraising — Sunny&apos;s Donuts exists to give
-            back to the state that gave us so much.
-          </p>
+        <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-16">
+          <h2 className="inline-flex items-center justify-center gap-2 font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-primary text-balance">
+            Our Story
+            <BrandSparkle />
+          </h2>
         </div>
 
         <div className="relative">
