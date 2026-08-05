@@ -14,9 +14,9 @@ export function Footer() {
               <Image
                 src="/sunnys-donuts-logo.png"
                 alt="Sunny's Donuts logo"
-                width={180}
-                height={120}
-                className="h-12 w-auto"
+                width={220}
+                height={146}
+                className="h-14 w-auto"
               />
             </div>
             <p className="mt-4 text-sm font-heading font-semibold text-[color:var(--brand-yellow)]">

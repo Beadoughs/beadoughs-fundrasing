@@ -34,14 +34,14 @@ export function Header() {
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 sm:h-20 items-center justify-between gap-4">
+        <div className="flex h-[4.5rem] sm:h-[5.5rem] items-center justify-between gap-4">
           <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/sunnys-donuts-logo.png"
               alt="Sunny's Donuts logo"
-              width={200}
-              height={133}
-              className="h-10 sm:h-12 w-auto"
+              width={280}
+              height={186}
+              className="h-14 sm:h-16 w-auto"
               priority
             />
           </Link>
