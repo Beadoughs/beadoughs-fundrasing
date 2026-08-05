@@ -29,26 +29,24 @@ export function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-card/95 backdrop-blur-md shadow-sm border-b border-border"
-          : "bg-transparent"
+          ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-border"
+          : "bg-white/80 backdrop-blur-sm"
       }`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 sm:h-20 items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3">
+        <div className="flex h-16 sm:h-20 items-center justify-between gap-4">
+          <Link href="/" className="flex items-center shrink-0">
             <Image
               src="/sunnys-donuts-logo.png"
               alt="Sunny's Donuts logo"
-              width={180}
-              height={120}
+              width={200}
+              height={133}
               className="h-10 sm:h-12 w-auto"
               priority
             />
           </Link>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-7 lg:gap-9">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -60,9 +58,8 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Cart + CTA */}
           <div className="hidden md:flex items-center gap-3">
-            <Button asChild variant="outline" size="lg" className="rounded-full px-4 gap-2">
+            <Button asChild variant="ghost" size="lg" className="rounded-full px-4 gap-2 text-foreground">
               <Link href="/cart">
                 <ShoppingCart className="h-4 w-4" />
                 Cart
@@ -73,7 +70,6 @@ export function Header() {
             </Button>
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             className="md:hidden p-2 text-foreground"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -83,9 +79,8 @@ export function Header() {
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden pb-4 pt-2 border-t border-border bg-card/95 backdrop-blur-md -mx-4 px-4">
+          <div className="md:hidden pb-4 pt-2 border-t border-border bg-white/95 backdrop-blur-md -mx-4 px-4">
             <nav className="flex flex-col gap-3">
               {navLinks.map((link) => (
                 <Link

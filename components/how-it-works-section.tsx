@@ -39,7 +39,7 @@ export function HowItWorksSection() {
       </div>
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-primary text-balance">
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-primary text-balance">
             How Sunny&apos;s Donuts Makes Fundraising Feel Easy
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">

@@ -12,7 +12,7 @@ export function CTASection() {
           <div className="absolute bottom-0 right-0 w-96 h-96 bg-primary-foreground/5 rounded-full translate-x-1/3 translate-y-1/3" />
 
           <div className="relative z-10 mx-auto max-w-3xl">
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground text-balance">
+            <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-primary-foreground text-balance">
               Ready To Make Fundraising The Easiest Win Of The Year?
             </h2>
             <p className="mt-6 text-lg text-primary-foreground/80 max-w-2xl mx-auto">

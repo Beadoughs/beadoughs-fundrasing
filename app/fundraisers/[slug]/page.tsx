@@ -73,7 +73,7 @@ export default async function FundraiserPage({ params }: Props) {
       <main className="min-h-screen pt-24 pb-16 bg-secondary/10">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
-            <h1 className="text-center text-4xl sm:text-5xl font-serif font-bold text-foreground">
+            <h1 className="text-center text-4xl sm:text-5xl font-heading font-bold text-foreground">
               {campaign.title}
             </h1>
             {(campaign.descriptionHtml ||

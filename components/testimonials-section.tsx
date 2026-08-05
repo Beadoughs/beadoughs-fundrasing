@@ -28,17 +28,17 @@ const TESTIMONIALS = [
 
 export function TestimonialsSection() {
   return (
-    <section className="relative overflow-hidden py-24 bg-primary text-primary-foreground">
+    <section className="relative overflow-hidden py-24 bg-[color:var(--brand-dark)] text-white">
       <div className="absolute top-0 left-0 -z-10 h-full w-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent" />
 
       <TestimonialsDonutDecorations />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-8 duration-700">
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold mb-4">
+          <h2 className="mb-4 font-heading text-3xl sm:text-4xl font-bold">
             Hear It From The Legends
           </h2>
-          <p className="text-lg text-primary-foreground/80 max-w-2xl mx-auto">
+          <p className="mx-auto max-w-2xl text-lg text-white/80">
             See how Sunny&apos;s Donuts helps Tasmania-wide groups hit bigger goals without the usual fundraising chaos.
           </p>
         </div>

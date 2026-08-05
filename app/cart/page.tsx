@@ -44,7 +44,7 @@ export default async function CartPage() {
       <Header />
       <main className="min-h-screen pt-24 pb-16">
         <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-primary mb-8">Your cart</h1>
+          <h1 className="font-heading text-3xl sm:text-4xl font-bold text-primary mb-8">Your cart</h1>
 
           {!cart || lines.length === 0 ? (
             <div className="rounded-3xl border border-border bg-card p-10 text-center">

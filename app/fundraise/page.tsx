@@ -27,10 +27,10 @@ export default function FundraisePage() {
           <div className="absolute bottom-10 right-10 h-96 w-96 rounded-full bg-accent/10 blur-3xl" />
         </div>
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-yellow)]">
+          <p className="text-sm font-heading font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-yellow)]">
             Dough for Good
           </p>
-          <h1 className="mt-4 font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-primary text-balance">
+          <h1 className="mt-4 font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-primary text-balance">
             Run a Sunny&apos;s Donuts Fundraiser
           </h1>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">

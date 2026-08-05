@@ -58,7 +58,7 @@ export default function OurStoryPage() {
         <section className="py-12 sm:py-16">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-yellow)]">Dough for Good</p>
-            <h1 className="mt-4 font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-primary text-balance">
+            <h1 className="mt-4 font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-primary text-balance">
               Our Story
             </h1>
             <p className="mt-6 text-lg text-muted-foreground max-w-3xl mx-auto">
@@ -72,7 +72,7 @@ export default function OurStoryPage() {
         <section className="py-8 sm:py-12">
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
             <div className="rounded-3xl border border-border bg-card p-6 sm:p-8 lg:p-10 shadow-sm">
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-primary">
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-primary">
                 From Kitchen To Community
               </h2>
               <p className="mt-3 max-w-3xl text-muted-foreground">
@@ -108,7 +108,7 @@ export default function OurStoryPage() {
                         <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-primary">
                           {milestone.year}
                         </p>
-                        <h3 className="mt-1 font-serif text-xl font-bold text-primary">{milestone.title}</h3>
+                        <h3 className="mt-1 font-heading text-xl font-bold text-primary">{milestone.title}</h3>
                         <p className="mt-2 text-sm leading-relaxed text-foreground">{milestone.description}</p>
                         <p className="mt-3 text-xs font-medium text-primary/80">Milestone {index + 1} of 5</p>
                           </div>
@@ -128,7 +128,7 @@ export default function OurStoryPage() {
               <div className="absolute -top-24 -left-24 h-56 w-56 rounded-full bg-primary-foreground/10" />
               <div className="absolute -bottom-28 -right-20 h-72 w-72 rounded-full bg-primary-foreground/10" />
               <div className="relative z-10 max-w-3xl">
-                <h2 className="font-serif text-3xl sm:text-4xl font-bold text-primary-foreground">
+                <h2 className="font-heading text-3xl sm:text-4xl font-bold text-primary-foreground">
                   Our Mission
                 </h2>
                 <p className="mt-4 text-lg text-primary-foreground/90">

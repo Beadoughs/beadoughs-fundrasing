@@ -48,7 +48,7 @@ export default async function FundraisersDirectoryPage() {
       <main className="min-h-screen pt-24 pb-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-8 duration-700">
-            <h1 className="text-4xl sm:text-5xl font-serif font-bold text-primary mb-6">
+            <h1 className="text-4xl sm:text-5xl font-heading font-bold text-primary mb-6">
               Support Local Fundraisers
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">

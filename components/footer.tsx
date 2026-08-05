@@ -4,115 +4,85 @@ import Image from "next/image"
 
 export function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-primary text-primary-foreground py-12 sm:py-16">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid md:grid-cols-3 gap-10 md:gap-8">
-          {/* Brand */}
+    <footer className="relative overflow-hidden bg-[color:var(--brand-dark)] text-white py-12 sm:py-16">
+      <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/5 blur-2xl" aria-hidden />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid gap-10 md:grid-cols-3 md:gap-8">
           <div>
-            <div className="flex flex-col gap-3">
-              <div className="inline-flex w-fit rounded-xl bg-white p-2">
-                <Image
-                  src="/sunnys-donuts-logo.png"
-                  alt="Sunny's Donuts logo"
-                  width={180}
-                  height={120}
-                  className="h-12 w-auto"
-                />
-              </div>
-              <span className="text-sm font-semibold text-[color:var(--brand-yellow)]">
-                Dough for Good
-              </span>
+            <div className="inline-flex w-fit rounded-2xl bg-white p-2.5 shadow-sm">
+              <Image
+                src="/sunnys-donuts-logo.png"
+                alt="Sunny's Donuts logo"
+                width={180}
+                height={120}
+                className="h-12 w-auto"
+              />
             </div>
-            <p className="mt-4 text-sm text-primary-foreground/70 max-w-xs">
-              Helping Tasmania-wide groups and workplaces raise more through easy, high-margin donut campaigns.
+            <p className="mt-4 text-sm font-heading font-semibold text-[color:var(--brand-yellow)]">
+              Dough for Good
             </p>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h4 className="font-semibold mb-4">Quick Links</h4>
-            <ul className="space-y-3">
-              <li>
-                <Link
-                  href="/"
-                  className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/our-story"
-                  className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                >
-                  Our Story
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/fundraisers"
-                  className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                >
-                  Active Fundraisers
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/fundraise"
-                  className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                >
-                  Run a Fundraiser
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/fundraise#enquiry"
-                  className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors"
-                >
-                  Start a Fundraiser
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="font-semibold mb-4">Get in Touch</h4>
-            <ul className="space-y-3">
-              <li className="flex items-center gap-3 text-sm text-primary-foreground/70">
-                <Mail className="h-4 w-4 flex-shrink-0" />
-                <span>sunny@beadoughs.com</span>
-              </li>
-            </ul>
-            
-            {/* Social Links */}
-            <div className="flex gap-4 mt-6">
-              <a 
-                href="#" 
-                className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors"
+            <p className="mt-3 max-w-xs text-sm text-white/70 leading-relaxed">
+              Helping Tasmania-wide groups and workplaces raise more through easy, high-margin donut
+              campaigns.
+            </p>
+            <div className="mt-6 flex gap-3">
+              <a
+                href="#"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
                 aria-label="Facebook"
               >
                 <Facebook className="h-5 w-5" />
               </a>
-              <a 
-                href="#" 
-                className="w-10 h-10 rounded-full bg-primary-foreground/10 flex items-center justify-center hover:bg-primary-foreground/20 transition-colors"
+              <a
+                href="#"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
                 aria-label="Instagram"
               >
                 <Instagram className="h-5 w-5" />
               </a>
             </div>
           </div>
+
+          <div>
+            <h4 className="mb-4 font-heading font-semibold">Quick Links</h4>
+            <ul className="space-y-3">
+              {[
+                { href: "/", label: "Home" },
+                { href: "/our-story", label: "Our Story" },
+                { href: "/fundraisers", label: "Active Fundraisers" },
+                { href: "/fundraise", label: "Run a Fundraiser" },
+                { href: "/fundraise#enquiry", label: "Start a Fundraiser" },
+              ].map((link) => (
+                <li key={link.href + link.label}>
+                  <Link
+                    href={link.href}
+                    className="text-sm text-white/70 transition-colors hover:text-white"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="mb-4 font-heading font-semibold">Get in Touch</h4>
+            <ul className="space-y-3">
+              <li className="flex items-center gap-3 text-sm text-white/70">
+                <Mail className="h-4 w-4 shrink-0" />
+                <span>sunny@beadoughs.com</span>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-primary-foreground/10">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-sm text-primary-foreground/50">
+        <div className="mt-12 border-t border-white/10 pt-8">
+          <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+            <p className="text-sm text-white/50">
               © {new Date().getFullYear()} Sunny&apos;s Donuts. All rights reserved.
             </p>
-            <p className="text-sm text-primary-foreground/50">
-              Made with love in Tasmania 🇦🇺
-            </p>
+            <p className="text-sm text-white/50">Made with love in Tasmania 🇦🇺</p>
           </div>
         </div>
       </div>

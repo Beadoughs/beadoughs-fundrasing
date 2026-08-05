@@ -13,8 +13,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Send, CheckCircle2 } from "lucide-react"
+import { Send, CheckCircle2, Check } from "lucide-react"
 import { submitEnquiry } from "@/app/actions/enquiry"
+import { BrandSparkle } from "@/components/brand-sparkle"
+
+const benefits = [
+  "No obligation — just a friendly chat about your goals",
+  "We'll help you figure out if a donut fundraiser is right for you",
+  "Get a clear picture of how the process works",
+]
 
 export function EnquiryForm() {
   const [isSubmitted, setIsSubmitted] = useState(false)
@@ -64,16 +71,16 @@ export function EnquiryForm() {
 
   if (isSubmitted) {
     return (
-      <section id="enquiry" className="py-16 sm:py-24 scroll-mt-20">
+      <section id="enquiry" className="relative scroll-mt-20 overflow-hidden bg-white py-16 sm:py-24">
         <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
-          <Card className="p-8 sm:p-12 bg-card border-border rounded-3xl text-center">
-            <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-6">
+          <Card className="rounded-3xl border-border bg-card p-8 sm:p-12 text-center shadow-lg shadow-primary/5">
+            <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-secondary">
               <CheckCircle2 className="h-10 w-10 text-primary" />
             </div>
-            <h3 className="font-serif text-2xl sm:text-3xl font-bold text-primary mb-4">
+            <h3 className="mb-4 font-heading text-2xl sm:text-3xl font-bold text-primary">
               Thank you for your enquiry!
             </h3>
-            <p className="text-muted-foreground mb-6">
+            <p className="mb-6 text-muted-foreground">
               We&apos;ve received your fundraising enquiry and will be in touch within 1-2 business days.
             </p>
             <Button
@@ -93,42 +100,34 @@ export function EnquiryForm() {
   }
 
   return (
-    <section id="enquiry" className="py-16 sm:py-24 scroll-mt-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
-          {/* Left - Info */}
+    <section id="enquiry" className="relative scroll-mt-20 overflow-hidden bg-white py-16 sm:py-24">
+      <div className="pointer-events-none absolute -left-32 -top-20 h-80 w-80 rounded-full bg-secondary blur-2xl" aria-hidden />
+      <div className="brand-blob absolute left-0 top-0 h-[360px] w-[360px] opacity-80" aria-hidden />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
           <div className="lg:sticky lg:top-32">
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-primary text-balance">
+            <h2 className="inline-flex flex-wrap items-center gap-2 font-heading text-3xl sm:text-4xl lg:text-5xl font-bold text-primary text-balance">
               Let&apos;s Get Your Fundraiser Rolling
+              <BrandSparkle className="mt-1" />
             </h2>
-            <p className="mt-6 text-lg text-muted-foreground">
+            <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
               Pop in your details and we&apos;ll be in touch in 1-2 business days to shape the right plan for your group, school, charity or workplace.
             </p>
-            
+
             <div className="mt-8 space-y-4">
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <div className="w-2 h-2 rounded-full bg-primary" />
+              {benefits.map((text) => (
+                <div key={text} className="flex items-start gap-3">
+                  <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[color:var(--brand-yellow)] text-foreground shadow-sm">
+                    <Check className="h-4 w-4" strokeWidth={3} />
+                  </div>
+                  <p className="pt-0.5 leading-relaxed text-foreground">{text}</p>
                 </div>
-                <p className="text-foreground">No obligation — just a friendly chat about your goals</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <div className="w-2 h-2 rounded-full bg-primary" />
-                </div>
-                <p className="text-foreground">We&apos;ll help you figure out if a donut fundraiser is right for you</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                  <div className="w-2 h-2 rounded-full bg-primary" />
-                </div>
-                <p className="text-foreground">Get a clear picture of how the process works</p>
-              </div>
+              ))}
             </div>
           </div>
 
-          {/* Right - Form */}
-          <Card className="p-6 sm:p-8 bg-card border-border rounded-3xl shadow-xl shadow-primary/5">
+          <Card className="rounded-3xl border-border bg-white p-6 sm:p-8 shadow-xl shadow-primary/5">
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-2">
                 <label htmlFor="name" className="text-sm font-medium text-foreground">
@@ -142,7 +141,7 @@ export function EnquiryForm() {
                   placeholder="Jane Smith"
                   required
                   autoComplete="name"
-                  className="h-12 rounded-xl bg-secondary/50 border-border"
+                  className="h-12 rounded-xl border-border bg-secondary/60"
                 />
               </div>
 
@@ -158,11 +157,11 @@ export function EnquiryForm() {
                   placeholder="Hobart Primary School P&F"
                   required
                   autoComplete="organization"
-                  className="h-12 rounded-xl bg-secondary/50 border-border"
+                  className="h-12 rounded-xl border-border bg-secondary/60"
                 />
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-5">
+              <div className="grid gap-5 sm:grid-cols-2">
                 <div className="space-y-2">
                   <label htmlFor="email" className="text-sm font-medium text-foreground">
                     Email
@@ -176,7 +175,7 @@ export function EnquiryForm() {
                     placeholder="jane@example.com"
                     required
                     autoComplete="email"
-                    className="h-12 rounded-xl bg-secondary/50 border-border"
+                    className="h-12 rounded-xl border-border bg-secondary/60"
                   />
                 </div>
                 <div className="space-y-2">
@@ -191,7 +190,7 @@ export function EnquiryForm() {
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="0412 345 678"
                     autoComplete="tel"
-                    className="h-12 rounded-xl bg-secondary/50 border-border"
+                    className="h-12 rounded-xl border-border bg-secondary/60"
                   />
                 </div>
               </div>
@@ -200,14 +199,10 @@ export function EnquiryForm() {
                 <label htmlFor="group-type" className="text-sm font-medium text-foreground">
                   Type of group
                 </label>
-                <Select
-                  value={groupType}
-                  onValueChange={setGroupType}
-                  required
-                >
+                <Select value={groupType} onValueChange={setGroupType} required>
                   <SelectTrigger
                     id="group-type"
-                    className="h-12 rounded-xl bg-secondary/50 border-border"
+                    className="h-12 rounded-xl border-border bg-secondary/60"
                   >
                     <SelectValue placeholder="Select your group type" />
                   </SelectTrigger>
@@ -233,7 +228,7 @@ export function EnquiryForm() {
                   value={fundraisingDate}
                   onChange={(e) => setFundraisingDate(e.target.value)}
                   placeholder="e.g. March 2025, Term 2, or flexible"
-                  className="h-12 rounded-xl bg-secondary/50 border-border"
+                  className="h-12 rounded-xl border-border bg-secondary/60"
                 />
               </div>
 
@@ -248,7 +243,7 @@ export function EnquiryForm() {
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Tell us a bit about your group and what you're hoping to raise money for..."
                   rows={4}
-                  className="rounded-xl bg-secondary/50 border-border resize-none"
+                  className="resize-none rounded-xl border-border bg-secondary/60"
                 />
               </div>
 
@@ -256,13 +251,13 @@ export function EnquiryForm() {
                 type="submit"
                 size="lg"
                 disabled={isPending}
-                className="w-full rounded-full h-14 text-base shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transition-all"
+                className="h-14 w-full rounded-full text-base shadow-lg shadow-primary/20"
               >
-                <Send className="h-5 w-5 mr-2" />
+                <Send className="mr-2 h-5 w-5" />
                 {isPending ? "Sending…" : "Send Fundraising Enquiry"}
               </Button>
 
-              <p className="text-xs text-center text-muted-foreground">
+              <p className="text-center text-xs text-muted-foreground">
                 By submitting, you agree to be contacted about your fundraising enquiry.
               </p>
             </form>

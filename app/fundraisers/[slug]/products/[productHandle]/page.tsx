@@ -96,7 +96,7 @@ export default async function FundraiserProductPage({ params }: Props) {
             </div>
 
             <Card className="p-6 sm:p-8 rounded-3xl border-border shadow-sm h-fit">
-              <h1 className="text-3xl sm:text-4xl font-serif font-bold text-foreground mb-4">
+              <h1 className="text-3xl sm:text-4xl font-heading font-bold text-foreground mb-4">
                 {product.title}
               </h1>
 
