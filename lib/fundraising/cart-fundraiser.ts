@@ -1,3 +1,9 @@
+import {
+  fundraiserBasePath,
+  fundraiserCampaignHref,
+  resolveFundraiserRegion,
+} from "@/lib/fundraising/region"
+
 export type CartAttribute = { key: string; value: string }
 
 const FUNDRAISER_SLUG_KEYS = new Set(
@@ -34,5 +40,7 @@ export function resolveCartFundraiserSlug(cart: {
 }
 
 export function fundraiserContinueHref(slug: string | null): string {
-  return slug ? `/fundraisers/${slug}` : "/fundraisers"
+  if (!slug) return fundraiserBasePath("tas")
+  const region = resolveFundraiserRegion(slug)
+  return fundraiserCampaignHref(slug, region)
 }

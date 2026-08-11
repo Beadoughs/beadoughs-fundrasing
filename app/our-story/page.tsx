@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 export const metadata: Metadata = {
   title: "Our Story | Sunny's Donuts",
   description:
-    "How Sunny's Donuts started in Burnie and grew into Tasmania-wide, community-driven fundraising.",
+    "How Sunny's Donuts started in Burnie and grew into community-driven fundraising across Australia.",
 }
 
 const milestones = [
@@ -38,14 +38,14 @@ const milestones = [
     title: "Fundraising Pivot",
     year: "Community Focus",
     description:
-      "Demand from schools, clubs, and families inspired a shift toward fundraising-first campaigns across Tasmania.",
+      "Demand from schools, clubs, and families inspired a shift toward fundraising-first campaigns across Australia.",
     image: "/images/story/fundraising-pivot.png",
   },
   {
     title: "Helping People in Need",
     year: "Today",
     description:
-      "In 2025, we helped raise $11,079 for Constable Keith Smith — one of many campaigns focused on uplifting Tasmanians in real need.",
+      "In 2025, we helped raise $11,079 for Constable Keith Smith — one of many campaigns focused on uplifting communities in real need.",
     image: "/images/story/helping-people.png",
   },
 ]
@@ -63,7 +63,7 @@ export default function OurStoryPage() {
             </h1>
             <p className="mt-6 text-lg text-muted-foreground max-w-3xl mx-auto">
               Sunny Beatson founded Sunny&apos;s Donuts in 2020 during COVID, starting in his mum&apos;s
-              kitchen in Burnie, Tasmania, with a passion for bringing people together through handmade,
+              kitchen in Burnie with a passion for bringing people together through handmade,
               quality donuts.
             </p>
           </div>
@@ -85,7 +85,7 @@ export default function OurStoryPage() {
                 </p>
                 <p className="mt-2 text-sm sm:text-base text-muted-foreground leading-relaxed">
                   Same business, same community focus. The story continues under a new name — still
-                  handmade donuts, still dough for good across Tasmania.
+                  handmade donuts, still dough for good across Australia.
                 </p>
               </div>
             </div>
@@ -99,8 +99,8 @@ export default function OurStoryPage() {
                 From Kitchen To Community
               </h2>
               <p className="mt-3 max-w-3xl text-muted-foreground">
-                A simple idea became a Tasmania-wide fundraising journey built on quality donuts, care, and
-                local impact.
+                A simple idea became a community fundraising journey built on quality donuts, care, and
+                real impact across Australia.
               </p>
 
               <div className="relative mt-8">
@@ -155,11 +155,11 @@ export default function OurStoryPage() {
                   Our Mission
                 </h2>
                 <p className="mt-4 text-lg text-primary-foreground/90">
-                  Our mission is simple: to give back to the state that gave us so much.
+                  Our mission is simple: to give back to the communities that give us so much.
                 </p>
                 <p className="mt-4 text-primary-foreground/85">
                   From upgrading basketball courts to supporting grieving families, every campaign is
-                  built to uplift Tasmanians through meaningful, community-driven fundraising.
+                  built to uplift Australians through meaningful, community-driven fundraising.
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row gap-3">
                   <Button asChild size="lg" className="rounded-full bg-primary-foreground text-primary hover:bg-primary-foreground/90">

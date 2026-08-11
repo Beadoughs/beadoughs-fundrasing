@@ -5,7 +5,7 @@ import {
   COLLECTIONS_FIRST_QUERY,
   PRODUCT_BY_HANDLE_QUERY,
 } from "./queries"
-import { getFundraiserCollectionHandles, isShopifyAdminConfigured } from "./config"
+import { getFundraiserCollectionHandles, isShopifyAdminConfigured, type FundraiserRegion } from "./config"
 import { getCollectionDisplayMetafieldsByHandle } from "./admin"
 import type { LeaderboardEntry } from "@/lib/fundraising/types"
 
@@ -364,8 +364,10 @@ export async function getFundraiserCardByHandle(
   return withAdminMetafieldFallback(mapCollectionCard(data.collection))
 }
 
-export async function listFundraiserCards(): Promise<FundraiserCollectionCard[]> {
-  const handles = getFundraiserCollectionHandles()
+export async function listFundraiserCards(
+  region: FundraiserRegion = "tas"
+): Promise<FundraiserCollectionCard[]> {
+  const handles = getFundraiserCollectionHandles(region)
   const results = await Promise.all(handles.map((h) => getFundraiserCardByHandle(h)))
   return results.filter((c): c is FundraiserCollectionCard => c != null)
 }
@@ -378,16 +380,22 @@ type CollectionsFirstResponse = {
   }
 }
 
-/** Up to `first` collections, as returned by Storefront API (order is Shopify-defined). */
+/** Up to `first` collections, as returned by Storefront API (order is Shopify-defined).
+ * Excludes QLD-listed handles so the public /fundraisers + homepage never surface them.
+ */
 export async function listFundraiserCardsFromStore(
   first: number = 48
 ): Promise<FundraiserCollectionCard[]> {
+  const qldHandles = new Set(
+    getFundraiserCollectionHandles("qld").map((h) => h.toLowerCase())
+  )
   const data = await storefrontRequest<CollectionsFirstResponse>(
     COLLECTIONS_FIRST_QUERY,
     { first },
     { revalidate: 30 }
   )
-  return Promise.all(
+  const cards = await Promise.all(
     data.collections.edges.map(({ node }) => withAdminMetafieldFallback(mapCollectionCard(node)))
   )
+  return cards.filter((c) => !qldHandles.has(c.handle.toLowerCase()))
 }

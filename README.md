@@ -47,7 +47,9 @@ Quick test: place a $1 paid order from a fundraiser page, then refresh that page
    The site also dual-reads `custom.goal_boxes` (and related keys) and, when
    `SHOPIFY_ADMIN_ACCESS_TOKEN` is set, falls back to the Admin API if Storefront
    metafields are still missing.
-3. List handles in `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES` (comma-separated).
+3. List public campaign handles in `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES` (comma-separated).
+   For Queensland (hidden URL only), use `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD`
+   and share `/qld/fundraisers` — same collection + metafield steps, not linked from the main site.
 4. **Admin app token** — `SHOPIFY_ADMIN_ACCESS_TOKEN` with order + product metafield scopes.
 5. **Webhook** — `orders/paid` → `https://YOUR_DOMAIN/api/webhooks/shopify/orders-paid`  
    Set `SHOPIFY_WEBHOOK_SECRET` to the app/webhook signing secret, and redeploy after
@@ -62,7 +64,8 @@ The webhook accepts `Fundraiser slug`, `fundraiser_slug`, `Fundraiser handle`, o
 `fundraiser_handle`. If those are missing (common when Checkout Extensibility drops
 cart attributes), it attributes via **product→collection membership**: the purchased
 product must sit in exactly one fundraiser collection — either listed in
-`SHOPIFY_FUNDRAISER_COLLECTION_HANDLES` **or** already carrying fundraiser metafields
+`SHOPIFY_FUNDRAISER_COLLECTION_HANDLES` / `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD`
+**or** already carrying fundraiser metafields
 (`goal_boxes` / `boxes_sold` / `leaderboard`). Native cart attributes are not required.
 For a manually-created order, you can also add a tag `fundraiser:collection-handle`
 or a discount code `FUNDRAISER-collection-handle`.
@@ -93,6 +96,16 @@ Omit `dryRun` to apply the order to `boxes_sold` / `leaderboard` if it has not a
 
 Every new collection you add to the handles list (or that has fundraiser metafields)
 gets the same counter + leaderboard automatically once orders come in.
+
+### Queensland (hidden directory)
+
+Queensland campaigns use the **same** Shopify collection + metafield flow as public
+campaigns on `/fundraisers`.
+The only differences:
+
+1. Put handles in `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD` (Vercel env), then redeploy.
+2. Share only `https://YOUR-DOMAIN/qld/fundraisers` (or a specific `/qld/fundraisers/{handle}`).
+3. The main site does **not** link to QLD from header, footer, homepage, or Active Fundraisers.
 
 See comments in `lib/shopify/config.ts` for full Admin setup notes.
 

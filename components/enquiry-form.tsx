@@ -154,7 +154,7 @@ export function EnquiryForm() {
                   name="organisation"
                   value={organisation}
                   onChange={(e) => setOrganisation(e.target.value)}
-                  placeholder="Hobart Primary School P&F"
+                  placeholder="Riverside Primary School P&F"
                   required
                   autoComplete="organization"
                   className="h-12 rounded-xl border-border bg-secondary/60"

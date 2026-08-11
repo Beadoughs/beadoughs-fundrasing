@@ -8,14 +8,14 @@ const TESTIMONIALS = [
     quote: "We raised over $2,500 for our new playground equipment in just one week! The donuts practically sold themselves.",
     author: "Sarah J.",
     role: "P&C President",
-    school: "Hobart Primary School"
+    school: "Riverside Primary School"
   },
   {
     id: 2,
     quote: "The easiest fundraiser we've ever run. No upfront costs meant zero risk for our club, and the delivery was perfectly on time.",
     author: "Mark T.",
     role: "Club Secretary",
-    school: "Launceston Football Club"
+    school: "Northern Districts Football Club"
   },
   {
     id: 3,
@@ -39,7 +39,7 @@ export function TestimonialsSection() {
             Hear It From The Legends
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-white/80">
-            See how Sunny&apos;s Donuts helps Tasmania-wide groups hit bigger goals without the usual fundraising chaos.
+            See how Sunny&apos;s Donuts helps groups across Australia hit bigger goals without the usual fundraising chaos.
           </p>
         </div>
 

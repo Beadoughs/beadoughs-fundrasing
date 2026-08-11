@@ -13,10 +13,18 @@ type FundraiserCardGridProps = {
   limit?: number
   /** Grid columns — use 2 for large homepage cards. */
   columns?: 2 | 3
+  /** Campaign link prefix — `/fundraisers` (TAS) or `/qld/fundraisers` (QLD). */
+  basePath?: string
 }
 
-export function FundraiserCardGrid({ cards, limit, columns = 3 }: FundraiserCardGridProps) {
+export function FundraiserCardGrid({
+  cards,
+  limit,
+  columns = 3,
+  basePath = "/fundraisers",
+}: FundraiserCardGridProps) {
   const visible = typeof limit === "number" ? cards.slice(0, limit) : cards
+  const root = basePath.replace(/\/$/, "")
 
   return (
     <div
@@ -33,7 +41,7 @@ export function FundraiserCardGrid({ cards, limit, columns = 3 }: FundraiserCard
         return (
           <Link
             key={campaign.id}
-            href={`/fundraisers/${campaign.handle}`}
+            href={`${root}/${campaign.handle}`}
             aria-label={`Support ${campaign.title}`}
             className="block h-full rounded-[1.5rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >

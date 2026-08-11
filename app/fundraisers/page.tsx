@@ -35,7 +35,7 @@ export default async function FundraisersDirectoryPage() {
   let cards: Awaited<ReturnType<typeof listFundraiserCards>> = []
   let loadError: string | null = null
   try {
-    cards = useListAll ? await listFundraiserCardsFromStore() : await listFundraiserCards()
+    cards = useListAll ? await listFundraiserCardsFromStore() : await listFundraiserCards("tas")
   } catch (e) {
     loadError = e instanceof Error ? e.message : "Could not load fundraisers"
   }

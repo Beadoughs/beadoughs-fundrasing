@@ -1,4 +1,3 @@
-import { revalidatePath } from "next/cache"
 import { NextResponse } from "next/server"
 import {
   applyPaidOrderToFundraiserStats,
@@ -6,6 +5,7 @@ import {
   resolveFundraiserAttributionWithFallbacks,
   type ShopifyPaidOrderPayload,
 } from "@/lib/fundraising/stats"
+import { revalidateFundraiserPaths } from "@/lib/fundraising/revalidate"
 import {
   getPaidOrderPayloadById,
   listRecentUnappliedPaidOrderIds,
@@ -162,8 +162,7 @@ export async function POST(request: Request) {
           }
           const result = await applyPaidOrderToFundraiserStats(order)
           if (result.status === "applied") {
-            revalidatePath("/fundraisers")
-            revalidatePath(`/fundraisers/${result.slug}`)
+            revalidateFundraiserPaths(result.slug)
           }
           results.push({
             orderId: candidate.id,
@@ -230,8 +229,7 @@ export async function POST(request: Request) {
   try {
     const result = await applyPaidOrderToFundraiserStats(order)
     if (result.status === "applied") {
-      revalidatePath("/fundraisers")
-      revalidatePath(`/fundraisers/${result.slug}`)
+      revalidateFundraiserPaths(result.slug)
     }
     return NextResponse.json({
       ok: true,

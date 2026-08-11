@@ -12,19 +12,33 @@ export const revalidate = 30
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params
-  if (!isShopifyConfigured()) {
-    return { title: "Fundraiser | Sunny's Donuts" }
+  if (!isShopifyConfigured() || !isFundraiserHandleInRegion(slug, "qld")) {
+    return {
+      title: "Fundraiser | Sunny's Donuts",
+      robots: { index: false, follow: false },
+    }
   }
   try {
     const campaign = await getFundraiserByHandle(slug)
-    if (!campaign) return { title: "Fundraiser | Sunny's Donuts" }
-    return { title: `${campaign.title} | Sunny's Donuts` }
+    if (!campaign) {
+      return {
+        title: "Fundraiser | Sunny's Donuts",
+        robots: { index: false, follow: false },
+      }
+    }
+    return {
+      title: `${campaign.title} | Sunny's Donuts`,
+      robots: { index: false, follow: false },
+    }
   } catch {
-    return { title: "Fundraiser | Sunny's Donuts" }
+    return {
+      title: "Fundraiser | Sunny's Donuts",
+      robots: { index: false, follow: false },
+    }
   }
 }
 
-export default async function FundraiserPage({ params }: Props) {
+export default async function QldFundraiserPage({ params }: Props) {
   const { slug } = await params
 
   if (!isShopifyConfigured()) {
@@ -37,11 +51,7 @@ export default async function FundraiserPage({ params }: Props) {
     )
   }
 
-  // QLD-only handles belong under /qld/fundraisers — keep TAS URLs scoped to TAS list.
-  if (
-    isFundraiserHandleInRegion(slug, "qld") &&
-    !isFundraiserHandleInRegion(slug, "tas")
-  ) {
+  if (!isFundraiserHandleInRegion(slug, "qld")) {
     notFound()
   }
 
@@ -56,5 +66,5 @@ export default async function FundraiserPage({ params }: Props) {
     notFound()
   }
 
-  return <FundraiserCampaignView campaign={campaign} region="tas" />
+  return <FundraiserCampaignView campaign={campaign} region="qld" />
 }

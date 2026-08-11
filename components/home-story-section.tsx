@@ -28,7 +28,7 @@ const highlights: {
     title: "Fundraising First",
     year: "Today",
     description:
-      "Schools, clubs and families across Tasmania raise meaningful money with donuts people love.",
+      "Schools, clubs and families across Australia raise meaningful money with donuts people love.",
     icon: HeartHandshake,
   },
 ]

@@ -23,8 +23,8 @@ export function Footer() {
               Dough for Good
             </p>
             <p className="mt-3 max-w-xs text-sm text-white/70 leading-relaxed">
-              Helping Tasmania-wide groups and workplaces raise more through easy, high-margin donut
-              campaigns.
+              Helping groups and workplaces across Australia raise more through easy, high-margin
+              donut campaigns.
             </p>
             <div className="mt-6 flex gap-3">
               <a
@@ -87,7 +87,7 @@ export function Footer() {
             <p className="text-sm text-white/50">
               © {new Date().getFullYear()} Sunny&apos;s Donuts. All rights reserved.
             </p>
-            <p className="text-sm text-white/50">Made with love in Tasmania 🇦🇺</p>
+            <p className="text-sm text-white/50">Made with love in Australia 🇦🇺</p>
           </div>
         </div>
       </div>

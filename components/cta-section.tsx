@@ -16,7 +16,7 @@ export function CTASection() {
               Ready To Make Fundraising The Easiest Win Of The Year?
             </h2>
             <p className="mt-6 text-lg text-primary-foreground/80 max-w-2xl mx-auto">
-              Tell us about your group, school or workplace and we&apos;ll help map a Tasmania-ready fundraiser your community will love.
+              Tell us about your group, school or workplace and we&apos;ll help map a fundraiser your community will love.
             </p>
             <div className="mt-8">
               <Button 

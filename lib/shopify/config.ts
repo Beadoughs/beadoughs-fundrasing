@@ -42,16 +42,19 @@
  *    SHOPIFY_FUNDRAISER_COLLECTION_HANDLES OR collection has goal_boxes /
  *    boxes_sold / leaderboard metafields).
  *
- * 7. Set env vars (see .env.example). List collection handles in SHOPIFY_FUNDRAISER_COLLECTION_HANDLES
- *    (comma-separated) for the /fundraisers directory. Every listed collection gets a counter +
- *    leaderboard automatically once orders are attributed via cart "Fundraiser slug".
+ * 7. Set env vars (see .env.example). List public (main) collection handles in
+ *    SHOPIFY_FUNDRAISER_COLLECTION_HANDLES (comma-separated) for /fundraisers.
+ *    Queensland campaigns use SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD and are only
+ *    reachable at /qld/fundraisers (hidden from the main site nav). Same Shopify
+ *    collection + metafield setup for both.
  *
  * Owner checklist (auto boxes_sold / leaderboard — do once):
  *  1. Webhook topic orders/paid → https://YOUR_DOMAIN/api/webhooks/shopify/orders-paid
  *  2. SHOPIFY_WEBHOOK_SECRET = that webhook’s signing secret (Vercel env)
  *  3. SHOPIFY_ADMIN_ACCESS_TOKEN with read/write orders + products (Vercel env)
  *  4. Collection metafields beadoughs.boxes_sold + beadoughs.leaderboard exist
- *  5. Buyers must checkout from this website’s /fundraisers/{handle} page (not the native Shopify theme alone)
+ *  5. Buyers must checkout from this website’s fundraiser page
+ *     (/fundraisers/{handle} or /qld/fundraisers/{handle}), not the native Shopify theme alone
  */
 
 export const BEADOUGHS_METAFIELD_NAMESPACE = "beadoughs"
@@ -138,13 +141,46 @@ export function getShopifyWebhookSecret(): string | null {
   return secret || null
 }
 
-export function getFundraiserCollectionHandles(): string[] {
-  const raw = process.env.SHOPIFY_FUNDRAISER_COLLECTION_HANDLES?.trim()
-  if (!raw) return []
+export type FundraiserRegion = "tas" | "qld"
+
+function parseHandleList(raw: string | undefined): string[] {
+  if (!raw?.trim()) return []
   return raw
     .split(",")
     .map((h) => h.trim())
     .filter(Boolean)
+}
+
+/** Public /fundraisers by default; pass "qld" for the hidden /qld/fundraisers list. */
+export function getFundraiserCollectionHandles(region: FundraiserRegion = "tas"): string[] {
+  if (region === "qld") {
+    return parseHandleList(process.env.SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD)
+  }
+  return parseHandleList(process.env.SHOPIFY_FUNDRAISER_COLLECTION_HANDLES)
+}
+
+/** Union of TAS + QLD handles — used for order attribution fallbacks. */
+export function getAllFundraiserCollectionHandles(): string[] {
+  const seen = new Set<string>()
+  const out: string[] = []
+  for (const h of [
+    ...getFundraiserCollectionHandles("tas"),
+    ...getFundraiserCollectionHandles("qld"),
+  ]) {
+    const key = h.toLowerCase()
+    if (seen.has(key)) continue
+    seen.add(key)
+    out.push(h)
+  }
+  return out
+}
+
+export function isFundraiserHandleInRegion(
+  handle: string,
+  region: FundraiserRegion
+): boolean {
+  const key = handle.trim().toLowerCase()
+  return getFundraiserCollectionHandles(region).some((h) => h.toLowerCase() === key)
 }
 
 /** When true, /fundraisers loads collections from Shopify instead of only SHOPIFY_FUNDRAISER_COLLECTION_HANDLES. */

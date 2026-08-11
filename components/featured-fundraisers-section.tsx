@@ -22,7 +22,7 @@ export async function FeaturedFundraisersSection() {
     try {
       cards = listAllShopifyCollectionsEnabled()
         ? await listFundraiserCardsFromStore()
-        : await listFundraiserCards()
+        : await listFundraiserCards("tas")
     } catch (e) {
       loadError = e instanceof Error ? e.message : "Could not load fundraisers"
     }

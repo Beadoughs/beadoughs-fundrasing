@@ -14,7 +14,7 @@ import Link from "next/link"
 export const metadata: Metadata = {
   title: "Run a Fundraiser | Sunny's Donuts",
   description:
-    "How Sunny's Donuts fundraisers work for Tasmanian schools, clubs, charities and workplaces — plus FAQs and how to get started.",
+    "How Sunny's Donuts fundraisers work for schools, clubs, charities and workplaces across Australia — plus FAQs and how to get started.",
 }
 
 export default function FundraisePage() {
@@ -35,7 +35,7 @@ export default function FundraisePage() {
           </h1>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
             Simple, high-margin donut campaigns for schools, clubs, charities, community groups
-            and workplaces across Tasmania.
+            and workplaces across Australia.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="rounded-full px-8 text-base h-12">

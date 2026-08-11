@@ -1,11 +1,11 @@
-import { revalidatePath } from "next/cache"
 import { NextResponse } from "next/server"
 import {
   applyPaidOrderToFundraiserStats,
   type ShopifyPaidOrderPayload,
 } from "@/lib/fundraising/stats"
+import { revalidateFundraiserPaths } from "@/lib/fundraising/revalidate"
 import {
-  getFundraiserCollectionHandles,
+  getAllFundraiserCollectionHandles,
   getShopifyWebhookSecret,
   isShopifyAdminConfigured,
 } from "@/lib/shopify/config"
@@ -21,7 +21,7 @@ export const runtime = "nodejs"
 export async function GET() {
   const webhookSecret = Boolean(getShopifyWebhookSecret())
   const adminApi = isShopifyAdminConfigured()
-  const fundraiserHandles = getFundraiserCollectionHandles().length
+  const fundraiserHandles = getAllFundraiserCollectionHandles().length
   const ready = webhookSecret && adminApi
 
   return NextResponse.json({
@@ -112,8 +112,7 @@ export async function POST(request: Request) {
     const result = await applyPaidOrderToFundraiserStats(order)
 
     if (result.status === "applied") {
-      revalidatePath("/fundraisers")
-      revalidatePath(`/fundraisers/${result.slug}`)
+      revalidateFundraiserPaths(result.slug)
     }
 
     console.info("[shopify webhook] Processed paid order", {

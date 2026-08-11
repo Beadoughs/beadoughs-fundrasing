@@ -9,7 +9,7 @@ export function FAQSection() {
   const faqs = [
     {
       question: "Who can run a Sunny's Donuts fundraiser?",
-      answer: "Any Tasmanian community group can run a Sunny's Donuts fundraiser! This includes schools, P&Fs, sports clubs, charities, workplaces, community organisations, and more. If you're raising money for a good cause, we'd love to hear from you.",
+      answer: "Any Australian community group can run a Sunny's Donuts fundraiser! This includes schools, P&Fs, sports clubs, charities, workplaces, community organisations, and more. If you're raising money for a good cause, we'd love to hear from you.",
     },
     {
       question: "How does the fundraiser work?",
@@ -25,7 +25,7 @@ export function FAQSection() {
     },
     {
       question: "Where is Sunny's Donuts available?",
-      answer: "We currently serve groups across Tasmania, including Hobart, Launceston, and surrounding areas. If you're unsure whether we can reach your location, just submit an enquiry and we'll let you know.",
+      answer: "We work with groups across Australia. Reach and delivery options can vary by location — submit an enquiry and we'll confirm what we can support for your area.",
     },
     {
       question: "How do we get started?",

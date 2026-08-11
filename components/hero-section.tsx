@@ -24,7 +24,7 @@ export function HeroSection() {
               </span>
             </h1>
             <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 text-pretty leading-relaxed">
-              Tasmania-made donuts that help schools, clubs and community groups raise funds —
+              Fresh donuts that help schools, clubs and community groups raise funds —
               or support a campaign that&apos;s already underway.
             </p>
 

@@ -16,7 +16,7 @@ export function ImpactSection() {
     {
       icon: Heart,
       value: "Trusted",
-      label: "by Tasmanian community groups",
+      label: "by community groups nationwide",
     },
   ]
 

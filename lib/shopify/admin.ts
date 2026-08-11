@@ -2,7 +2,7 @@ import {
   BEADOUGHS_COLLECTION_METAFIELDS,
   BEADOUGHS_METAFIELD_NAMESPACE,
   BEADOUGHS_ORDER_STATS_APPLIED_KEY,
-  getFundraiserCollectionHandles,
+  getAllFundraiserCollectionHandles,
   getShopifyAdminConfig,
 } from "./config"
 import type { FundraiserStats, LeaderboardEntry } from "@/lib/fundraising/types"
@@ -413,7 +413,8 @@ const PRODUCT_COLLECTION_HANDLES = `
 
 /**
  * A collection counts as a fundraiser when:
- * - its handle is listed in SHOPIFY_FUNDRAISER_COLLECTION_HANDLES, OR
+ * - its handle is listed in SHOPIFY_FUNDRAISER_COLLECTION_HANDLES or
+ *   SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD, OR
  * - it already has fundraiser metafields (goal_boxes / boxes_sold / leaderboard)
  *   under beadoughs.* or custom.*.
  *
@@ -457,7 +458,7 @@ export async function resolveUniqueFundraiserHandleForProducts(
   if (!getShopifyAdminConfig()) return null
 
   const configuredSet = new Set(
-    getFundraiserCollectionHandles().map((h) => h.toLowerCase())
+    getAllFundraiserCollectionHandles().map((h) => h.toLowerCase())
   )
   const matchedHandles = new Set<string>()
   const matchedProductIds: string[] = []

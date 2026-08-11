@@ -43,7 +43,7 @@ export function HowItWorksSection() {
             How Sunny&apos;s Donuts Makes Fundraising Feel Easy
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Four clear and simple steps to better results for Tasmania-wide communities and teams.
+            Four clear and simple steps to better results for communities and teams across Australia.
           </p>
         </div>
 
