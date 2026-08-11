@@ -381,13 +381,16 @@ type CollectionsFirstResponse = {
 }
 
 /** Up to `first` collections, as returned by Storefront API (order is Shopify-defined).
- * Excludes QLD-listed handles so the public /fundraisers + homepage never surface them.
+ * Excludes QLD + private handles so the public /fundraisers + homepage never surface them.
  */
 export async function listFundraiserCardsFromStore(
   first: number = 48
 ): Promise<FundraiserCollectionCard[]> {
-  const qldHandles = new Set(
-    getFundraiserCollectionHandles("qld").map((h) => h.toLowerCase())
+  const hiddenHandles = new Set(
+    [
+      ...getFundraiserCollectionHandles("qld"),
+      ...getFundraiserCollectionHandles("private"),
+    ].map((h) => h.toLowerCase())
   )
   const data = await storefrontRequest<CollectionsFirstResponse>(
     COLLECTIONS_FIRST_QUERY,
@@ -397,5 +400,5 @@ export async function listFundraiserCardsFromStore(
   const cards = await Promise.all(
     data.collections.edges.map(({ node }) => withAdminMetafieldFallback(mapCollectionCard(node)))
   )
-  return cards.filter((c) => !qldHandles.has(c.handle.toLowerCase()))
+  return cards.filter((c) => !hiddenHandles.has(c.handle.toLowerCase()))
 }

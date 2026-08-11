@@ -13,7 +13,7 @@ type FundraiserCardGridProps = {
   limit?: number
   /** Grid columns — use 2 for large homepage cards. */
   columns?: 2 | 3
-  /** Campaign link prefix — `/fundraisers` (TAS) or `/qld/fundraisers` (QLD). */
+  /** Campaign link prefix — `/fundraisers`, `/qld/fundraisers`, or `/p`. */
   basePath?: string
 }
 

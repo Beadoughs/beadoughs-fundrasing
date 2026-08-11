@@ -14,19 +14,33 @@ export const revalidate = 30
 
 export async function generateMetadata({ params }: Props) {
   const { slug, productHandle } = await params
-  if (!isShopifyConfigured()) {
-    return { title: "Product | Sunny's Donuts" }
+  if (!isShopifyConfigured() || !isFundraiserHandleInRegion(slug, "private")) {
+    return {
+      title: "Product | Sunny's Donuts",
+      robots: { index: false, follow: false },
+    }
   }
   try {
     const data = await getFundraiserProduct(slug, productHandle)
-    if (!data) return { title: "Product | Sunny's Donuts" }
-    return { title: `${data.product.title} | ${data.fundraiser.title} | Sunny's Donuts` }
+    if (!data) {
+      return {
+        title: "Product | Sunny's Donuts",
+        robots: { index: false, follow: false },
+      }
+    }
+    return {
+      title: `${data.product.title} | ${data.fundraiser.title} | Sunny's Donuts`,
+      robots: { index: false, follow: false },
+    }
   } catch {
-    return { title: "Product | Sunny's Donuts" }
+    return {
+      title: "Product | Sunny's Donuts",
+      robots: { index: false, follow: false },
+    }
   }
 }
 
-export default async function FundraiserProductPage({ params }: Props) {
+export default async function PrivateFundraiserProductPage({ params }: Props) {
   const { slug, productHandle } = await params
 
   if (!isShopifyConfigured()) {
@@ -39,11 +53,7 @@ export default async function FundraiserProductPage({ params }: Props) {
     )
   }
 
-  if (
-    (isFundraiserHandleInRegion(slug, "private") ||
-      isFundraiserHandleInRegion(slug, "qld")) &&
-    !isFundraiserHandleInRegion(slug, "tas")
-  ) {
+  if (!isFundraiserHandleInRegion(slug, "private")) {
     notFound()
   }
 
@@ -62,7 +72,7 @@ export default async function FundraiserProductPage({ params }: Props) {
     <FundraiserProductView
       fundraiser={data.fundraiser}
       product={data.product}
-      region="tas"
+      region="private"
     />
   )
 }

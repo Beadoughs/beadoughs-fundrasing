@@ -413,8 +413,9 @@ const PRODUCT_COLLECTION_HANDLES = `
 
 /**
  * A collection counts as a fundraiser when:
- * - its handle is listed in SHOPIFY_FUNDRAISER_COLLECTION_HANDLES or
- *   SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD, OR
+ * - its handle is listed in SHOPIFY_FUNDRAISER_COLLECTION_HANDLES,
+ *   SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD, or
+ *   SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_PRIVATE, OR
  * - it already has fundraiser metafields (goal_boxes / boxes_sold / leaderboard)
  *   under beadoughs.* or custom.*.
  *

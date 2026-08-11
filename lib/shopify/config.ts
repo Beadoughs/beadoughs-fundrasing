@@ -45,8 +45,10 @@
  * 7. Set env vars (see .env.example). List public (main) collection handles in
  *    SHOPIFY_FUNDRAISER_COLLECTION_HANDLES (comma-separated) for /fundraisers.
  *    Queensland campaigns use SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD and are only
- *    reachable at /qld/fundraisers (hidden from the main site nav). Same Shopify
- *    collection + metafield setup for both.
+ *    reachable at /qld/fundraisers (hidden from the main site nav).
+ *    Per-campaign private links use SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_PRIVATE
+ *    at /p/{handle} (no directory listing). Same Shopify collection + metafield
+ *    setup for all.
  *
  * Owner checklist (auto boxes_sold / leaderboard — do once):
  *  1. Webhook topic orders/paid → https://YOUR_DOMAIN/api/webhooks/shopify/orders-paid
@@ -54,7 +56,8 @@
  *  3. SHOPIFY_ADMIN_ACCESS_TOKEN with read/write orders + products (Vercel env)
  *  4. Collection metafields beadoughs.boxes_sold + beadoughs.leaderboard exist
  *  5. Buyers must checkout from this website’s fundraiser page
- *     (/fundraisers/{handle} or /qld/fundraisers/{handle}), not the native Shopify theme alone
+ *     (/fundraisers/{handle}, /qld/fundraisers/{handle}, or /p/{handle}), not the
+ *     native Shopify theme alone
  */
 
 export const BEADOUGHS_METAFIELD_NAMESPACE = "beadoughs"
@@ -141,7 +144,7 @@ export function getShopifyWebhookSecret(): string | null {
   return secret || null
 }
 
-export type FundraiserRegion = "tas" | "qld"
+export type FundraiserRegion = "tas" | "qld" | "private"
 
 function parseHandleList(raw: string | undefined): string[] {
   if (!raw?.trim()) return []
@@ -151,21 +154,29 @@ function parseHandleList(raw: string | undefined): string[] {
     .filter(Boolean)
 }
 
-/** Public /fundraisers by default; pass "qld" for the hidden /qld/fundraisers list. */
+/**
+ * Public /fundraisers by default;
+ * "qld" → hidden /qld/fundraisers directory;
+ * "private" → unlisted /p/{handle} only (no index).
+ */
 export function getFundraiserCollectionHandles(region: FundraiserRegion = "tas"): string[] {
   if (region === "qld") {
     return parseHandleList(process.env.SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD)
   }
+  if (region === "private") {
+    return parseHandleList(process.env.SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_PRIVATE)
+  }
   return parseHandleList(process.env.SHOPIFY_FUNDRAISER_COLLECTION_HANDLES)
 }
 
-/** Union of TAS + QLD handles — used for order attribution fallbacks. */
+/** Union of public + QLD + private handles — used for order attribution fallbacks. */
 export function getAllFundraiserCollectionHandles(): string[] {
   const seen = new Set<string>()
   const out: string[] = []
   for (const h of [
     ...getFundraiserCollectionHandles("tas"),
     ...getFundraiserCollectionHandles("qld"),
+    ...getFundraiserCollectionHandles("private"),
   ]) {
     const key = h.toLowerCase()
     if (seen.has(key)) continue

@@ -48,8 +48,10 @@ Quick test: place a $1 paid order from a fundraiser page, then refresh that page
    `SHOPIFY_ADMIN_ACCESS_TOKEN` is set, falls back to the Admin API if Storefront
    metafields are still missing.
 3. List public campaign handles in `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES` (comma-separated).
-   For Queensland (hidden URL only), use `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD`
-   and share `/qld/fundraisers` — same collection + metafield steps, not linked from the main site.
+   For Queensland (hidden directory), use `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD`
+   and share `/qld/fundraisers`. For per-campaign private links (schools/clubs), use
+   `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_PRIVATE` and share `/p/{handle}` only —
+   same collection + metafield steps; not linked from the main site.
 4. **Admin app token** — `SHOPIFY_ADMIN_ACCESS_TOKEN` with order + product metafield scopes.
 5. **Webhook** — `orders/paid` → `https://YOUR_DOMAIN/api/webhooks/shopify/orders-paid`  
    Set `SHOPIFY_WEBHOOK_SECRET` to the app/webhook signing secret, and redeploy after
@@ -64,7 +66,8 @@ The webhook accepts `Fundraiser slug`, `fundraiser_slug`, `Fundraiser handle`, o
 `fundraiser_handle`. If those are missing (common when Checkout Extensibility drops
 cart attributes), it attributes via **product→collection membership**: the purchased
 product must sit in exactly one fundraiser collection — either listed in
-`SHOPIFY_FUNDRAISER_COLLECTION_HANDLES` / `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD`
+`SHOPIFY_FUNDRAISER_COLLECTION_HANDLES` / `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD` /
+`SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_PRIVATE`
 **or** already carrying fundraiser metafields
 (`goal_boxes` / `boxes_sold` / `leaderboard`). Native cart attributes are not required.
 For a manually-created order, you can also add a tag `fundraiser:collection-handle`
@@ -106,6 +109,14 @@ The only differences:
 1. Put handles in `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD` (Vercel env), then redeploy.
 2. Share only `https://YOUR-DOMAIN/qld/fundraisers` (or a specific `/qld/fundraisers/{handle}`).
 3. The main site does **not** link to QLD from header, footer, homepage, or Active Fundraisers.
+
+### Private-by-link campaigns (`/p/{handle}`)
+
+For schools, sports clubs, and other campaigns that should stay off the public site:
+
+1. Create the collection + metafields + products (same as public).
+2. Add the handle to `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_PRIVATE` (Vercel), then redeploy.
+3. Share only `https://YOUR-DOMAIN/p/{handle}` — there is **no** `/p` page that lists every private campaign.
 
 See comments in `lib/shopify/config.ts` for full Admin setup notes.
 

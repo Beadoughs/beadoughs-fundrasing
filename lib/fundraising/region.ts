@@ -7,7 +7,9 @@ export type { FundraiserRegion }
 
 /** Base path for fundraiser URLs in a region (no trailing slash). */
 export function fundraiserBasePath(region: FundraiserRegion = "tas"): string {
-  return region === "qld" ? "/qld/fundraisers" : "/fundraisers"
+  if (region === "qld") return "/qld/fundraisers"
+  if (region === "private") return "/p"
+  return "/fundraisers"
 }
 
 export function fundraiserCampaignHref(
@@ -25,10 +27,13 @@ export function fundraiserProductHref(
   return `${fundraiserCampaignHref(campaignHandle, region)}/products/${productHandle}`
 }
 
-/** Resolve region from a campaign handle (QLD list wins if listed in both). */
+/** Resolve region from a campaign handle (private wins, then QLD, then public). */
 export function resolveFundraiserRegion(handle: string | null): FundraiserRegion {
   if (!handle) return "tas"
   const key = handle.trim().toLowerCase()
+  if (getFundraiserCollectionHandles("private").some((h) => h.toLowerCase() === key)) {
+    return "private"
+  }
   if (getFundraiserCollectionHandles("qld").some((h) => h.toLowerCase() === key)) {
     return "qld"
   }
