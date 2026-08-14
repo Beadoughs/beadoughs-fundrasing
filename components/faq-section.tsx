@@ -13,7 +13,7 @@ export function FAQSection() {
     },
     {
       question: "How does the fundraiser work?",
-      answer: "It's simple: your group collects pre-orders from supporters, we bake fresh donuts based on those orders, and then help coordinate delivery. Your group sells the donuts at a set price, keeps the profit margin, and supporters get delicious fresh donuts. No upfront inventory, no waste, no stress.",
+      answer: "It's simple: your group collects pre-orders from supporters, we bake delicious donuts based on those orders, and then help coordinate delivery. Your group sells the donuts at a set price, keeps the profit margin, and supporters get delicious donuts. No upfront inventory, no waste, no stress.",
     },
     {
       question: "Do we need to pay upfront?",

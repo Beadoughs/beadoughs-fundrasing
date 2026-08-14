@@ -26,7 +26,7 @@ export function HowItWorksSection() {
       number: "04",
       icon: Truck,
       title: "We bake & deliver",
-      description: "We bake fresh donuts and help coordinate delivery so your group can distribute them.",
+      description: "We bake delicious donuts and help coordinate delivery so your group can distribute them.",
     },
   ]
 
