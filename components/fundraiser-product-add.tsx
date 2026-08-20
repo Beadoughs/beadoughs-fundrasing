@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import Link from "next/link"
-import { addCartLines, redirectToShopifyCheckout } from "@/app/actions/cart"
+import { toast } from "sonner"
+import { addCartLines } from "@/app/actions/cart"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -40,7 +40,6 @@ export function FundraiserProductAdd({
   const [quantity, setQuantity] = useState(Math.max(1, Math.floor(defaultQuantity)))
   const [pending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
-  const [done, setDone] = useState(false)
 
   const activeVariant =
     product.variants.find((v) => v.id === variantId) ?? product.variants[0]
@@ -61,7 +60,6 @@ export function FundraiserProductAdd({
     const qty = showQuantitySelector ? clampQuantity(quantity) : 1
     startTransition(async () => {
       setError(null)
-      setDone(false)
       try {
         // Line properties are the primary attribution path for the orders/paid
         // webhook; cart attributes are a secondary copy for order Additional details.
@@ -81,7 +79,7 @@ export function FundraiserProductAdd({
             { key: "Fundraiser", value: title },
           ]
         )
-        setDone(true)
+        toast.success("Added to cart")
         window.dispatchEvent(new Event("cart-updated"))
       } catch (e) {
         setError(e instanceof Error ? e.message : "Could not add to cart")
@@ -180,21 +178,6 @@ export function FundraiserProductAdd({
       </div>
 
       {error && <p className="text-sm text-destructive">{error}</p>}
-      {done && !error && (
-        <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 space-y-3">
-          <p className="text-sm font-medium text-primary">Added to cart</p>
-          <div className="flex flex-col sm:flex-row gap-2">
-            <Button asChild variant="outline" className="rounded-full flex-1">
-              <Link href="/cart">View cart</Link>
-            </Button>
-            <form action={redirectToShopifyCheckout} className="flex-1">
-              <Button type="submit" className="w-full rounded-full">
-                Checkout
-              </Button>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   )
 }

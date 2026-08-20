@@ -5,6 +5,7 @@ import { Footer } from "@/components/footer"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { FundraiserProductAdd } from "@/components/fundraiser-product-add"
+import { FundraiserCartActions } from "@/components/fundraiser-cart-actions"
 import { ArrowLeft } from "lucide-react"
 import { fundraiserCampaignHref, type FundraiserRegion } from "@/lib/fundraising/region"
 import type { FundraiserProduct, FundraiserProductPage } from "@/lib/shopify/fundraiser-data"
@@ -86,17 +87,18 @@ export function FundraiserProductView({
                 size="lg"
               />
 
+              <div className="mt-6 pt-6 border-t border-border">
+                <FundraiserCartActions />
+              </div>
+
               <p className="text-xs text-center text-muted-foreground pt-6">
                 Secure payment. This purchase is attributed to{" "}
                 <span className="font-medium text-foreground">{fundraiser.title}</span>.
               </p>
 
-              <div className="mt-6 pt-6 border-t border-border flex flex-col sm:flex-row gap-3">
-                <Button asChild variant="outline" className="rounded-full flex-1">
+              <div className="mt-6 pt-6 border-t border-border">
+                <Button asChild variant="outline" className="rounded-full w-full">
                   <Link href={campaignHref}>Back to campaign</Link>
-                </Button>
-                <Button asChild variant="secondary" className="rounded-full flex-1">
-                  <Link href="/cart">View cart</Link>
                 </Button>
               </div>
             </Card>

@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Package, Clock, Users } from "lucide-react"
 import { FundraiserProductAdd } from "@/components/fundraiser-product-add"
+import { FundraiserCartActions } from "@/components/fundraiser-cart-actions"
 import {
   daysLeftFromEndDate,
   percentBoxesSold,
@@ -205,12 +206,10 @@ export function FundraiserCampaignView({ campaign, region = "tas" }: Props) {
                     )}
                   </div>
 
-                  <Button asChild size="lg" className="w-full text-lg h-14 rounded-full shadow-lg shadow-primary/20">
-                    <Link href="/cart">View cart</Link>
-                  </Button>
+                  <FundraiserCartActions />
 
                   <p className="text-xs text-center text-muted-foreground pt-4">
-                    Review your cart, then checkout securely.
+                    Add products below, then view your cart or checkout here.
                   </p>
                 </Card>
               </div>
