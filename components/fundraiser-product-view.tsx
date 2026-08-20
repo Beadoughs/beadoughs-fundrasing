@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { FundraiserProductAdd } from "@/components/fundraiser-product-add"
-import { FundraiserCartActions } from "@/components/fundraiser-cart-actions"
+import { FundraiserCartActions, FundraiserCartActionsMobileBar } from "@/components/fundraiser-cart-actions"
 import { ArrowLeft } from "lucide-react"
 import { fundraiserCampaignHref, type FundraiserRegion } from "@/lib/fundraising/region"
 import type { FundraiserProduct, FundraiserProductPage } from "@/lib/shopify/fundraiser-data"
@@ -27,7 +27,7 @@ export function FundraiserProductView({
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-24 pb-16 bg-secondary/10">
+      <main className="min-h-screen pt-24 pb-28 md:pb-16 bg-secondary/10">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
             <Button asChild variant="ghost" className="mb-4 -ml-2 rounded-full text-muted-foreground">
@@ -87,7 +87,7 @@ export function FundraiserProductView({
                 size="lg"
               />
 
-              <div className="mt-6 pt-6 border-t border-border">
+              <div className="mt-6 pt-6 border-t border-border hidden md:block">
                 <FundraiserCartActions />
               </div>
 
@@ -105,6 +105,7 @@ export function FundraiserProductView({
           </div>
         </div>
       </main>
+      <FundraiserCartActionsMobileBar />
       <Footer />
     </>
   )

@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Package, Clock, Users } from "lucide-react"
 import { FundraiserProductAdd } from "@/components/fundraiser-product-add"
-import { FundraiserCartActions } from "@/components/fundraiser-cart-actions"
+import { FundraiserCartActions, FundraiserCartActionsMobileBar } from "@/components/fundraiser-cart-actions"
 import {
   daysLeftFromEndDate,
   percentBoxesSold,
@@ -36,7 +36,7 @@ export function FundraiserCampaignView({ campaign, region = "tas" }: Props) {
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-24 pb-16 bg-secondary/10">
+      <main className="min-h-screen pt-24 pb-28 md:pb-16 bg-secondary/10">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
             <h1 className="text-center text-4xl sm:text-5xl font-heading font-bold text-foreground">
@@ -206,17 +206,20 @@ export function FundraiserCampaignView({ campaign, region = "tas" }: Props) {
                     )}
                   </div>
 
-                  <FundraiserCartActions />
+                  <div className="hidden md:block">
+                    <FundraiserCartActions />
 
-                  <p className="text-xs text-center text-muted-foreground pt-4">
-                    Add products below, then view your cart or checkout here.
-                  </p>
+                    <p className="text-xs text-center text-muted-foreground pt-4">
+                      Add products below, then view your cart or checkout here.
+                    </p>
+                  </div>
                 </Card>
               </div>
             </div>
           </div>
         </div>
       </main>
+      <FundraiserCartActionsMobileBar />
       <Footer />
     </>
   )
