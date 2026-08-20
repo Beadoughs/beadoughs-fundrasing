@@ -89,9 +89,6 @@ export function FundraiserSearchSection({ onSearchingChange }: Props) {
             <Loader2 className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 animate-spin text-muted-foreground" />
           )}
         </div>
-        <p className="mt-3 text-center text-sm text-muted-foreground">
-          Find public and invite-only campaigns. Private fundraisers won&apos;t appear in the list below unless you search for them.
-        </p>
       </div>
 
       {isSearching && (
