@@ -20,14 +20,27 @@ function attrMatchesFundraiserSlug(key: string | null | undefined): boolean {
 /** Prefer cart attributes, then line item attributes. */
 export function resolveCartFundraiserSlug(cart: {
   attributes?: CartAttribute[] | null
-  lines?: {
-    edges: { node: { attributes?: CartAttribute[] | null } }[]
-  } | null
+  lines?:
+    | { attributes?: CartAttribute[] | null }[]
+    | {
+        edges: { node: { attributes?: CartAttribute[] | null } }[]
+      }
+    | null
 } | null): string | null {
   if (!cart) return null
 
   const fromCart = cart.attributes?.find((a) => attrMatchesFundraiserSlug(a.key))?.value?.trim()
   if (fromCart) return fromCart
+
+  if (Array.isArray(cart.lines)) {
+    for (const line of cart.lines) {
+      const fromLine = line.attributes
+        ?.find((a) => attrMatchesFundraiserSlug(a.key))
+        ?.value?.trim()
+      if (fromLine) return fromLine
+    }
+    return null
+  }
 
   for (const edge of cart.lines?.edges ?? []) {
     const fromLine = edge.node.attributes

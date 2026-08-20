@@ -1,6 +1,7 @@
 "use server"
 
 import { cookies } from "next/headers"
+import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import {
   CART_COOKIE_MAX_AGE,
@@ -18,6 +19,106 @@ import {
   CART_QUERY,
 } from "@/lib/shopify/queries"
 import type { CartAttribute } from "@/lib/fundraising/cart-fundraiser"
+
+export type CartDisplayLine = {
+  id: string
+  quantity: number
+  attributes: CartAttribute[]
+  cost: { totalAmount: { amount: string; currencyCode: string } }
+  merchandise: {
+    id: string
+    title: string
+    imageUrl: string | null
+    imageAlt: string | null
+    product: { title: string; handle: string }
+  }
+}
+
+export type CartDisplay = {
+  id: string
+  checkoutUrl: string
+  totalQuantity: number
+  cost: { totalAmount: { amount: string; currencyCode: string } }
+  attributes: CartAttribute[]
+  lines: CartDisplayLine[]
+}
+
+function revalidateCart() {
+  revalidatePath("/cart")
+}
+
+function mapCartForDisplay(
+  cart: NonNullable<Awaited<ReturnType<typeof fetchCartRaw>>>
+): CartDisplay {
+  return {
+    id: cart.id,
+    checkoutUrl: cart.checkoutUrl,
+    totalQuantity: cart.totalQuantity,
+    cost: cart.cost,
+    attributes: cart.attributes,
+    lines: cart.lines.edges.map(({ node }) => ({
+      id: node.id,
+      quantity: node.quantity,
+      attributes: node.attributes ?? [],
+      cost: node.cost,
+      merchandise: {
+        id: node.merchandise.id,
+        title: node.merchandise.title,
+        imageUrl:
+          node.merchandise.image?.url ??
+          node.merchandise.product.featuredImage?.url ??
+          null,
+        imageAlt:
+          node.merchandise.image?.altText ??
+          node.merchandise.product.featuredImage?.altText ??
+          node.merchandise.product.title,
+        product: {
+          title: node.merchandise.product.title,
+          handle: node.merchandise.product.handle,
+        },
+      },
+    })),
+  }
+}
+
+async function fetchCartRaw(cartId: string) {
+  type Res = {
+    cart: {
+      id: string
+      checkoutUrl: string
+      totalQuantity: number
+      cost: {
+        totalAmount: { amount: string; currencyCode: string }
+      }
+      attributes: CartAttribute[]
+      lines: {
+        edges: {
+          node: {
+            id: string
+            quantity: number
+            cost: {
+              totalAmount: { amount: string; currencyCode: string }
+            }
+            attributes: CartAttribute[]
+            merchandise: {
+              id: string
+              title: string
+              image?: { url: string; altText?: string | null } | null
+              product: {
+                title: string
+                handle: string
+                featuredImage?: { url: string; altText?: string | null } | null
+              }
+            }
+          }
+        }[]
+      }
+    } | null
+  }
+
+  const data = await storefrontRequest<Res>(CART_QUERY, { cartId }, { cache: "no-store" })
+  return data.cart
+}
 
 export type CartLineInputAttr = { key: string; value: string }
 
@@ -205,6 +306,7 @@ export async function addCartLines(
     const cart = data.cartCreate.cart
     if (!cart?.id) throw new Error("cartCreate returned no cart")
     await setCartCookie(cart.id)
+    revalidateCart()
     return
   }
 
@@ -242,6 +344,7 @@ export async function addCartLines(
     const cart = fresh.cartCreate.cart
     if (!cart?.id) throw new Error("cartCreate returned no cart")
     await setCartCookie(cart.id)
+    revalidateCart()
     return
   }
 
@@ -259,6 +362,7 @@ export async function addCartLines(
       error instanceof Error ? error.message : error
     )
   }
+  revalidateCart()
 }
 
 export async function updateCartLineQuantity(lineId: string, quantity: number): Promise<void> {
@@ -266,6 +370,11 @@ export async function updateCartLineQuantity(lineId: string, quantity: number): 
   getShopifyConfig()
   const cartId = await getCartIdFromCookie()
   if (!cartId) return
+
+  if (quantity < 1) {
+    await removeCartLine(lineId)
+    return
+  }
 
   type Res = {
     cartLinesUpdate: {
@@ -279,6 +388,7 @@ export async function updateCartLineQuantity(lineId: string, quantity: number): 
     { cache: "no-store" }
   )
   cartUserErrors(data.cartLinesUpdate.userErrors, "cartLinesUpdate")
+  revalidateCart()
 }
 
 export async function removeCartLine(lineId: string): Promise<void> {
@@ -299,6 +409,12 @@ export async function removeCartLine(lineId: string): Promise<void> {
     { cache: "no-store" }
   )
   cartUserErrors(data.cartLinesRemove.userErrors, "cartLinesRemove")
+  revalidateCart()
+}
+
+export async function getCartItemCount(): Promise<number> {
+  const cart = await getCartForDisplay()
+  return cart?.totalQuantity ?? 0
 }
 
 export async function redirectToShopifyCheckout(): Promise<never> {
@@ -324,44 +440,16 @@ export async function redirectToShopifyCheckout(): Promise<never> {
   redirect(url)
 }
 
-export async function getCartForDisplay() {
+export async function getCartForDisplay(): Promise<CartDisplay | null> {
   if (!isShopifyConfigured()) return null
   getShopifyConfig()
   const cartId = await getCartIdFromCookie()
   if (!cartId) return null
 
-  type Res = {
-    cart: {
-      id: string
-      checkoutUrl: string
-      totalQuantity: number
-      cost: {
-        totalAmount: { amount: string; currencyCode: string }
-      }
-      attributes: CartAttribute[]
-      lines: {
-        edges: {
-          node: {
-            id: string
-            quantity: number
-            cost: {
-              totalAmount: { amount: string; currencyCode: string }
-            }
-            attributes: CartAttribute[]
-            merchandise: {
-              id: string
-              title: string
-              product: { title: string; handle: string }
-            }
-          }
-        }[]
-      }
-    } | null
-  }
-
   try {
-    const data = await storefrontRequest<Res>(CART_QUERY, { cartId }, { cache: "no-store" })
-    return data.cart
+    const cart = await fetchCartRaw(cartId)
+    if (!cart) return null
+    return mapCartForDisplay(cart)
   } catch {
     return null
   }

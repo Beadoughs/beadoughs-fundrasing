@@ -188,9 +188,17 @@ export const CART_QUERY = `
               ... on ProductVariant {
                 id
                 title
+                image {
+                  url
+                  altText
+                }
                 product {
                   title
                   handle
+                  featuredImage {
+                    url
+                    altText
+                  }
                 }
               }
             }

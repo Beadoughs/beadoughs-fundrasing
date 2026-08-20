@@ -1,10 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Menu, ShoppingCart, X } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
+import { CartNavLink } from "@/components/cart-nav-link"
+import { Menu, X } from "lucide-react"
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -78,12 +79,7 @@ export function Header() {
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
-            <Button asChild variant="ghost" size="lg" className="rounded-full px-4 gap-2 text-foreground">
-              <Link href="/cart">
-                <ShoppingCart className="h-4 w-4" />
-                Cart
-              </Link>
-            </Button>
+            <CartNavLink />
             <Button asChild size="lg" className="rounded-full px-6">
               <Link href="/fundraise#enquiry">Start a Fundraiser</Link>
             </Button>
@@ -113,7 +109,6 @@ export function Header() {
               ))}
               <Button asChild variant="outline" className="rounded-full mt-2">
                 <Link href="/cart" onClick={() => setIsMobileMenuOpen(false)}>
-                  <ShoppingCart className="mr-2 h-4 w-4" />
                   Cart
                 </Link>
               </Button>

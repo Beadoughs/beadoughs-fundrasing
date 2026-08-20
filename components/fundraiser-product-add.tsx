@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { addCartLines } from "@/app/actions/cart"
+import Link from "next/link"
+import { addCartLines, redirectToShopifyCheckout } from "@/app/actions/cart"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -81,6 +82,7 @@ export function FundraiserProductAdd({
           ]
         )
         setDone(true)
+        window.dispatchEvent(new Event("cart-updated"))
       } catch (e) {
         setError(e instanceof Error ? e.message : "Could not add to cart")
       }
@@ -179,7 +181,19 @@ export function FundraiserProductAdd({
 
       {error && <p className="text-sm text-destructive">{error}</p>}
       {done && !error && (
-        <p className="text-sm text-primary font-medium">Added — view your cart to checkout.</p>
+        <div className="rounded-2xl border border-primary/20 bg-primary/5 p-4 space-y-3">
+          <p className="text-sm font-medium text-primary">Added to cart</p>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <Button asChild variant="outline" className="rounded-full flex-1">
+              <Link href="/cart">View cart</Link>
+            </Button>
+            <form action={redirectToShopifyCheckout} className="flex-1">
+              <Button type="submit" className="w-full rounded-full">
+                Checkout
+              </Button>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   )

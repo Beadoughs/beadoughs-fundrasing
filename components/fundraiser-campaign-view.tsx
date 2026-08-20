@@ -206,11 +206,11 @@ export function FundraiserCampaignView({ campaign, region = "tas" }: Props) {
                   </div>
 
                   <Button asChild size="lg" className="w-full text-lg h-14 rounded-full shadow-lg shadow-primary/20">
-                    <Link href="/cart">View cart & checkout</Link>
+                    <Link href="/cart">View cart</Link>
                   </Button>
 
                   <p className="text-xs text-center text-muted-foreground pt-4">
-                    Secure checkout.
+                    Review your cart, then checkout securely.
                   </p>
                 </Card>
               </div>
