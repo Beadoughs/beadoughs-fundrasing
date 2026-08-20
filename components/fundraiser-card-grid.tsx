@@ -15,6 +15,8 @@ type FundraiserCardGridProps = {
   columns?: 2 | 3
   /** Campaign link prefix — `/fundraisers`, `/qld/fundraisers`, or `/p`. */
   basePath?: string
+  /** Per-handle href when cards span multiple regions (e.g. search results). */
+  hrefByHandle?: Record<string, string>
 }
 
 export function FundraiserCardGrid({
@@ -22,6 +24,7 @@ export function FundraiserCardGrid({
   limit,
   columns = 3,
   basePath = "/fundraisers",
+  hrefByHandle,
 }: FundraiserCardGridProps) {
   const visible = typeof limit === "number" ? cards.slice(0, limit) : cards
   const root = basePath.replace(/\/$/, "")
@@ -37,11 +40,12 @@ export function FundraiserCardGrid({
         const pct = percentBoxesSold(campaign.boxesSold, campaign.goalBoxes)
         const orgLabel = campaign.organization ?? campaign.title
         const hasGoal = campaign.goalBoxes != null && campaign.goalBoxes > 0
+        const href = hrefByHandle?.[campaign.handle] ?? `${root}/${campaign.handle}`
 
         return (
           <Link
             key={campaign.id}
-            href={`${root}/${campaign.handle}`}
+            href={href}
             aria-label={`Support ${campaign.title}`}
             className="block h-full rounded-[1.5rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
