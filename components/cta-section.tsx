@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { HashScrollLink } from "@/components/hash-scroll-link"
 import { ArrowRight } from "lucide-react"
 
 export function CTASection() {
@@ -24,10 +24,10 @@ export function CTASection() {
                 size="lg" 
                 className="rounded-full px-8 text-base h-14 bg-primary-foreground text-primary hover:bg-primary-foreground/90 shadow-lg hover:shadow-xl transition-all"
               >
-                <Link href="#enquiry" className="inline-flex items-center gap-2">
+                <HashScrollLink href="#enquiry" className="inline-flex items-center gap-2">
                   Submit a Fundraising Enquiry
                   <ArrowRight className="h-5 w-5" />
-                </Link>
+                </HashScrollLink>
               </Button>
             </div>
           </div>

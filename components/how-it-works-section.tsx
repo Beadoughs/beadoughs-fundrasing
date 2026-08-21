@@ -31,7 +31,7 @@ export function HowItWorksSection() {
   ]
 
   return (
-    <section id="how-it-works" className="relative py-16 sm:py-24 scroll-mt-20 overflow-hidden">
+    <section id="how-it-works" className="relative py-16 sm:py-24 scroll-mt-28 sm:scroll-mt-32 overflow-hidden">
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         <div className="relative mx-auto h-full w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <HowItWorksDonutDecorations />

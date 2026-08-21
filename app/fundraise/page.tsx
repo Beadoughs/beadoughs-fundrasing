@@ -9,7 +9,7 @@ import { CTASection } from "@/components/cta-section"
 import { EnquirySection } from "@/components/enquiry-section"
 import { FAQSection } from "@/components/faq-section"
 import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { HashScrollLink } from "@/components/hash-scroll-link"
 
 export const metadata: Metadata = {
   title: "Run a Fundraiser | Sunny's Donuts",
@@ -39,10 +39,10 @@ export default function FundraisePage() {
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="rounded-full px-8 text-base h-12">
-              <Link href="#enquiry">Submit a Fundraising Enquiry</Link>
+              <HashScrollLink href="#enquiry">Submit a Fundraising Enquiry</HashScrollLink>
             </Button>
             <Button asChild variant="outline" size="lg" className="rounded-full px-8 text-base h-12">
-              <Link href="#how-it-works">See How It Works</Link>
+              <HashScrollLink href="#how-it-works">See How It Works</HashScrollLink>
             </Button>
           </div>
         </div>

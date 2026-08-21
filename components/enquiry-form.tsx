@@ -71,7 +71,7 @@ export function EnquiryForm() {
 
   if (isSubmitted) {
     return (
-      <section id="enquiry" className="relative scroll-mt-20 overflow-hidden bg-white py-16 sm:py-24">
+      <section id="enquiry" className="relative scroll-mt-28 sm:scroll-mt-32 overflow-hidden bg-white py-16 sm:py-24">
         <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
           <Card className="rounded-3xl border-border bg-card p-8 sm:p-12 text-center shadow-lg shadow-primary/5">
             <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-secondary">
@@ -100,7 +100,7 @@ export function EnquiryForm() {
   }
 
   return (
-    <section id="enquiry" className="relative scroll-mt-20 overflow-hidden bg-white py-16 sm:py-24">
+    <section id="enquiry" className="relative scroll-mt-28 sm:scroll-mt-32 overflow-hidden bg-white py-16 sm:py-24">
       <div className="pointer-events-none absolute -left-32 -top-20 h-80 w-80 rounded-full bg-secondary blur-2xl" aria-hidden />
       <div className="brand-blob absolute left-0 top-0 h-[360px] w-[360px] opacity-80" aria-hidden />
 
