@@ -242,7 +242,18 @@ html {
 }
 
 .giveaway-marquee-inner {
-  animation: giveaway-marquee 40s linear infinite;
+  animation: giveaway-marquee 90s linear infinite;
+}
+
+.giveaway-marquee-dot {
+  display: inline-block;
+  width: 0.35rem;
+  height: 0.35rem;
+  margin: 0 1.75rem;
+  border-radius: 9999px;
+  background: var(--brand-yellow);
+  box-shadow: 0 0 0 1px rgb(255 201 40 / 0.35);
+  flex-shrink: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

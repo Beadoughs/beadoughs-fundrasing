@@ -10,22 +10,45 @@ export function GiveawayMarqueeBanner() {
   if (!isGiveawayEnabled()) return null
 
   const message = giveawayBannerMessage()
-  const segment = `${message}  ·  `
+  const segment = (
+    <>
+      <span className="giveaway-marquee-dot" aria-hidden="true" />
+      <span>{message}</span>
+    </>
+  )
 
   return (
     <div
-      className="giveaway-marquee-bar fixed left-0 right-0 z-40 border-b border-[color:var(--brand-dark)]/15 bg-[color:var(--brand-yellow)] text-[color:var(--brand-dark)]"
+      className="giveaway-marquee-bar fixed left-0 right-0 z-40 border-b border-white/10 bg-[color:var(--brand-dark)] text-white"
       style={{ top: "var(--site-header-height, 4.5rem)" }}
       role="status"
       aria-label={message}
     >
-      <div className="giveaway-marquee-static hidden motion-reduce:flex items-center justify-center px-4 py-2 text-center text-xs sm:text-sm font-heading font-semibold">
+      <div className="giveaway-marquee-static hidden motion-reduce:flex items-center justify-center gap-3 px-4 py-2.5 text-center text-[11px] sm:text-xs font-heading font-medium tracking-[0.14em] uppercase">
+        <span className="text-[color:var(--brand-yellow)]" aria-hidden="true">
+          ◆
+        </span>
         {message}
+        <span className="text-[color:var(--brand-yellow)]" aria-hidden="true">
+          ◆
+        </span>
       </div>
-      <div className="giveaway-marquee-track motion-reduce:hidden overflow-hidden py-2">
-        <div className="giveaway-marquee-inner flex w-max whitespace-nowrap text-xs sm:text-sm font-heading font-semibold">
-          <span aria-hidden="true">{segment.repeat(8)}</span>
-          <span aria-hidden="true">{segment.repeat(8)}</span>
+      <div className="giveaway-marquee-track motion-reduce:hidden overflow-hidden py-2.5">
+        <div className="giveaway-marquee-inner flex w-max items-center whitespace-nowrap text-[11px] sm:text-xs font-heading font-medium tracking-[0.14em] uppercase">
+          <span className="flex items-center" aria-hidden="true">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <span key={`a-${i}`} className="flex items-center">
+                {segment}
+              </span>
+            ))}
+          </span>
+          <span className="flex items-center" aria-hidden="true">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <span key={`b-${i}`} className="flex items-center">
+                {segment}
+              </span>
+            ))}
+          </span>
         </div>
       </div>
     </div>
@@ -35,6 +58,5 @@ export function GiveawayMarqueeBanner() {
 /** Extra top padding when the giveaway banner is visible under the fixed header. */
 export function giveawayMainPadClass(base = "pt-24"): string {
   if (!isGiveawayEnabled()) return base
-  // header (~4.5–5.5rem) + banner (~2.25rem)
   return "pt-36 sm:pt-40"
 }

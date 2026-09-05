@@ -23,7 +23,7 @@ export function boxesUntilNextEntry(totalBoxes: number): number {
 }
 
 export function giveawayBannerMessage(): string {
-  return `Buy ${GIVEAWAY_BOXES_PER_ENTRY} boxes across any Sunny's fundraiser = 1 entry into our ${GIVEAWAY_PRIZE_LABEL} giveaway · T&Cs apply`
+  return `Buy ${GIVEAWAY_BOXES_PER_ENTRY} boxes across any Sunny's fundraiser · 1 entry into our ${GIVEAWAY_PRIZE_LABEL} giveaway`
 }
 
 export type GiveawayBuyerRecord = {
