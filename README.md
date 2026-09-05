@@ -118,6 +118,24 @@ For schools, sports clubs, and other campaigns that should stay off the public s
 2. Add the handle to `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_PRIVATE` (Vercel), then redeploy.
 3. Share only `https://YOUR-DOMAIN/p/{handle}` — there is **no** `/p` page that lists every private campaign.
 
+### $500 cash giveaway (5 boxes = 1 entry)
+
+Site-wide promo: boxes bought for **any** fundraiser count toward a cumulative total.
+`entries = floor(total_boxes / 5)` per buyer (email/customer).
+
+1. Set `GIVEAWAY_ENABLED=true` in Vercel and redeploy.
+2. A sliding yellow banner appears on every fundraiser campaign/product page and on `/cart`.
+3. Paid orders (via the existing `orders/paid` webhook) add boxes to a site-wide ledger.
+4. Export entrants for the draw:
+
+```bash
+curl -H "Authorization: Bearer $FUNDRAISING_ADMIN_SECRET" \
+  "https://YOUR-DOMAIN/api/admin/fundraising/giveaway-entries?format=csv" \
+  -o giveaway-entries.csv
+```
+
+Or omit `?format=csv` for JSON.
+
 See comments in `lib/shopify/config.ts` for full Admin setup notes.
 
 ## Scripts

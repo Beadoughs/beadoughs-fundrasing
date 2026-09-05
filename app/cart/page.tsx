@@ -10,6 +10,10 @@ import { Footer } from "@/components/footer"
 import { Button } from "@/components/ui/button"
 import { isShopifyConfigured } from "@/lib/shopify/config"
 import { ShopifyConfigMissing } from "@/components/shopify-config-missing"
+import {
+  GiveawayMarqueeBanner,
+  giveawayMainPadClass,
+} from "@/components/giveaway-marquee-banner"
 
 export const dynamic = "force-dynamic"
 
@@ -36,7 +40,8 @@ export default async function CartPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-24 pb-16">
+      <GiveawayMarqueeBanner />
+      <main className={`min-h-screen pb-16 ${giveawayMainPadClass()}`}>
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <h1 className="font-heading text-3xl sm:text-4xl font-bold text-primary mb-8">Your cart</h1>
 

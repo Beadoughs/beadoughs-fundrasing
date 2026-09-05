@@ -6,6 +6,10 @@ import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { FundraiserProductAdd } from "@/components/fundraiser-product-add"
 import { FundraiserCartActions, FundraiserCartActionsMobileBar } from "@/components/fundraiser-cart-actions"
+import {
+  GiveawayMarqueeBanner,
+  giveawayMainPadClass,
+} from "@/components/giveaway-marquee-banner"
 import { ArrowLeft } from "lucide-react"
 import { fundraiserCampaignHref, type FundraiserRegion } from "@/lib/fundraising/region"
 import type { FundraiserProduct, FundraiserProductPage } from "@/lib/shopify/fundraiser-data"
@@ -27,7 +31,8 @@ export function FundraiserProductView({
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-24 pb-28 md:pb-16 bg-secondary/10">
+      <GiveawayMarqueeBanner />
+      <main className={`min-h-screen pb-28 md:pb-16 bg-secondary/10 ${giveawayMainPadClass()}`}>
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
             <Button asChild variant="ghost" className="mb-4 -ml-2 rounded-full text-muted-foreground">

@@ -11,6 +11,8 @@ import {
   resolveUniqueFundraiserHandleForProducts,
   saveCollectionStats,
 } from "@/lib/shopify/admin"
+import { creditGiveawayBoxes } from "@/lib/shopify/giveaway-ledger"
+import { isGiveawayEnabled } from "@/lib/fundraising/giveaway"
 
 export type ShopifyAttrRow = {
   name?: string
@@ -317,6 +319,25 @@ export async function applyPaidOrderToFundraiserStats(
   }
 
   await saveCollectionStats(current.collectionId, next)
+
+  if (isGiveawayEnabled()) {
+    try {
+      const email = (order.customer?.email ?? order.email ?? null)?.trim() || null
+      await creditGiveawayBoxes({
+        key,
+        email,
+        name: displayName,
+        boxesAdded,
+        orderId: String(order.id),
+      })
+    } catch (error) {
+      console.warn(
+        "[fundraising] Giveaway ledger update failed; fundraiser stats were still saved",
+        error instanceof Error ? error.message : error
+      )
+    }
+  }
+
   await markOrderStatsApplied(orderGid)
 
   return {

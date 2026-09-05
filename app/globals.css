@@ -220,3 +220,33 @@ html {
     transform: none !important;
   }
 }
+
+/* Site header height used by giveaway marquee (matches header.tsx) */
+:root {
+  --site-header-height: 4.5rem;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --site-header-height: 5.5rem;
+  }
+}
+
+@keyframes giveaway-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.giveaway-marquee-inner {
+  animation: giveaway-marquee 40s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .giveaway-marquee-inner {
+    animation: none !important;
+  }
+}

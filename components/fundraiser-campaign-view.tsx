@@ -9,6 +9,10 @@ import { Package, Clock, Users } from "lucide-react"
 import { FundraiserProductAdd } from "@/components/fundraiser-product-add"
 import { FundraiserCartActions, FundraiserCartActionsMobileBar } from "@/components/fundraiser-cart-actions"
 import {
+  GiveawayMarqueeBanner,
+  giveawayMainPadClass,
+} from "@/components/giveaway-marquee-banner"
+import {
   daysLeftFromEndDate,
   percentBoxesSold,
   type FundraiserDetail,
@@ -36,7 +40,8 @@ export function FundraiserCampaignView({ campaign, region = "tas" }: Props) {
   return (
     <>
       <Header />
-      <main className="min-h-screen pt-24 pb-28 md:pb-16 bg-secondary/10">
+      <GiveawayMarqueeBanner />
+      <main className={`min-h-screen pb-28 md:pb-16 bg-secondary/10 ${giveawayMainPadClass()}`}>
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-700">
             <h1 className="text-center text-4xl sm:text-5xl font-heading font-bold text-foreground">
