@@ -23,7 +23,7 @@ export function boxesUntilNextEntry(totalBoxes: number): number {
 }
 
 export function giveawayBannerMessage(): string {
-  return "Every 5 boxes purchased = 1 entry to win $500 cash 💛  ·  Every box you share helps raise even more for your fundraiser. Thank you for your support!"
+  return "Every 5 boxes purchased = 1 entry to win $500 cash 💛"
 }
 
 export type GiveawayBuyerRecord = {
