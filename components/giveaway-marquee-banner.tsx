@@ -24,7 +24,7 @@ export function GiveawayMarqueeBanner() {
       role="status"
       aria-label={message}
     >
-      <div className="giveaway-marquee-static hidden motion-reduce:flex items-center justify-center gap-3 px-4 py-2.5 text-center text-[11px] sm:text-xs font-heading font-medium tracking-[0.14em] uppercase">
+      <div className="giveaway-marquee-static hidden motion-reduce:flex items-center justify-center gap-3 px-4 py-2.5 text-center text-[11px] sm:text-xs font-heading font-medium tracking-wide">
         <span className="text-[color:var(--brand-yellow)]" aria-hidden="true">
           ◆
         </span>
@@ -34,7 +34,7 @@ export function GiveawayMarqueeBanner() {
         </span>
       </div>
       <div className="giveaway-marquee-track motion-reduce:hidden overflow-hidden py-2.5">
-        <div className="giveaway-marquee-inner flex w-max items-center whitespace-nowrap text-[11px] sm:text-xs font-heading font-medium tracking-[0.14em] uppercase">
+        <div className="giveaway-marquee-inner flex w-max items-center whitespace-nowrap text-[11px] sm:text-xs font-heading font-medium tracking-wide">
           <span className="flex items-center" aria-hidden="true">
             {Array.from({ length: 6 }).map((_, i) => (
               <span key={`a-${i}`} className="flex items-center">
