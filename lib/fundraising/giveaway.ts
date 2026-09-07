@@ -1,8 +1,8 @@
 /**
- * Site-wide $500 cash giveaway: every 5 boxes (cumulative across all fundraisers) = 1 entry.
+ * Site-wide $500 cash giveaway: every 2 boxes (cumulative across all fundraisers) = 1 entry.
  */
 
-export const GIVEAWAY_BOXES_PER_ENTRY = 5
+export const GIVEAWAY_BOXES_PER_ENTRY = 2
 export const GIVEAWAY_PRIZE_LABEL = "$500 cash"
 export const GIVEAWAY_METAFIELD_KEY = "giveaway_ledger"
 
@@ -23,7 +23,7 @@ export function boxesUntilNextEntry(totalBoxes: number): number {
 }
 
 export function giveawayBannerMessage(): string {
-  return "Every 5 boxes purchased = 1 entry to win $500 cash 💛"
+  return "Every 2 boxes purchased = 1 entry to win $500 cash 💛"
 }
 
 export type GiveawayBuyerRecord = {

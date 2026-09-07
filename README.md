@@ -118,10 +118,10 @@ For schools, sports clubs, and other campaigns that should stay off the public s
 2. Add the handle to `SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_PRIVATE` (Vercel), then redeploy.
 3. Share only `https://YOUR-DOMAIN/p/{handle}` — there is **no** `/p` page that lists every private campaign.
 
-### $500 cash giveaway (5 boxes = 1 entry)
+### $500 cash giveaway (2 boxes = 1 entry)
 
 Site-wide promo: boxes bought for **any** fundraiser count toward a cumulative total.
-`entries = floor(total_boxes / 5)` per buyer (email/customer).
+`entries = floor(total_boxes / 2)` per buyer (email/customer).
 
 1. Set `GIVEAWAY_ENABLED=true` in Vercel and redeploy.
 2. A sliding yellow banner appears on every fundraiser campaign/product page and on `/cart`.

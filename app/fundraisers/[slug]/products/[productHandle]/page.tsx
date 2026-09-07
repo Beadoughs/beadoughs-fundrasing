@@ -1,10 +1,11 @@
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { FundraiserProductView } from "@/components/fundraiser-product-view"
 import { getFundraiserProduct } from "@/lib/shopify/fundraiser-data"
 import { isFundraiserHandleInRegion, isShopifyConfigured } from "@/lib/shopify/config"
 import { ShopifyConfigMissing } from "@/components/shopify-config-missing"
+import { fundraiserProductHref } from "@/lib/fundraising/region"
 
 type Props = {
   params: Promise<{ slug: string; productHandle: string }>
@@ -39,12 +40,13 @@ export default async function FundraiserProductPage({ params }: Props) {
     )
   }
 
-  if (
-    (isFundraiserHandleInRegion(slug, "private") ||
-      isFundraiserHandleInRegion(slug, "qld")) &&
-    !isFundraiserHandleInRegion(slug, "tas")
-  ) {
-    notFound()
+  if (!isFundraiserHandleInRegion(slug, "tas")) {
+    if (isFundraiserHandleInRegion(slug, "private")) {
+      redirect(fundraiserProductHref(slug, productHandle, "private"))
+    }
+    if (isFundraiserHandleInRegion(slug, "qld")) {
+      redirect(fundraiserProductHref(slug, productHandle, "qld"))
+    }
   }
 
   let data: Awaited<ReturnType<typeof getFundraiserProduct>> = null

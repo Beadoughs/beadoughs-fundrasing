@@ -1,10 +1,11 @@
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { FundraiserCampaignView } from "@/components/fundraiser-campaign-view"
 import { getFundraiserByHandle } from "@/lib/shopify/fundraiser-data"
 import { isFundraiserHandleInRegion, isShopifyConfigured } from "@/lib/shopify/config"
 import { ShopifyConfigMissing } from "@/components/shopify-config-missing"
+import { fundraiserCampaignHref } from "@/lib/fundraising/region"
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -37,13 +38,14 @@ export default async function FundraiserPage({ params }: Props) {
     )
   }
 
-  // Private and QLD-only handles belong under /p or /qld — keep public URLs scoped to the public list.
-  if (
-    (isFundraiserHandleInRegion(slug, "private") ||
-      isFundraiserHandleInRegion(slug, "qld")) &&
-    !isFundraiserHandleInRegion(slug, "tas")
-  ) {
-    notFound()
+  // Private / QLD-only campaigns live under /p or /qld — send people to the right URL.
+  if (!isFundraiserHandleInRegion(slug, "tas")) {
+    if (isFundraiserHandleInRegion(slug, "private")) {
+      redirect(fundraiserCampaignHref(slug, "private"))
+    }
+    if (isFundraiserHandleInRegion(slug, "qld")) {
+      redirect(fundraiserCampaignHref(slug, "qld"))
+    }
   }
 
   let campaign: Awaited<ReturnType<typeof getFundraiserByHandle>> = null
