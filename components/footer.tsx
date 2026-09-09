@@ -20,7 +20,7 @@ export function Footer() {
               />
             </div>
             <p className="mt-4 text-sm font-heading font-semibold text-[color:var(--brand-yellow)]">
-              Dough for Good
+              Donuts for Charity
             </p>
             <p className="mt-3 max-w-xs text-sm text-white/70 leading-relaxed">
               Helping groups and workplaces across Australia raise more through easy, high-margin

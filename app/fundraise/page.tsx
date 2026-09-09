@@ -28,7 +28,7 @@ export default function FundraisePage() {
         </div>
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
           <p className="text-sm font-heading font-semibold uppercase tracking-[0.2em] text-[color:var(--brand-yellow)]">
-            Dough for Good
+            Donuts for Charity
           </p>
           <h1 className="mt-4 font-heading text-4xl sm:text-5xl lg:text-6xl font-bold text-primary text-balance">
             Run a Sunny&apos;s Donuts Fundraiser

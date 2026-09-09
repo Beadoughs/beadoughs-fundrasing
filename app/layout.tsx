@@ -16,12 +16,12 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "Sunny's Donuts | Dough for Good — Donut Fundraising",
+  title: "Sunny's Donuts | Donuts for Charity — Donut Fundraising",
   description:
     "Sunny's Donuts helps schools, clubs, charities and community groups across Australia run simple, high-profit donut fundraisers. Run a campaign or support one today.",
   keywords: ['fundraising', 'donuts', 'Australia', 'schools', 'charities', 'community', "Sunny's Donuts"],
   openGraph: {
-    title: "Sunny's Donuts | Dough for Good",
+    title: "Sunny's Donuts | Donuts for Charity",
     description:
       'Raise more money with donuts people actually want. Run a fundraiser or support an active campaign.',
     type: 'website',

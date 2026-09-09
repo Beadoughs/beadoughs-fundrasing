@@ -17,9 +17,9 @@ export function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="text-center lg:text-left animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both">
             <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] text-balance">
-              <span className="text-primary">Dough</span>{" "}
+              <span className="text-primary">Donuts</span>{" "}
               <span className="relative inline-block text-[color:var(--brand-yellow)]">
-                for Good
+                for Charity
                 <BrandSparkle className="absolute -right-7 -top-2 sm:-right-8 sm:-top-3" />
               </span>
             </h1>
