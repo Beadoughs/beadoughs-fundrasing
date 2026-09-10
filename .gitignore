@@ -15,3 +15,9 @@ node_modules
 .next/
 .DS_Store
 *.tsbuildinfo
+
+# Local tooling / package caches (not part of the app)
+.tools/
+.pnpm-home/
+.pnpm-store/
+.yarn.js

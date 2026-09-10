@@ -37,6 +37,18 @@ export default function FundraisePage() {
             Simple, high-margin donut campaigns for schools, clubs, charities, community groups
             and workplaces across Australia.
           </p>
+          <div className="mt-8 mx-auto w-full max-w-3xl overflow-hidden rounded-2xl bg-black shadow-lg shadow-primary/10 ring-1 ring-border">
+            <video
+              className="aspect-video w-full"
+              controls
+              playsInline
+              preload="metadata"
+              aria-label="How Sunny's Donuts fundraisers work"
+            >
+              <source src="/videos/sunnys-donuts-fundraiser.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="rounded-full px-8 text-base h-12">
               <HashScrollLink href="#enquiry">Submit a Fundraising Enquiry</HashScrollLink>
