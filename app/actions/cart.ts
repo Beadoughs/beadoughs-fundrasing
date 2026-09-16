@@ -430,14 +430,17 @@ export async function redirectToShopifyCheckout(): Promise<never> {
   type Res = {
     cart: {
       checkoutUrl: string
+      totalQuantity: number
     } | null
   }
   const data = await storefrontRequest<Res>(CART_QUERY, { cartId }, { cache: "no-store" })
-  const url = data.cart?.checkoutUrl
-  if (!url) {
+  const cart = data.cart
+  // Empty carts still have a checkoutUrl that lands on the Shopify storefront home —
+  // keep buyers on our /cart empty state instead.
+  if (!cart || cart.totalQuantity < 1 || !cart.checkoutUrl) {
     redirect("/cart")
   }
-  redirect(url)
+  redirect(cart.checkoutUrl)
 }
 
 export async function getCartForDisplay(): Promise<CartDisplay | null> {
