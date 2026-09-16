@@ -38,7 +38,6 @@ export function FundraiserCardGrid({
     >
       {visible.map((campaign, index) => {
         const pct = percentBoxesSold(campaign.boxesSold, campaign.goalBoxes)
-        const orgLabel = campaign.organization ?? campaign.title
         const hasGoal = campaign.goalBoxes != null && campaign.goalBoxes > 0
         const href = hrefByHandle?.[campaign.handle] ?? `${root}/${campaign.handle}`
 
@@ -67,9 +66,6 @@ export function FundraiserCardGrid({
                     Images coming soon
                   </div>
                 )}
-                <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-heading font-semibold shadow-sm max-w-[85%] truncate">
-                  {orgLabel}
-                </div>
               </div>
 
               <div className="p-6 sm:p-7 flex flex-col flex-grow">

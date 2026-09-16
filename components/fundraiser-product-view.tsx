@@ -25,7 +25,6 @@ export function FundraiserProductView({
   product,
   region = "tas",
 }: Props) {
-  const org = fundraiser.organization ?? "Community fundraiser"
   const campaignHref = fundraiserCampaignHref(fundraiser.handle, region)
 
   return (
@@ -43,8 +42,6 @@ export function FundraiserProductView({
             </Button>
             <p className="text-sm text-muted-foreground font-medium">
               Supporting <span className="text-primary font-bold">{fundraiser.title}</span>
-              {" · "}
-              Organized by <span className="font-semibold text-foreground">{org}</span>
             </p>
           </div>
 
