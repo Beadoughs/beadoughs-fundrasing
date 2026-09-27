@@ -172,7 +172,6 @@ export function BookingForm() {
   const [deliveryDate, setDeliveryDate] = useState("")
   const [deliveryDifferent, setDeliveryDifferent] = useState("")
   const [deliveryAddress, setDeliveryAddress] = useState<Address>(emptyAddress)
-  const [promoCode, setPromoCode] = useState("")
   const [heardAbout, setHeardAbout] = useState("")
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [newsletter, setNewsletter] = useState(false)
@@ -197,7 +196,6 @@ export function BookingForm() {
         deliveryDate,
         deliveryDifferent,
         deliveryAddress: deliveryDifferent === "yes" ? deliveryAddress : undefined,
-        promoCode,
         heardAbout,
         acceptedTerms,
         newsletter,
@@ -503,29 +501,17 @@ export function BookingForm() {
 
         <section className="space-y-5">
           <SectionHeading>Final Details</SectionHeading>
-          <div className="grid gap-5 sm:grid-cols-2">
-            <div className="space-y-2">
-              <Label htmlFor="promo-code">Promo code</Label>
-              <Input
-                id="promo-code"
-                value={promoCode}
-                onChange={(e) => setPromoCode(e.target.value)}
-                placeholder="If applicable"
-                className={inputClass}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="heard-about">
-                How did you hear about us?<Required />
-              </Label>
-              <OptionSelect
-                id="heard-about"
-                value={heardAbout}
-                onChange={setHeardAbout}
-                options={BOOKING_HEARD_ABOUT}
-                placeholder="Please select"
-              />
-            </div>
+          <div className="space-y-2 sm:max-w-sm">
+            <Label htmlFor="heard-about">
+              How did you hear about us?<Required />
+            </Label>
+            <OptionSelect
+              id="heard-about"
+              value={heardAbout}
+              onChange={setHeardAbout}
+              options={BOOKING_HEARD_ABOUT}
+              placeholder="Please select"
+            />
           </div>
 
           <div className="space-y-3">

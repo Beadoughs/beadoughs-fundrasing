@@ -55,7 +55,6 @@ const bookingSchema = z
       message: "Please tell us if the delivery address is different",
     }),
     deliveryAddress: addressSchema.optional(),
-    promoCode: z.string().trim().max(100),
     heardAbout: z.enum(BOOKING_HEARD_ABOUT, { message: "Please tell us how you heard about us" }),
     acceptedTerms: z.literal(true, { message: "Please accept the Terms & Conditions" }),
     newsletter: z.boolean(),
@@ -91,7 +90,6 @@ export type BookingFormValues = {
   deliveryDate: string
   deliveryDifferent: string
   deliveryAddress?: AddressValues
-  promoCode: string
   heardAbout: string
   acceptedTerms: boolean
   newsletter: boolean
@@ -169,7 +167,6 @@ export async function submitBooking(raw: BookingFormValues): Promise<BookingResu
     ["Fundraising length", d.duration],
     ["Requested delivery date", formatDate(d.deliveryDate)],
     ["Delivery address", deliveryAddress],
-    ["Promo code", d.promoCode || "—"],
     ["Heard about us", d.heardAbout],
     ["Accepted Terms & Conditions", "Yes"],
     ["Newsletter", d.newsletter ? "Yes" : "No"],
