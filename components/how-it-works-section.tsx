@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { HowItWorksDonutDecorations } from "@/components/donut-decorations"
-import { Send, Handshake, ClipboardList, Truck } from "lucide-react"
+import { Send, Handshake, ClipboardList, Truck, FileDown } from "lucide-react"
 
 export function HowItWorksSection() {
   const steps = [
@@ -76,6 +77,20 @@ export function HowItWorksSection() {
               )}
             </Card>
           ))}
+        </div>
+
+        <div className="mt-12 text-center">
+          <Button asChild size="lg" className="rounded-full px-8 text-base h-12">
+            <a
+              href="/downloads/sunnys-donuts-fundraiser-info-pack.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FileDown className="mr-2 h-5 w-5" />
+              Download our Fundraiser Info Pack
+            </a>
+          </Button>
+          <p className="mt-3 text-sm text-muted-foreground">PDF · opens in a new tab</p>
         </div>
       </div>
     </section>
