@@ -6,9 +6,6 @@ import { HowItWorksSection } from "@/components/how-it-works-section"
 import { WeHandleEverythingSection } from "@/components/we-handle-everything-section"
 import { ProductsProfitsSection } from "@/components/products-profits-section"
 import { ProudlySupportingSection } from "@/components/proudly-supporting-section"
-import { TestimonialsSection } from "@/components/testimonials-section"
-import { ImpactSection } from "@/components/impact-section"
-import { CTASection } from "@/components/cta-section"
 import { EnquirySection } from "@/components/enquiry-section"
 import { FAQSection } from "@/components/faq-section"
 import { Button } from "@/components/ui/button"
@@ -69,9 +66,6 @@ export default function FundraisePage() {
       <WeHandleEverythingSection />
       <ProductsProfitsSection />
       <ProudlySupportingSection />
-      <TestimonialsSection />
-      <ImpactSection />
-      <CTASection />
       <EnquirySection />
       <FAQSection />
       <Footer />
