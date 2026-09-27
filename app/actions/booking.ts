@@ -41,6 +41,11 @@ const bookingSchema = z
       .int()
       .min(1, "Box goal is required")
       .max(1000000),
+    fundsPurpose: z
+      .string()
+      .trim()
+      .min(30, "Please tell us a bit more about what the funds will go towards (at least 30 characters)")
+      .max(3000),
     duration: z.enum(BOOKING_DURATIONS, { message: "Please choose how long to fundraise" }),
     deliveryDate: z
       .string()
@@ -81,6 +86,7 @@ export type BookingFormValues = {
   organisationAddress: AddressValues
   participants: string
   boxGoal: string
+  fundsPurpose: string
   duration: string
   deliveryDate: string
   deliveryDifferent: string
@@ -159,6 +165,7 @@ export async function submitBooking(raw: BookingFormValues): Promise<BookingResu
     ["Organisation address", orgAddress],
     ["Number of participants", String(d.participants)],
     ["Box goal", String(d.boxGoal)],
+    ["What the funds will go towards", d.fundsPurpose],
     ["Fundraising length", d.duration],
     ["Requested delivery date", formatDate(d.deliveryDate)],
     ["Delivery address", deliveryAddress],

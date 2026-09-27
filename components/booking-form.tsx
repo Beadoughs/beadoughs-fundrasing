@@ -7,6 +7,7 @@ import { CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import {
@@ -166,6 +167,7 @@ export function BookingForm() {
   const [organisationAddress, setOrganisationAddress] = useState<Address>(emptyAddress)
   const [participants, setParticipants] = useState("")
   const [boxGoal, setBoxGoal] = useState("")
+  const [fundsPurpose, setFundsPurpose] = useState("")
   const [duration, setDuration] = useState("")
   const [deliveryDate, setDeliveryDate] = useState("")
   const [deliveryDifferent, setDeliveryDifferent] = useState("")
@@ -190,6 +192,7 @@ export function BookingForm() {
         organisationAddress,
         participants,
         boxGoal,
+        fundsPurpose,
         duration,
         deliveryDate,
         deliveryDifferent,
@@ -393,6 +396,35 @@ export function BookingForm() {
                 className={inputClass}
               />
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="funds-purpose">
+              What will the funds go towards?<Required />
+            </Label>
+            <p className="text-sm text-muted-foreground">
+              Supporters are far more likely to buy when they know exactly where their money is
+              going. Be as detailed as you can — for example:
+            </p>
+            <ul className="ml-4 list-disc space-y-0.5 text-sm text-muted-foreground">
+              <li>What you&apos;re raising money for (equipment, a trip, a cause, a family in need)</li>
+              <li>Who it will help and how many people benefit</li>
+              <li>Why it matters to your group or community</li>
+              <li>What your target amount will cover</li>
+            </ul>
+            <Textarea
+              id="funds-purpose"
+              value={fundsPurpose}
+              onChange={(e) => setFundsPurpose(e.target.value)}
+              placeholder="e.g. We're raising $2,000 to buy new sports uniforms for our 45 junior players. Many of our families can't afford the full kit, and new uniforms will mean every child can take the field feeling proud and part of the team…"
+              rows={6}
+              maxLength={3000}
+              required
+              className="resize-y rounded-xl border-border bg-secondary/60"
+            />
+            <p className="text-xs text-muted-foreground">
+              We may use this on your fundraiser page to help motivate supporters.
+            </p>
           </div>
 
           <div className="space-y-3">
