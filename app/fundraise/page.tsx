@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { GroupsBanner } from "@/components/groups-banner"
@@ -51,6 +52,9 @@ export default function FundraisePage() {
           </div>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="rounded-full px-8 text-base h-12">
+              <Link href="/book">Book Your Fundraiser</Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="rounded-full px-8 text-base h-12">
               <HashScrollLink href="#enquiry">Submit a Fundraising Enquiry</HashScrollLink>
             </Button>
             <Button asChild variant="outline" size="lg" className="rounded-full px-8 text-base h-12">
