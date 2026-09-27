@@ -518,7 +518,16 @@ export function BookingForm() {
               <p>
                 <strong className="text-foreground">Delivery:</strong> Once your fundraiser closes
                 we&apos;ll confirm the final order and arrange delivery or collection with your
-                coordinator. Delivery options vary by location.
+                coordinator.
+              </p>
+              <p>
+                <strong className="text-foreground">Minimum boxes for delivery:</strong> Groups
+                that sell <strong className="text-foreground">50 boxes or more</strong> receive{" "}
+                <strong className="text-foreground">free delivery</strong> to their nominated
+                address. Groups that sell <strong className="text-foreground">fewer than 50 boxes</strong>{" "}
+                are <strong className="text-foreground">pickup only</strong> and must collect their
+                full order from us — we&apos;ll confirm the pickup location and time with your
+                coordinator.
               </p>
               <p>
                 <strong className="text-foreground">Changes &amp; cancellations:</strong> Please
