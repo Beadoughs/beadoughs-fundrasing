@@ -2,8 +2,10 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { GroupsBanner } from "@/components/groups-banner"
 import { HowItWorksSection } from "@/components/how-it-works-section"
+import { WeHandleEverythingSection } from "@/components/we-handle-everything-section"
+import { ProductsProfitsSection } from "@/components/products-profits-section"
+import { ProudlySupportingSection } from "@/components/proudly-supporting-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
 import { ImpactSection } from "@/components/impact-section"
 import { CTASection } from "@/components/cta-section"
@@ -63,8 +65,10 @@ export default function FundraisePage() {
           </div>
         </div>
       </section>
-      <GroupsBanner />
       <HowItWorksSection />
+      <WeHandleEverythingSection />
+      <ProductsProfitsSection />
+      <ProudlySupportingSection />
       <TestimonialsSection />
       <ImpactSection />
       <CTASection />

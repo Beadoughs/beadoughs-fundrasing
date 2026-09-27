@@ -512,8 +512,8 @@ export function BookingForm() {
               </p>
               <p>
                 <strong className="text-foreground">Payments:</strong> No upfront payment is
-                required from your group. Your group&apos;s fundraising profit is calculated from
-                the boxes sold and paid to your nominated bank account after the fundraiser closes.
+                required from your group. Your group earns $5 profit per box sold, transferred to
+                your nominated bank account within 7 days after delivery.
               </p>
               <p>
                 <strong className="text-foreground">Delivery:</strong> Once your fundraiser closes
