@@ -88,7 +88,12 @@ export function ProductsProfitsSection() {
                       {p.flavoursLabel && (
                         <p className="mb-2 text-sm text-foreground">{p.flavoursLabel}</p>
                       )}
-                      <ul className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm text-foreground">
+                      <ul
+                        className={cn(
+                          "grid gap-x-4 gap-y-1.5 text-sm text-foreground",
+                          p.flavoursLabel ? "grid-cols-2" : "grid-cols-1 w-fit mx-auto",
+                        )}
+                      >
                         {p.flavours.map((f) => (
                           <li key={f} className="flex items-center gap-2">
                             <span

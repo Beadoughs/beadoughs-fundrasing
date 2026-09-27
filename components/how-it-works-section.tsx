@@ -94,8 +94,8 @@ export function HowItWorksSection() {
           })}
         </ol>
 
-        <div className="mt-8 sm:ml-[8.5rem] border-t-2 border-[#f5a800] w-24" />
-        <p className="mt-4 sm:ml-[8.5rem] font-heading text-lg font-bold uppercase tracking-wide text-primary">
+        <div className="mt-8 ml-16 sm:ml-[12.5rem] border-t-2 border-[#f5a800] w-24" />
+        <p className="mt-4 ml-16 sm:ml-[12.5rem] font-heading text-lg font-bold uppercase tracking-wide text-primary">
           You receive the profits!
         </p>
 
