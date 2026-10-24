@@ -14,7 +14,7 @@ import { HashScrollLink } from "@/components/hash-scroll-link"
 export const metadata: Metadata = {
   title: "Run a Fundraiser | Sunny's Donuts",
   description:
-    "How Sunny's Donuts fundraisers work for schools, clubs, charities and workplaces across Australia — plus FAQs and how to get started.",
+    "How Sunny's Donuts fundraisers work for schools, clubs, charities and workplaces across Australia, plus FAQs and how to get started.",
 }
 
 export default function FundraisePage() {

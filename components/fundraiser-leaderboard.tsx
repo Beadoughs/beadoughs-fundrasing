@@ -18,7 +18,7 @@ export function FundraiserLeaderboard({ entries, className }: Props) {
 
       {top.length === 0 ? (
         <p className="text-sm text-muted-foreground">
-          No boxes sold yet — be the first on the board!
+          No boxes sold yet. Be the first on the board!
         </p>
       ) : (
         <ol className="space-y-2">

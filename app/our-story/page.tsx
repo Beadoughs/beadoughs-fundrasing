@@ -45,7 +45,7 @@ const milestones = [
     title: "Helping People in Need",
     year: "Today",
     description:
-      "In 2025, we helped raise $11,079 for Constable Keith Smith — one of many campaigns focused on uplifting communities in real need.",
+      "In 2025, we helped raise $11,079 for Constable Keith Smith, one of many campaigns focused on uplifting communities in real need.",
     image: "/images/story/helping-people.png",
   },
 ]

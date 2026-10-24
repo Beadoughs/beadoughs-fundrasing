@@ -173,7 +173,7 @@ export async function submitBooking(raw: BookingFormValues): Promise<BookingResu
   ]
 
   const textBody = [
-    "New fundraiser booking — Sunny's Donuts website",
+    "New fundraiser booking from the Sunny's Donuts website",
     "",
     ...rows.map(([k, v]) => `${k}: ${v}`),
   ].join("\n")

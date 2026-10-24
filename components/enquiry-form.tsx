@@ -18,7 +18,7 @@ import { submitEnquiry } from "@/app/actions/enquiry"
 import { BrandSparkle } from "@/components/brand-sparkle"
 
 const benefits = [
-  "No obligation — just a friendly chat about your goals",
+  "No obligation, just a friendly chat about your goals",
   "We'll help you figure out if a donut fundraiser is right for you",
   "Get a clear picture of how the process works",
 ]

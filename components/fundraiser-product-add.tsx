@@ -54,7 +54,7 @@ export function FundraiserProductAdd({
     const slug = fundraiserSlug.trim()
     const title = fundraiserTitle.trim() || slug
     if (!slug) {
-      setError("Missing fundraiser — refresh the page and try again.")
+      setError("Missing fundraiser. Refresh the page and try again.")
       return
     }
     const qty = showQuantitySelector ? clampQuantity(quantity) : 1
@@ -107,7 +107,7 @@ export function FundraiserProductAdd({
           <SelectContent>
             {variants.map((v) => (
               <SelectItem key={v.id} value={v.id}>
-                {v.title} — {v.currencyCode} ${v.priceAmount}
+                {v.title} ({v.currencyCode} ${v.priceAmount})
               </SelectItem>
             ))}
           </SelectContent>

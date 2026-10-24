@@ -14,14 +14,14 @@ const highlights: {
     title: "Mum's Kitchen",
     year: "2020",
     description:
-      "Sunny's Donuts began in Sunny's mum's kitchen in Burnie — handmade donuts with a heart for community.",
+      "Sunny's Donuts began in Sunny's mum's kitchen in Burnie, with handmade donuts and a heart for community.",
     icon: Home,
   },
   {
     title: "Markets to Shop",
     year: "Growth",
     description:
-      "Weekend markets became a local favourite, then a dedicated shop — same quality, bigger reach.",
+      "Weekend markets became a local favourite, then a dedicated shop. Same quality, bigger reach.",
     icon: Store,
   },
   {

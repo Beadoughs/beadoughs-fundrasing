@@ -45,7 +45,7 @@ export function FundraisersDirectory({
                 This page only shows collections whose <strong>handles</strong> you list in{" "}
                 <code className="text-xs bg-secondary px-1 rounded">SHOPIFY_FUNDRAISER_COLLECTION_HANDLES</code>{" "}
                 (comma-separated). The sample handles in{" "}
-                <code className="text-xs bg-secondary px-1 rounded">.env.example</code> are placeholders — replace
+                <code className="text-xs bg-secondary px-1 rounded">.env.example</code> are placeholders. Replace
                 them with your real collection handles from your store admin → Products → Collections → collection
                 URL (the part after <code className="text-xs bg-secondary px-1 rounded">/collections/</code>).
               </span>

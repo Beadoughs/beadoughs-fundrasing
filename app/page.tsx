@@ -9,7 +9,7 @@ import { Footer } from "@/components/footer"
 export const revalidate = 30
 
 export const metadata: Metadata = {
-  title: "Sunny's Donuts | Donuts for Charity — Donut Fundraising",
+  title: "Sunny's Donuts | Donuts for Charity",
   description:
     "Sunny's Donuts helps schools, clubs and community groups across Australia raise money with donuts people love. Run a fundraiser or support an active campaign.",
   openGraph: {

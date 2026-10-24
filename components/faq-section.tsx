@@ -21,15 +21,15 @@ export function FAQSection() {
     },
     {
       question: "How much can our group raise?",
-      answer: "Fundraising amounts vary based on your group's size and reach. Many groups raise between $1,000–$5,000 from a single fundraiser. We'll help you set realistic goals and maximise your results during the planning stage.",
+      answer: "Fundraising amounts vary based on your group's size and reach. Many groups raise between $1,000 and $5,000 from a single fundraiser. We'll help you set realistic goals and maximise your results during the planning stage.",
     },
     {
       question: "Where is Sunny's Donuts available?",
-      answer: "We work with groups across Australia. Reach and delivery options can vary by location — submit an enquiry and we'll confirm what we can support for your area.",
+      answer: "We work with groups across Australia. Reach and delivery options can vary by location, so submit an enquiry and we'll confirm what we can support for your area.",
     },
     {
       question: "How do we get started?",
-      answer: "Simply fill out the enquiry form on this page! Tell us about your group and your goals, and we'll be in touch within 1-2 business days to discuss the next steps. There's no obligation — it's just a friendly chat to see if we're the right fit.",
+      answer: "Simply fill out the enquiry form on this page! Tell us about your group and your goals, and we'll be in touch within 1-2 business days to discuss the next steps. There's no obligation. It's just a friendly chat to see if we're the right fit.",
     },
   ]
 

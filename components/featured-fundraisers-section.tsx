@@ -39,7 +39,7 @@ export async function FeaturedFundraisersSection() {
             <BrandSparkle />
           </h2>
           <p className="mt-5 text-lg text-muted-foreground">
-            Support a campaign happening now — every box sold helps a local group raise more.
+            Support a campaign happening now. Every box sold helps a local group raise more.
           </p>
         </div>
 

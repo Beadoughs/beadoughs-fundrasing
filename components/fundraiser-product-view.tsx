@@ -77,7 +77,7 @@ export function FundraiserProductView({
                 <p className="mb-8 text-muted-foreground leading-relaxed">{product.description}</p>
               ) : (
                 <p className="mb-8 text-muted-foreground leading-relaxed">
-                  Delicious Sunny&apos;s Donuts — every purchase supports this fundraiser.
+                  Delicious Sunny&apos;s Donuts. Every purchase supports this fundraiser.
                 </p>
               )}
 

@@ -16,7 +16,7 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "Sunny's Donuts | Donuts for Charity — Donut Fundraising",
+  title: "Sunny's Donuts | Donuts for Charity",
   description:
     "Sunny's Donuts helps schools, clubs, charities and community groups across Australia run simple, high-profit donut fundraisers. Run a campaign or support one today.",
   keywords: ['fundraising', 'donuts', 'Australia', 'schools', 'charities', 'community', "Sunny's Donuts"],

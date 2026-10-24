@@ -217,7 +217,7 @@ export function BookingForm() {
           <CheckCircle2 className="h-10 w-10 text-primary" />
         </div>
         <h2 className="mb-4 font-heading text-2xl sm:text-3xl font-bold text-primary">
-          Booking received — thank you!
+          Booking received. Thank you!
         </h2>
         <p className="mb-6 text-muted-foreground">
           We&apos;ll be in touch within 1-2 business days to confirm your fundraiser details and
@@ -402,7 +402,7 @@ export function BookingForm() {
             </Label>
             <p className="text-sm text-muted-foreground">
               Supporters are far more likely to buy when they know exactly where their money is
-              going. Be as detailed as you can — for example:
+              going. Be as detailed as you can, for example:
             </p>
             <ul className="ml-4 list-disc space-y-0.5 text-sm text-muted-foreground">
               <li>What you&apos;re raising money for (equipment, a trip, a cause, a family in need)</li>
@@ -544,7 +544,7 @@ export function BookingForm() {
                 <strong className="text-foreground">free delivery</strong> to their nominated
                 address. Groups that sell <strong className="text-foreground">fewer than 50 boxes</strong>{" "}
                 are <strong className="text-foreground">pickup only</strong> and must collect their
-                full order from us — we&apos;ll confirm the pickup location and time with your
+                full order from us. We&apos;ll confirm the pickup location and time with your
                 coordinator.
               </p>
               <p>

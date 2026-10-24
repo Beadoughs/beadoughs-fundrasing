@@ -6,7 +6,7 @@ import { BookingForm } from "@/components/booking-form"
 export const metadata: Metadata = {
   title: "Book a Fundraiser | Sunny's Donuts",
   description:
-    "Book your Sunny's Donuts fundraiser — tell us about your group, goal and preferred delivery date.",
+    "Book your Sunny's Donuts fundraiser. Tell us about your group, goal and preferred delivery date.",
 }
 
 export default function BookPage() {

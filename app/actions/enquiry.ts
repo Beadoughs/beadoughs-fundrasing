@@ -93,7 +93,7 @@ export async function submitEnquiry(
   const groupLabel = GROUP_TYPE_LABELS[d.groupType] ?? d.groupType
 
   const textLines = [
-    "New fundraising enquiry — Sunny's Donuts website",
+    "New fundraising enquiry from the Sunny's Donuts website",
     "",
     `Your name: ${d.name}`,
     `Organisation / group name: ${d.organisation}`,
