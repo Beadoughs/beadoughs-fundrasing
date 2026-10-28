@@ -56,28 +56,31 @@ function mapCartForDisplay(
     totalQuantity: cart.totalQuantity,
     cost: cart.cost,
     attributes: cart.attributes,
-    lines: cart.lines.edges.map(({ node }) => ({
-      id: node.id,
-      quantity: node.quantity,
-      attributes: node.attributes ?? [],
-      cost: node.cost,
-      merchandise: {
-        id: node.merchandise.id,
-        title: node.merchandise.title,
-        imageUrl:
-          node.merchandise.image?.url ??
-          node.merchandise.product.featuredImage?.url ??
-          null,
-        imageAlt:
-          node.merchandise.image?.altText ??
-          node.merchandise.product.featuredImage?.altText ??
-          node.merchandise.product.title,
-        product: {
-          title: node.merchandise.product.title,
-          handle: node.merchandise.product.handle,
+    lines: cart.lines.edges.flatMap(({ node }) => {
+      const merch = node.merchandise
+      if (!merch?.id || !merch.product) return []
+      return [
+        {
+          id: node.id,
+          quantity: node.quantity,
+          attributes: node.attributes ?? [],
+          cost: node.cost,
+          merchandise: {
+            id: merch.id,
+            title: merch.title ?? merch.product.title,
+            imageUrl: merch.image?.url ?? merch.product.featuredImage?.url ?? null,
+            imageAlt:
+              merch.image?.altText ??
+              merch.product.featuredImage?.altText ??
+              merch.product.title,
+            product: {
+              title: merch.product.title,
+              handle: merch.product.handle,
+            },
+          },
         },
-      },
-    })),
+      ]
+    }),
   }
 }
 
@@ -100,16 +103,16 @@ async function fetchCartRaw(cartId: string) {
               totalAmount: { amount: string; currencyCode: string }
             }
             attributes: CartAttribute[]
-            merchandise: {
-              id: string
-              title: string
+            merchandise?: {
+              id?: string
+              title?: string
               image?: { url: string; altText?: string | null } | null
-              product: {
+              product?: {
                 title: string
                 handle: string
                 featuredImage?: { url: string; altText?: string | null } | null
               }
-            }
+            } | null
           }
         }[]
       }
@@ -433,10 +436,19 @@ export async function redirectToShopifyCheckout(): Promise<never> {
       totalQuantity: number
     } | null
   }
-  const data = await storefrontRequest<Res>(CART_QUERY, { cartId }, { cache: "no-store" })
-  const cart = data.cart
-  // Empty carts still have a checkoutUrl that lands on the Shopify storefront home —
-  // keep buyers on our /cart empty state instead.
+  let cart: Res["cart"] = null
+  try {
+    const data = await storefrontRequest<Res>(CART_QUERY, { cartId }, { cache: "no-store" })
+    cart = data.cart
+  } catch (error) {
+    console.error(
+      "[checkout] Could not load Shopify cart",
+      error instanceof Error ? error.message : error
+    )
+    redirect("/cart")
+  }
+  // Empty carts still have a checkoutUrl that lands on the Shopify storefront home.
+  // Keep buyers on our /cart empty state instead.
   if (!cart || cart.totalQuantity < 1 || !cart.checkoutUrl) {
     redirect("/cart")
   }

@@ -5,6 +5,7 @@ import { FundraiserCampaignView } from "@/components/fundraiser-campaign-view"
 import { getFundraiserByHandle } from "@/lib/shopify/fundraiser-data"
 import { isFundraiserHandleInRegion, isShopifyConfigured } from "@/lib/shopify/config"
 import { ShopifyConfigMissing } from "@/components/shopify-config-missing"
+import { ShopifyLoadError } from "@/components/shopify-load-error"
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -59,7 +60,7 @@ export default async function PrivateFundraiserPage({ params }: Props) {
   try {
     campaign = await getFundraiserByHandle(slug)
   } catch {
-    throw new Error("Failed to load fundraiser from Shopify. Check API token and Storefront scopes.")
+    return <ShopifyLoadError />
   }
 
   if (!campaign) {

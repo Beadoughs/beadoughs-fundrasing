@@ -5,6 +5,7 @@ import { FundraiserProductView } from "@/components/fundraiser-product-view"
 import { getFundraiserProduct } from "@/lib/shopify/fundraiser-data"
 import { isFundraiserHandleInRegion, isShopifyConfigured } from "@/lib/shopify/config"
 import { ShopifyConfigMissing } from "@/components/shopify-config-missing"
+import { ShopifyLoadError } from "@/components/shopify-load-error"
 
 type Props = {
   params: Promise<{ slug: string; productHandle: string }>
@@ -61,7 +62,7 @@ export default async function PrivateFundraiserProductPage({ params }: Props) {
   try {
     data = await getFundraiserProduct(slug, productHandle)
   } catch {
-    throw new Error("Failed to load product from Shopify. Check API token and Storefront scopes.")
+    return <ShopifyLoadError />
   }
 
   if (!data) {

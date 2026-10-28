@@ -246,9 +246,9 @@ function mapProductNode(p: {
     descriptionHtml: p.descriptionHtml ?? "",
     imageUrl: p.featuredImage?.url ?? null,
     imageAlt: p.featuredImage?.altText ?? null,
-    minPriceAmount: p.priceRange.minVariantPrice.amount,
-    minPriceCurrency: p.priceRange.minVariantPrice.currencyCode,
-    variants: p.variants.edges.map(({ node: v }) => ({
+    minPriceAmount: p.priceRange?.minVariantPrice?.amount ?? "0",
+    minPriceCurrency: p.priceRange?.minVariantPrice?.currencyCode ?? "AUD",
+    variants: (p.variants?.edges ?? []).map(({ node: v }) => ({
       id: v.id,
       title: v.title,
       availableForSale: v.availableForSale,

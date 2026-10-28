@@ -44,12 +44,17 @@ export async function storefrontRequest<T>(
     errors?: { message: string }[]
   }
 
-  if (body.errors?.length) {
-    throw new Error(body.errors.map((e) => e.message).join("; "))
+  // Shopify can return GraphQL warnings alongside usable data. Only fail
+  // when there is nothing to render, otherwise checkout/cart pages crash.
+  if (body.data == null) {
+    const detail = body.errors?.map((e) => e.message).join("; ")
+    throw new Error(detail || "Storefront API returned no data")
   }
-
-  if (body.data === undefined) {
-    throw new Error("Storefront API returned no data")
+  if (body.errors?.length) {
+    console.warn(
+      "[shopify storefront]",
+      body.errors.map((e) => e.message).join("; ")
+    )
   }
 
   return body.data
