@@ -20,15 +20,14 @@ export default function Error({
             Something went wrong
           </h1>
           <p className="text-muted-foreground mb-6">
-            We couldn&apos;t finish that step. Please try again, or go back to the fundraisers
-            and add the donuts to your cart once more.
+            We couldn&apos;t finish that step. Please try again, or head home and start over.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button onClick={reset} className="rounded-full">
               Try again
             </Button>
             <Button asChild variant="outline" className="rounded-full">
-              <Link href="/fundraisers">View fundraisers</Link>
+              <Link href="/">Go home</Link>
             </Button>
           </div>
         </div>

@@ -29,7 +29,7 @@ export function CartView({
   lines,
   totalQuantity,
   totalAmount,
-  continueHref = "/fundraisers",
+  continueHref = "/",
 }: Props) {
   const router = useRouter()
   const [pending, startTransition] = useTransition()

@@ -22,7 +22,6 @@ export function Header() {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/our-story", label: "Our Story" },
-    { href: "/fundraisers", label: "Active Fundraisers" },
     { href: "/fundraise", label: "Run a Fundraiser" },
   ]
 

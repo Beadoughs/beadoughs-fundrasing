@@ -24,8 +24,8 @@ export function HeroSection() {
               </span>
             </h1>
             <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 text-pretty leading-relaxed">
-              Delicious donuts that help schools, clubs and community groups raise funds,
-              or support a campaign that&apos;s already underway.
+              Delicious donuts that help schools, clubs and community groups raise funds
+              across Australia.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -34,7 +34,7 @@ export function HeroSection() {
                 size="lg"
                 className="rounded-full px-8 text-base h-14 shadow-lg shadow-primary/20"
               >
-                <Link href="#fundraisers">Support a fundraiser</Link>
+                <Link href="/book">Join the waitlist</Link>
               </Button>
               <Button
                 asChild
@@ -42,7 +42,7 @@ export function HeroSection() {
                 size="lg"
                 className="rounded-full px-8 text-base h-14"
               >
-                <Link href="/book">Join the waitlist</Link>
+                <Link href="/fundraise">How it works</Link>
               </Button>
             </div>
           </div>
