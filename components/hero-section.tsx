@@ -42,7 +42,7 @@ export function HeroSection() {
                 size="lg"
                 className="rounded-full px-8 text-base h-14"
               >
-                <Link href="/fundraise">Start a fundraiser</Link>
+                <Link href="/book">Join the waitlist</Link>
               </Button>
             </div>
           </div>

@@ -6,7 +6,6 @@ import {
   listFundraiserCardsFromStore,
 } from "@/lib/shopify/fundraiser-data"
 import {
-  getFundraiserCollectionHandles,
   isShopifyConfigured,
   listAllShopifyCollectionsEnabled,
 } from "@/lib/shopify/config"
@@ -39,8 +38,6 @@ export default async function FundraisersDirectoryPage() {
     loadError = e instanceof Error ? e.message : "Could not load fundraisers"
   }
 
-  const handlesConfigured = getFundraiserCollectionHandles().length > 0
-
   return (
     <>
       <Header />
@@ -60,7 +57,6 @@ export default async function FundraisersDirectoryPage() {
             cards={cards}
             loadError={loadError}
             useListAll={useListAll}
-            handlesConfigured={handlesConfigured}
           />
         </div>
       </main>

@@ -25,11 +25,11 @@ export function FAQSection() {
     },
     {
       question: "Where is Sunny's Donuts available?",
-      answer: "We work with groups across Australia. Reach and delivery options can vary by location, so submit an enquiry and we'll confirm what we can support for your area.",
+      answer: "We work with groups across Australia. Reach and delivery options can vary by location. When bookings reopen, we'll confirm what we can support for your area.",
     },
     {
       question: "How do we get started?",
-      answer: "Simply fill out the enquiry form on this page! Tell us about your group and your goals, and we'll be in touch within 1-2 business days to discuss the next steps. There's no obligation. It's just a friendly chat to see if we're the right fit.",
+      answer: "Bookings are paused right now. Join the waitlist on this page and we'll email you when the next round of Sunny's Donuts fundraisers opens. There's no obligation.",
     },
   ]
 

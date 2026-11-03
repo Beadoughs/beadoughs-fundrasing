@@ -62,7 +62,7 @@ export function Header() {
           <div className="hidden md:flex items-center gap-3">
             <CartNavLink />
             <Button asChild size="lg" className="rounded-full px-6">
-              <Link href="/fundraise#enquiry">Start a Fundraiser</Link>
+              <Link href="/book">Join the Waitlist</Link>
             </Button>
           </div>
 
@@ -94,8 +94,8 @@ export function Header() {
                 </Link>
               </Button>
               <Button asChild className="rounded-full">
-                <Link href="/fundraise#enquiry" onClick={() => setIsMobileMenuOpen(false)}>
-                  Start a Fundraiser
+                <Link href="/book" onClick={() => setIsMobileMenuOpen(false)}>
+                  Join the Waitlist
                 </Link>
               </Button>
             </nav>

@@ -1,12 +1,11 @@
 import type { Metadata } from "next"
-import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { HowItWorksSection } from "@/components/how-it-works-section"
 import { WeHandleEverythingSection } from "@/components/we-handle-everything-section"
 import { ProductsProfitsSection } from "@/components/products-profits-section"
 import { ProudlySupportingSection } from "@/components/proudly-supporting-section"
-import { EnquirySection } from "@/components/enquiry-section"
+import { WaitlistForm } from "@/components/waitlist-form"
 import { FAQSection } from "@/components/faq-section"
 import { Button } from "@/components/ui/button"
 import { HashScrollLink } from "@/components/hash-scroll-link"
@@ -14,7 +13,7 @@ import { HashScrollLink } from "@/components/hash-scroll-link"
 export const metadata: Metadata = {
   title: "Run a Fundraiser | Sunny's Donuts",
   description:
-    "How Sunny's Donuts fundraisers work for schools, clubs, charities and workplaces across Australia, plus FAQs and how to get started.",
+    "How Sunny's Donuts fundraisers work for schools, clubs, charities and workplaces across Australia. Join the waitlist to get notified when bookings reopen.",
 }
 
 export default function FundraisePage() {
@@ -35,7 +34,8 @@ export default function FundraisePage() {
           </h1>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
             Simple, high-margin donut campaigns for schools, clubs, charities, community groups
-            and workplaces across Australia.
+            and workplaces across Australia. Bookings are paused for now. Join the waitlist to
+            hear when we reopen.
           </p>
           <div className="mt-8 mx-auto w-full max-w-3xl overflow-hidden rounded-2xl bg-black shadow-lg shadow-primary/10 ring-1 ring-border">
             <video
@@ -51,10 +51,7 @@ export default function FundraisePage() {
           </div>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="rounded-full px-8 text-base h-12">
-              <Link href="/book">Book Your Fundraiser</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-full px-8 text-base h-12">
-              <HashScrollLink href="#enquiry">Submit a Fundraising Enquiry</HashScrollLink>
+              <HashScrollLink href="#waitlist">Join the waitlist</HashScrollLink>
             </Button>
             <Button asChild variant="outline" size="lg" className="rounded-full px-8 text-base h-12">
               <HashScrollLink href="#how-it-works">See How It Works</HashScrollLink>
@@ -66,7 +63,11 @@ export default function FundraisePage() {
       <WeHandleEverythingSection />
       <ProductsProfitsSection />
       <ProudlySupportingSection />
-      <EnquirySection />
+      <section className="relative scroll-mt-28 overflow-hidden bg-secondary/20 py-16 sm:py-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <WaitlistForm />
+        </div>
+      </section>
       <FAQSection />
       <Footer />
     </main>

@@ -52,7 +52,7 @@ export function Footer() {
                 { href: "/our-story", label: "Our Story" },
                 { href: "/fundraisers", label: "Active Fundraisers" },
                 { href: "/fundraise", label: "Run a Fundraiser" },
-                { href: "/fundraise#enquiry", label: "Start a Fundraiser" },
+                { href: "/book", label: "Join the Waitlist" },
               ].map((link) => (
                 <li key={link.href + link.label}>
                   <Link

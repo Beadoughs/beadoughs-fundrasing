@@ -1,13 +1,12 @@
+import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { FundraiserCardGrid } from "@/components/fundraiser-card-grid"
 import { listFundraiserCards } from "@/lib/shopify/fundraiser-data"
-import {
-  getFundraiserCollectionHandles,
-  isShopifyConfigured,
-} from "@/lib/shopify/config"
+import { isShopifyConfigured } from "@/lib/shopify/config"
 import { ShopifyConfigMissing } from "@/components/shopify-config-missing"
 import { fundraiserBasePath } from "@/lib/fundraising/region"
+import { Button } from "@/components/ui/button"
 
 export const revalidate = 30
 
@@ -36,8 +35,6 @@ export default async function QldFundraisersDirectoryPage() {
     loadError = e instanceof Error ? e.message : "Could not load fundraisers"
   }
 
-  const handlesConfigured = getFundraiserCollectionHandles("qld").length > 0
-
   return (
     <>
       <Header />
@@ -57,28 +54,29 @@ export default async function QldFundraisersDirectoryPage() {
             <p className="text-center text-destructive mb-8 max-w-xl mx-auto">{loadError}</p>
           )}
 
-          {!handlesConfigured && !loadError && (
-            <p className="text-center text-muted-foreground mb-8 max-w-2xl mx-auto">
-              This page only shows collections whose <strong>handles</strong> you list in{" "}
-              <code className="text-xs bg-secondary px-1 rounded">
-                SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD
-              </code>{" "}
-              (comma-separated). Create a collection in Shopify, set the same metafields as public
-              campaigns, then add the handle here and redeploy.
-            </p>
+          {!loadError && cards.length === 0 && (
+            <div className="mx-auto max-w-xl rounded-3xl border border-border bg-white px-6 py-10 text-center shadow-sm">
+              <h2 className="font-heading text-2xl font-bold text-primary mb-3">
+                No active fundraisers right now
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                We&apos;re between campaigns. Join the waitlist and we&apos;ll email you when
+                Sunny&apos;s Donuts fundraisers open again.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button asChild className="rounded-full">
+                  <Link href="/book">Join the waitlist</Link>
+                </Button>
+                <Button asChild variant="outline" className="rounded-full">
+                  <Link href="/fundraise">How fundraisers work</Link>
+                </Button>
+              </div>
+            </div>
           )}
 
-          {handlesConfigured && cards.length === 0 && !loadError && (
-            <p className="text-center text-muted-foreground mb-8 max-w-xl mx-auto">
-              No matching collections found. Each value in{" "}
-              <code className="text-xs bg-secondary px-1 rounded">
-                SHOPIFY_FUNDRAISER_COLLECTION_HANDLES_QLD
-              </code>{" "}
-              must exactly match a collection handle in your store (not the collection title).
-            </p>
+          {cards.length > 0 && (
+            <FundraiserCardGrid cards={cards} basePath={fundraiserBasePath("qld")} />
           )}
-
-          <FundraiserCardGrid cards={cards} basePath={fundraiserBasePath("qld")} />
         </div>
       </main>
       <Footer />

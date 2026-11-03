@@ -1,12 +1,12 @@
 import type { Metadata } from "next"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { BookingForm } from "@/components/booking-form"
+import { WaitlistForm } from "@/components/waitlist-form"
 
 export const metadata: Metadata = {
-  title: "Book a Fundraiser | Sunny's Donuts",
+  title: "Fundraiser Waitlist | Sunny's Donuts",
   description:
-    "Book your Sunny's Donuts fundraiser. Tell us about your group, goal and preferred delivery date.",
+    "Join the Sunny's Donuts fundraiser waitlist and get notified when bookings reopen.",
 }
 
 export default function BookPage() {
@@ -19,14 +19,15 @@ export default function BookPage() {
             Donuts for Charity
           </p>
           <h1 className="mt-4 font-heading text-4xl sm:text-5xl font-bold text-primary text-balance">
-            Let&apos;s Make a Booking!
+            Fundraiser bookings are paused
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            Fill in your details below and we&apos;ll be in touch to lock in your fundraiser.
+            We&apos;re not taking new Sunny&apos;s Donuts fundraiser bookings right now. Join the
+            waitlist and we&apos;ll email you as soon as the next round opens.
           </p>
         </div>
         <div className="px-4 sm:px-6 lg:px-8">
-          <BookingForm />
+          <WaitlistForm />
         </div>
       </section>
       <Footer />

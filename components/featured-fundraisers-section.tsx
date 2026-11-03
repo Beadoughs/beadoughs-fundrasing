@@ -46,15 +46,15 @@ export async function FeaturedFundraisersSection() {
         {!shopifyReady && (
           <div className="mx-auto max-w-xl rounded-3xl border border-border bg-white px-6 py-10 text-center shadow-sm">
             <p className="text-muted-foreground">
-              Active fundraisers will appear here once the store is connected. In the meantime, you
-              can browse the full directory or start your own campaign.
+              There are no active public fundraisers right now. Join the waitlist to hear when
+              groups can book the next round.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-              <Button asChild variant="outline" className="rounded-full">
-                <Link href="/fundraisers">View all fundraisers</Link>
-              </Button>
               <Button asChild className="rounded-full">
-                <Link href="/fundraise#enquiry">Start a fundraiser</Link>
+                <Link href="/book">Join the waitlist</Link>
+              </Button>
+              <Button asChild variant="outline" className="rounded-full">
+                <Link href="/fundraise">How it works</Link>
               </Button>
             </div>
           </div>
@@ -66,15 +66,19 @@ export async function FeaturedFundraisersSection() {
 
         {shopifyReady && !loadError && cards.length === 0 && (
           <div className="mx-auto max-w-xl rounded-3xl border border-border bg-white px-6 py-10 text-center shadow-sm">
+            <h3 className="font-heading text-xl font-bold text-primary mb-3">
+              No active fundraisers right now
+            </h3>
             <p className="text-muted-foreground">
-              No active campaigns right now. Check back soon, or start one for your group.
+              We&apos;re between campaigns. Join the waitlist and we&apos;ll notify you when
+              fundraiser bookings reopen.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
-              <Button asChild variant="outline" className="rounded-full">
-                <Link href="/fundraisers">View all fundraisers</Link>
-              </Button>
               <Button asChild className="rounded-full">
-                <Link href="/fundraise#enquiry">Start a fundraiser</Link>
+                <Link href="/book">Join the waitlist</Link>
+              </Button>
+              <Button asChild variant="outline" className="rounded-full">
+                <Link href="/fundraise">How it works</Link>
               </Button>
             </div>
           </div>
