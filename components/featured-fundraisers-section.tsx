@@ -46,8 +46,7 @@ export async function FeaturedFundraisersSection() {
         {!shopifyReady && (
           <div className="mx-auto max-w-xl rounded-3xl border border-border bg-white px-6 py-10 text-center shadow-sm">
             <p className="text-muted-foreground">
-              There are no active public fundraisers right now. Join the waitlist to hear when
-              groups can book the next round.
+              We&apos;re full right now. Join the waitlist to hear when spots open again.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
               <Button asChild className="rounded-full">
@@ -70,7 +69,7 @@ export async function FeaturedFundraisersSection() {
               No active fundraisers right now
             </h3>
             <p className="text-muted-foreground">
-              We&apos;re between campaigns. Join the waitlist and we&apos;ll notify you when
+              We&apos;re full right now. Join the waitlist and we&apos;ll notify you when
               fundraiser bookings reopen.
             </p>
             <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">

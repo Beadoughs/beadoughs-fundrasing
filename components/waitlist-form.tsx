@@ -91,11 +91,11 @@ export function WaitlistForm({ compact = false, id = "waitlist" }: Props) {
             Waitlist open
           </p>
           <h2 className="mt-2 font-heading text-2xl sm:text-3xl font-bold text-primary">
-            Get notified when bookings reopen
+            Get notified when spots open again
           </h2>
           <p className="mt-2 text-muted-foreground">
-            We&apos;re not taking new fundraiser bookings right now. Leave your details and
-            we&apos;ll be in touch when the next round opens.
+            We&apos;re full right now. Leave your details and we&apos;ll be in touch when
+            spots open again.
           </p>
         </div>
       )}
@@ -219,7 +219,7 @@ export function WaitlistForm({ compact = false, id = "waitlist" }: Props) {
         </Button>
 
         <p className="text-center text-xs text-muted-foreground">
-          We&apos;ll only use your details to tell you when fundraiser bookings reopen.
+          We&apos;ll only use your details to tell you when spots open again.
         </p>
       </form>
     </Card>

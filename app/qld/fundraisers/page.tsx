@@ -60,7 +60,7 @@ export default async function QldFundraisersDirectoryPage() {
                 No active fundraisers right now
               </h2>
               <p className="text-muted-foreground mb-6">
-                We&apos;re between campaigns. Join the waitlist and we&apos;ll email you when
+                We&apos;re full right now. Join the waitlist and we&apos;ll email you when
                 Sunny&apos;s Donuts fundraisers open again.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">

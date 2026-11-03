@@ -6,7 +6,7 @@ import { WaitlistForm } from "@/components/waitlist-form"
 export const metadata: Metadata = {
   title: "Fundraiser Waitlist | Sunny's Donuts",
   description:
-    "Join the Sunny's Donuts fundraiser waitlist and get notified when bookings reopen.",
+    "Join the Sunny's Donuts fundraiser waitlist and get notified when spots open again.",
 }
 
 export default function BookPage() {
@@ -19,11 +19,11 @@ export default function BookPage() {
             Donuts for Charity
           </p>
           <h1 className="mt-4 font-heading text-4xl sm:text-5xl font-bold text-primary text-balance">
-            Fundraiser bookings are paused
+            We&apos;re full right now
           </h1>
           <p className="mt-4 text-lg text-muted-foreground">
-            We&apos;re not taking new Sunny&apos;s Donuts fundraiser bookings right now. Join the
-            waitlist and we&apos;ll email you as soon as the next round opens.
+            Sunny&apos;s Donuts fundraiser bookings are at capacity. Join the waitlist and
+            we&apos;ll email you as soon as spots open again.
           </p>
         </div>
         <div className="px-4 sm:px-6 lg:px-8">

@@ -34,8 +34,8 @@ export default function FundraisePage() {
           </h1>
           <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto">
             Simple, high-margin donut campaigns for schools, clubs, charities, community groups
-            and workplaces across Australia. Bookings are paused for now. Join the waitlist to
-            hear when we reopen.
+            and workplaces across Australia. We&apos;re full right now. Join the waitlist to
+            hear when spots open again.
           </p>
           <div className="mt-8 mx-auto w-full max-w-3xl overflow-hidden rounded-2xl bg-black shadow-lg shadow-primary/10 ring-1 ring-border">
             <video

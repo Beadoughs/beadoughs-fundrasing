@@ -29,7 +29,7 @@ export function FAQSection() {
     },
     {
       question: "How do we get started?",
-      answer: "Bookings are paused right now. Join the waitlist on this page and we'll email you when the next round of Sunny's Donuts fundraisers opens. There's no obligation.",
+      answer: "We're full right now. Join the waitlist on this page and we'll email you when spots open again. There's no obligation.",
     },
   ]
 
